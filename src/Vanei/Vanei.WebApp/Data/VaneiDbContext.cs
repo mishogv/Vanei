@@ -3,6 +3,8 @@
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
+    using Models;
+
     public class VaneiDbContext : IdentityDbContext<WebAppUser>
     {
         public VaneiDbContext(DbContextOptions<VaneiDbContext> options)
@@ -10,12 +12,26 @@
         {
         }
 
+        public VaneiDbContext()
+        {
+        }
+
+        public DbSet<Product> Products { get; set; }
+
+        public DbSet<Category> Categories { get; set; }
+
+        public DbSet<Company> Companies { get; set; }
+
+        public DbSet<WareHouse> WareHouses { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Company>()
+                        .HasOne(x => x.Owner)
+                        .WithOne(x => x.Company)
+                        .HasForeignKey<Company>(x => x.OwnerId);
+
             base.OnModelCreating(builder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -12,8 +10,6 @@ using Microsoft.Extensions.Logging;
 
 namespace Vanei.WebApp.Areas.Identity.Pages.Account
 {
-    using Data;
-
     using Models;
 
     [AllowAnonymous]
@@ -49,6 +45,16 @@ namespace Vanei.WebApp.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
+            [StringLength(30, MinimumLength = 3)]
+            [Display(Name = "First name")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [StringLength(30, MinimumLength = 3)]
+            [Display(Name = "Last name")]
+            public string LastName { get; set; }
+
+            [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
@@ -68,9 +74,16 @@ namespace Vanei.WebApp.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
-                var user = new WebAppUser { UserName = Input.Email, Email = Input.Email };
+                var user = new WebAppUser
+                {
+                    UserName = Input.Email,
+                    Email = Input.Email,
+                    LastName = Input.LastName,
+                    FirstName = Input.FirstName,
+                };
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

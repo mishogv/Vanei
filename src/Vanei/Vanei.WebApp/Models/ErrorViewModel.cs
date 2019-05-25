@@ -1,5 +1,3 @@
-using System;
-
 namespace Vanei.WebApp.Models
 {
     public class ErrorViewModel

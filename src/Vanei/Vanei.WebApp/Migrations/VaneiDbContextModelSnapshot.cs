@@ -133,12 +133,107 @@ namespace Vanei.WebApp.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Vanei.WebApp.Data.WebAppUser", b =>
+            modelBuilder.Entity("Vanei.WebApp.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(24);
+
+                    b.Property<int>("WareHouseId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WareHouseId");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("Vanei.WebApp.Models.Company", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(150);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(30);
+
+                    b.Property<string>("OwnerId");
+
+                    b.Property<int>("WareHouseId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId")
+                        .IsUnique()
+                        .HasFilter("[OwnerId] IS NOT NULL");
+
+                    b.HasIndex("WareHouseId");
+
+                    b.ToTable("Companies");
+                });
+
+            modelBuilder.Entity("Vanei.WebApp.Models.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("BarCode")
+                        .IsRequired();
+
+                    b.Property<int>("CategoryId");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(24);
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<double>("Quantity");
+
+                    b.Property<int>("WareHouseId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("WareHouseId");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Vanei.WebApp.Models.WareHouse", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(24);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WareHouses");
+                });
+
+            modelBuilder.Entity("Vanei.WebApp.Models.WebAppUser", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("AccessFailedCount");
+
+                    b.Property<int?>("CompanyId");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -147,6 +242,14 @@ namespace Vanei.WebApp.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(24);
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(24);
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -164,6 +267,8 @@ namespace Vanei.WebApp.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<int>("Role");
+
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
@@ -172,6 +277,8 @@ namespace Vanei.WebApp.Migrations
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -194,7 +301,7 @@ namespace Vanei.WebApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Vanei.WebApp.Data.WebAppUser")
+                    b.HasOne("Vanei.WebApp.Models.WebAppUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -202,7 +309,7 @@ namespace Vanei.WebApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Vanei.WebApp.Data.WebAppUser")
+                    b.HasOne("Vanei.WebApp.Models.WebAppUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -215,7 +322,7 @@ namespace Vanei.WebApp.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Vanei.WebApp.Data.WebAppUser")
+                    b.HasOne("Vanei.WebApp.Models.WebAppUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -223,10 +330,50 @@ namespace Vanei.WebApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Vanei.WebApp.Data.WebAppUser")
+                    b.HasOne("Vanei.WebApp.Models.WebAppUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Vanei.WebApp.Models.Category", b =>
+                {
+                    b.HasOne("Vanei.WebApp.Models.WareHouse", "WareHouse")
+                        .WithMany("Categories")
+                        .HasForeignKey("WareHouseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Vanei.WebApp.Models.Company", b =>
+                {
+                    b.HasOne("Vanei.WebApp.Models.WebAppUser", "Owner")
+                        .WithOne("Company")
+                        .HasForeignKey("Vanei.WebApp.Models.Company", "OwnerId");
+
+                    b.HasOne("Vanei.WebApp.Models.WareHouse", "WareHouse")
+                        .WithMany()
+                        .HasForeignKey("WareHouseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Vanei.WebApp.Models.Product", b =>
+                {
+                    b.HasOne("Vanei.WebApp.Models.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Vanei.WebApp.Models.WareHouse", "WareHouse")
+                        .WithMany("Products")
+                        .HasForeignKey("WareHouseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Vanei.WebApp.Models.WebAppUser", b =>
+                {
+                    b.HasOne("Vanei.WebApp.Models.Company")
+                        .WithMany("Users")
+                        .HasForeignKey("CompanyId");
                 });
 #pragma warning restore 612, 618
         }

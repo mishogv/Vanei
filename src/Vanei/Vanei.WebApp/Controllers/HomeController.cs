@@ -1,18 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
+
 using Microsoft.AspNetCore.Mvc;
 using Vanei.WebApp.Models;
 
 namespace Vanei.WebApp.Controllers
 {
+    using System.Threading.Tasks;
+
+    using Data;
+
+    using Microsoft.EntityFrameworkCore;
+
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly VaneiDbContext dbContext;
+
+        public HomeController(VaneiDbContext dbContext)
         {
-            return View();
+            this.dbContext = dbContext;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var user = await this.dbContext.Users.FirstOrDefaultAsync();
+
+            return this.View(user);
         }
 
         public IActionResult Privacy()
