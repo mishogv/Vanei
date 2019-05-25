@@ -21,7 +21,7 @@
         public string OwnerId { get; set; }
         public virtual WebAppUser Owner { get; set; }
 
-        public int WareHouseId { get; set; }
+        public int? WareHouseId { get; set; }
         public virtual WareHouse WareHouse { get; set; }
 
         public virtual ICollection<WebAppUser> Users { get; set; }

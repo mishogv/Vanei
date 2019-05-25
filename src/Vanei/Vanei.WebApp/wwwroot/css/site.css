@@ -7,6 +7,11 @@ a.navbar-brand {
   word-break: break-all;
 }
 
+#custom-logo {
+    height: 125px !important ;
+    width: 125px !important;
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {

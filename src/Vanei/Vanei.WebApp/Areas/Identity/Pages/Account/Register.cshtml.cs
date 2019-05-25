@@ -1,15 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
-
-namespace Vanei.WebApp.Areas.Identity.Pages.Account
+﻿namespace Vanei.WebApp.Areas.Identity.Pages.Account
 {
+    using System.ComponentModel.DataAnnotations;
+    using System.Text.Encodings.Web;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Identity.UI.Services;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.RazorPages;
+    using Microsoft.Extensions.Logging;
+
+
     using Models;
 
     [AllowAnonymous]
@@ -50,6 +51,11 @@ namespace Vanei.WebApp.Areas.Identity.Pages.Account
             public string FirstName { get; set; }
 
             [Required]
+            [StringLength(30, MinimumLength = 1)]
+            [Display(Name = "User name")]
+            public string Username { get; set; }
+
+            [Required]
             [StringLength(30, MinimumLength = 3)]
             [Display(Name = "Last name")]
             public string LastName { get; set; }
@@ -78,7 +84,7 @@ namespace Vanei.WebApp.Areas.Identity.Pages.Account
             {
                 var user = new WebAppUser
                 {
-                    UserName = Input.Email,
+                    UserName = Input.Username,
                     Email = Input.Email,
                     LastName = Input.LastName,
                     FirstName = Input.FirstName,

@@ -168,7 +168,7 @@ namespace Vanei.WebApp.Migrations
 
                     b.Property<string>("OwnerId");
 
-                    b.Property<int>("WareHouseId");
+                    b.Property<int?>("WareHouseId");
 
                     b.HasKey("Id");
 
@@ -245,11 +245,11 @@ namespace Vanei.WebApp.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(24);
+                        .HasMaxLength(30);
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(24);
+                        .HasMaxLength(30);
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -352,8 +352,7 @@ namespace Vanei.WebApp.Migrations
 
                     b.HasOne("Vanei.WebApp.Models.WareHouse", "WareHouse")
                         .WithMany()
-                        .HasForeignKey("WareHouseId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("WareHouseId");
                 });
 
             modelBuilder.Entity("Vanei.WebApp.Models.Product", b =>

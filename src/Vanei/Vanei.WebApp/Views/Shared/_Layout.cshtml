@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Vanei.WebApp</title>
+    <title>@ViewData["Title"] - Vanei</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -33,7 +33,17 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Shop" asp-action="Index">Shop</a>
+                        </li>
+                        <li class="dropdown nav-item">
+                            <button class="btn btn-link nav-item dropdown-toggle nav-link text-dark" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Warehouse
+                            </button>
+                            <div class="dropdown-menu nav-item" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -49,7 +59,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2019 - Vanei.WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2019 - Vanei.WebApp
         </div>
     </footer>
 
