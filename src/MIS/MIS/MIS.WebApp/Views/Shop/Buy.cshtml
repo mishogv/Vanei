@@ -1,0 +1,63 @@
+﻿@model int
+
+@{
+    ViewData["Title"] = "Buy";
+}
+
+<form asp-controller="Shop" asp-action="Buy" method="post" class="container">
+    <div class="row">
+        <div class="col-lg-2 col-md-4 col-sm-6 col-6">
+            <div class="card">
+                <img src="/img/logo2.png" class="card-img-top" alt="card">
+                <div class="card-body">
+                    <h5 class="card-title">MISystem</h5>
+                    <p class="card-text">MIS system is software for shops. Buy it for your company.</p>
+                    <label class="col-form-label">Price: 200$ per month!</label>
+                    <br />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8 col-md-8 col-sm-6 col-4">
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Email:</label>
+                <div class="col-sm-10">
+                    <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="@Model">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="username" class="col-sm-2 col-form-label">User name:</label>
+                <div class="col-sm-10">
+                    <input type="text" readonly class="form-control-plaintext" id="username" value="@Model">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="firstName" class="col-sm-2 col-form-label">First name:</label>
+                <div class="col-sm-10">
+                    <input type="text" readonly class="form-control-plaintext" id="firstName" value="@Model">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="lastName" class="col-sm-2 col-form-label">Last name:</label>
+                <div class="col-sm-10">
+                    <input type="text" readonly class="form-control-plaintext" id="lastName" value="@Model">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="companyName" class="col-lg-2 col-form-label">Company name:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="companyName" placeholder="Company name">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="address" class="col-lg-2 col-form-label">Address:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="address" placeholder="City, Street, Number">
+                </div>
+            </div>
+            
+            <input class="container-fluid btn btn-info" type="submit" value="Submit"/>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-6 col-6"></div>
+    </div>
+</form>

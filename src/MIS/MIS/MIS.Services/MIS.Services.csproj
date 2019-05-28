@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MIS.Data\MIS.Data.csproj" />
+    <ProjectReference Include="..\MIS.Models\MIS.Models.csproj" />
+  </ItemGroup>
+
+</Project>
