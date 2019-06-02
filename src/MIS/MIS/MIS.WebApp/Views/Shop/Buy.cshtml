@@ -1,4 +1,4 @@
-﻿@model int
+﻿@model SystemProductShowViewModel
 
 @{
     ViewData["Title"] = "Buy";
@@ -8,15 +8,16 @@
     <div class="row">
         <div class="col-lg-2 col-md-4 col-sm-6 col-6">
             <div class="card">
-                <img src="/img/logo2.png" class="card-img-top" alt="card">
+                <img src="@Model.ImgUrl" class="card-img-top" alt="card">
                 <div class="card-body">
-                    <h5 class="card-title">MISystem</h5>
-                    <p class="card-text">MIS system is software for shops. Buy it for your company.</p>
-                    <label class="col-form-label">Price: 200$ per month!</label>
+                    <h5 class="card-title">@Model.Name</h5>
+                    <p class="card-text">@Model.Description</p>
+                    <label class="col-form-label">Price: @Model.Price BGN!</label>
                     <br />
                 </div>
             </div>
         </div>
+
 
         <div class="col-lg-8 col-md-8 col-sm-6 col-4">
             <div class="form-group row">
@@ -55,8 +56,8 @@
                     <input type="text" class="form-control" id="address" placeholder="City, Street, Number">
                 </div>
             </div>
-            
-            <input class="container-fluid btn btn-info" type="submit" value="Submit"/>
+
+            <input class="container-fluid btn btn-info" type="submit" value="Submit" />
         </div>
         <div class="col-lg-2 col-md-2 col-sm-6 col-6"></div>
     </div>

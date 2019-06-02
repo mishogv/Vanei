@@ -162,6 +162,33 @@ namespace MIS.Data.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("MIS.Models.SystemProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.Property<string>("ImgUrl")
+                        .IsRequired();
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<string>("UserId")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SystemProducts");
+                });
+
             modelBuilder.Entity("MIS.Models.WareHouse", b =>
                 {
                     b.Property<int>("Id")
@@ -323,6 +350,14 @@ namespace MIS.Data.Migrations
                     b.HasOne("MIS.Models.WareHouse", "WareHouse")
                         .WithMany("Products")
                         .HasForeignKey("WareHouseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MIS.Models.SystemProduct", b =>
+                {
+                    b.HasOne("MIS.Models.MISUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

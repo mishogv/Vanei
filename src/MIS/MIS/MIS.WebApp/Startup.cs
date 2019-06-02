@@ -1,5 +1,7 @@
 ﻿namespace MIS.WebApp
 {
+    using AutoMapper;
+
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.UI;
@@ -12,7 +14,11 @@
 
     using Data;
 
+    using MapperConfigurations;
+
     using Models;
+
+    using Services;
 
     public class Startup
     {
@@ -24,6 +30,7 @@
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
@@ -47,12 +54,24 @@
                             options.Password.RequiredUniqueChars = 0;
                             options.Password.RequiredLength = 4;
                         })
+                    .AddEntityFrameworkStores<MISDbContext>()
                     .AddDefaultTokenProviders()
-                    .AddDefaultUI(UIFramework.Bootstrap4)
-                    .AddEntityFrameworkStores<MISDbContext>();
+                    .AddDefaultUI(UIFramework.Bootstrap4);
+
+            #region Identity services
 
             services.AddScoped<RoleManager<IdentityRole>>();
             services.AddScoped<UserManager<MISUser>>();
+
+            #endregion
+
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.AddProfile<MISProfile>();
+            }, typeof(MISProfile).Assembly);
+
+            services.AddScoped<ISystemProductsService, SystemProductsService>();
+
 
             services.AddRouting();
 

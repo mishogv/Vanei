@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIS.ViewModels", "MIS.ViewM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIS.Common", "MIS.Common\MIS.Common.csproj", "{6D1E4CDA-37F7-4F42-87C9-B20E7F14A8C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIS.Tests", "MIS.Tests\MIS.Tests.csproj", "{788A525C-4D9F-4F92-9D52-A6A88C7943A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{6D1E4CDA-37F7-4F42-87C9-B20E7F14A8C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D1E4CDA-37F7-4F42-87C9-B20E7F14A8C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D1E4CDA-37F7-4F42-87C9-B20E7F14A8C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{788A525C-4D9F-4F92-9D52-A6A88C7943A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{788A525C-4D9F-4F92-9D52-A6A88C7943A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{788A525C-4D9F-4F92-9D52-A6A88C7943A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{788A525C-4D9F-4F92-9D52-A6A88C7943A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

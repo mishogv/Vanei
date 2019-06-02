@@ -11,8 +11,13 @@
             : base(options)
         {
         }
+        public MISDbContext()
+        {
+        }
 
         public DbSet<Product> Products { get; set; }
+
+        public DbSet<SystemProduct> SystemProducts { get; set; }
 
         public DbSet<Category> Categories { get; set; }
 

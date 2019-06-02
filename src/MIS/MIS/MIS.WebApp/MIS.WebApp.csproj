@@ -15,8 +15,11 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\MIS.Common\MIS.Common.csproj" />
     <ProjectReference Include="..\MIS.Data\MIS.Data.csproj" />
     <ProjectReference Include="..\MIS.Models\MIS.Models.csproj" />
+    <ProjectReference Include="..\MIS.Services\MIS.Services.csproj" />
+    <ProjectReference Include="..\MIS.ViewModels\MIS.ViewModels.csproj" />
   </ItemGroup>
 
 

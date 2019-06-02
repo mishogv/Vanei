@@ -5,17 +5,13 @@
 
     using Data;
 
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
 
     using Models;
 
     public class HomeController : BaseController
     {
-        public HomeController()
-        {
-        }
-
         public async Task<IActionResult> Index()
         {
             return await Task.Run(() => this.View());
