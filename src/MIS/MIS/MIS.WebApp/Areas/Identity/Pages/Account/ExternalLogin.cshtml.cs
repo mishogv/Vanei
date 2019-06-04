@@ -1,7 +1,9 @@
 ﻿namespace MIS.WebApp.Areas.Identity.Pages.Account
 {
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
     using System.Security.Claims;
+    using System.Security.Cryptography.X509Certificates;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
@@ -10,7 +12,7 @@
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
 
-    using MIS.Models;
+    using Models;
 
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel
@@ -44,6 +46,11 @@
             [Required]
             [EmailAddress]
             public string Email { get; set; }
+
+            [Required]
+            [StringLength(30, MinimumLength = 1)]
+            [Display(Name = "User name")]
+            public string Username { get; set; }
         }
 
         public IActionResult OnGetAsync()
@@ -112,9 +119,17 @@
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
 
-            if (ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
-                var user = new MISUser { UserName = Input.Email, Email = Input.Email };
+                var user = new MISUser
+                {
+                    UserName = Input.Username,
+                    Email = Input.Email,
+                    FirstName = info.Principal.FindFirstValue(ClaimTypes.GivenName) ,
+                    LastName = info.Principal.FindFirstValue(ClaimTypes.Surname) ,
+                };
+
+
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

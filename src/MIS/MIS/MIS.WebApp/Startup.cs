@@ -68,6 +68,13 @@
 
             #endregion
 
+            services.AddAuthentication()
+                    .AddFacebook(options =>
+                    {
+                        options.AppId = this.Configuration["Facebook:Key"];
+                        options.AppSecret = this.Configuration["Facebook:Secret"];
+                    });
+
             services.AddAutoMapper(cfg =>
             {
                 cfg.AddProfile<MISProfile>();

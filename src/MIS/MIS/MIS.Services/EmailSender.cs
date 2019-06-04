@@ -13,12 +13,11 @@
         //TODO : Refactor make configuration file
         private const string SenderEmail = "no-reply@mis.com";
         private const string NameOfTheSender = "MIS";
-        private const string NameForApi = "mis";
-        private const string ApiKey = "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";
 
         public EmailSender(IConfiguration configuration)
         {
-            this.SendGridKey = ApiKey;
+            this.SendGridKey = configuration["SendGrid:Key"];
+            this.SendGridUser = configuration["SendGrid:Secret"];
         }
 
         public string SendGridUser { get; set; }
