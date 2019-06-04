@@ -16,6 +16,8 @@
 
     using MapperConfigurations;
 
+    using Microsoft.AspNetCore.Identity.UI.Services;
+
     using Models;
 
     using Services;
@@ -47,6 +49,7 @@
             services.AddIdentity<MISUser, IdentityRole>(
                         options =>
                         {
+                            options.SignIn.RequireConfirmedEmail = true;
                             options.Password.RequireDigit = false;
                             options.Password.RequireLowercase = false;
                             options.Password.RequireNonAlphanumeric = false;
@@ -71,6 +74,9 @@
             }, typeof(MISProfile).Assembly);
 
             services.AddScoped<ISystemProductsService, SystemProductsService>();
+
+            services.AddTransient<IEmailSender, EmailSender>();
+            //services.Configure<AuthMessageSenderOptions>(this.Configuration);
 
 
             services.AddRouting();

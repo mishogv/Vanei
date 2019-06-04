@@ -1,4 +1,4 @@
-﻿@model SystemProductShowViewModel
+﻿@model SystemProductBuyViewModel
 
 @{
     ViewData["Title"] = "Buy";
@@ -8,40 +8,39 @@
     <div class="row">
         <div class="col-lg-2 col-md-4 col-sm-6 col-6">
             <div class="card">
-                <img src="@Model.ImgUrl" class="card-img-top" alt="card">
+                <img src="/img/@Model.ShowViewModel.ImgUrl" class="card-img-top" alt="card">
                 <div class="card-body">
-                    <h5 class="card-title">@Model.Name</h5>
-                    <p class="card-text">@Model.Description</p>
-                    <label class="col-form-label">Price: @Model.Price BGN!</label>
+                    <h5 class="card-title">@Model.ShowViewModel.Name</h5>
+                    <p class="card-text">@Model.ShowViewModel.Description</p>
+                    <label class="col-form-label">Price: @Model.ShowViewModel.Price BGN!</label>
                     <br />
                 </div>
             </div>
         </div>
 
-
         <div class="col-lg-8 col-md-8 col-sm-6 col-4">
             <div class="form-group row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Email:</label>
                 <div class="col-sm-10">
-                    <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="@Model">
+                    <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="@Model.Email">
                 </div>
             </div>
             <div class="form-group row">
                 <label for="username" class="col-sm-2 col-form-label">User name:</label>
                 <div class="col-sm-10">
-                    <input type="text" readonly class="form-control-plaintext" id="username" value="@Model">
+                    <input type="text" readonly class="form-control-plaintext" id="username" value="@Model.Username">
                 </div>
             </div>
             <div class="form-group row">
                 <label for="firstName" class="col-sm-2 col-form-label">First name:</label>
                 <div class="col-sm-10">
-                    <input type="text" readonly class="form-control-plaintext" id="firstName" value="@Model">
+                    <input type="text" readonly class="form-control-plaintext" id="firstName" value="@Model.FirstName">
                 </div>
             </div>
             <div class="form-group row">
                 <label for="lastName" class="col-sm-2 col-form-label">Last name:</label>
                 <div class="col-sm-10">
-                    <input type="text" readonly class="form-control-plaintext" id="lastName" value="@Model">
+                    <input type="text" readonly class="form-control-plaintext" id="lastName" value="@Model.LastName">
                 </div>
             </div>
             <div class="form-group row">
@@ -59,6 +58,8 @@
 
             <input class="container-fluid btn btn-info" type="submit" value="Submit" />
         </div>
-        <div class="col-lg-2 col-md-2 col-sm-6 col-6"></div>
+
+        <div class="col-lg-2 col-md-2 col-sm-6 col-6">
+        </div>
     </div>
 </form>

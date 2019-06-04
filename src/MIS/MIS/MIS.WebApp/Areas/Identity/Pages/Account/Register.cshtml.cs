@@ -82,6 +82,13 @@
             returnUrl = returnUrl ?? this.Url.Content("~/");
             if (this.ModelState.IsValid)
             {
+                var isAvailable = await this._userManager.FindByNameAsync(this.Input.Username) == null && await this._userManager.FindByEmailAsync(this.Input.Email) == null;
+
+                if (!isAvailable)
+                {
+                    return this.Page();
+                }
+
                 var user = new MISUser
                 {
                     UserName = this.Input.Username,
@@ -93,6 +100,9 @@
                 var result = await this._userManager.CreateAsync(user, this.Input.Password);
                 if (result.Succeeded)
                 {
+                    //TODO : Fix Bugs gmail don't receive emails from mis!!!!
+
+                    TempData["ConfirmEmail"] = "Confirm your email please!";
                     this._logger.LogInformation("User created a new account with password.");
 
                     var code = await this._userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -105,8 +115,8 @@
                     await this._emailSender.SendEmailAsync(this.Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    await this._signInManager.SignInAsync(user, isPersistent: false);
-                    return this.LocalRedirect(returnUrl);
+                    //await this._signInManager.SignInAsync(user, isPersistent: false);
+                    return this.LocalRedirect("/Identity/Account/Login");
                 }
                 foreach (var error in result.Errors)
                 {
