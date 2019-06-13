@@ -22,6 +22,8 @@
 
     using Services;
 
+    using Stripe;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -55,7 +57,7 @@
                             options.Password.RequireNonAlphanumeric = false;
                             options.Password.RequireUppercase = false;
                             options.Password.RequiredUniqueChars = 0;
-                            options.Password.RequiredLength = 4;
+                            options.Password.RequiredLength = 6;
                         })
                     .AddEntityFrameworkStores<MISDbContext>()
                     .AddDefaultTokenProviders()
@@ -79,6 +81,8 @@
             {
                 cfg.AddProfile<MISProfile>();
             }, typeof(MISProfile).Assembly);
+
+            StripeConfiguration.ApiKey = this.Configuration["Stripe:Secret"];
 
             services.AddScoped<ISystemProductsService, SystemProductsService>();
 

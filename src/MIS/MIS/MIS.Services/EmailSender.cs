@@ -10,7 +10,6 @@
 
     public class EmailSender : IEmailSender
     {
-        //TODO : Refactor make configuration file
         private const string SenderEmail = "no-reply@mis.com";
         private const string NameOfTheSender = "MIS";
 

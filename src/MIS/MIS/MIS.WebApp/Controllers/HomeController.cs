@@ -22,6 +22,11 @@
             return await Task.Run(() => this.View());
         }
 
+        public async Task<IActionResult> Contact()
+        {
+            return await Task.Run(() => this.View());
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
