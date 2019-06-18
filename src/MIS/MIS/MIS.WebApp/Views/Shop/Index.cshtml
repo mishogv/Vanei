@@ -1,53 +1,36 @@
-﻿@model IEnumerable<SystemProductShowViewModel>
+﻿@using MIS.Common
+@model IEnumerable<SystemProductShowViewModel>
 @{
     ViewData["Title"] = "Shop";
 }
 
-    <div class="row">
-        @foreach (var product in Model)
-        {
-            <div class="card col-lg-3 col-md-6 col-sm-10" style="width: 18rem;">
-                <img src="/img/@product.ImgUrl" class="card-img-top" alt="card">
-                <div class="card-body">
-                    <h5 class="card-title">@product.Name</h5>
-                    <p class="card-text">@product.Description</p>
-                    <label class="col-form-label">Price: @product.Price.ToString("f2") BGN per month!</label>
-                    <br />
-                    <a asp-controller="Shop" asp-action="Buy" asp-route-id="@product.Id" class="btn btn-primary container-fluid">Buy</a>
-                </div>
-            </div>
-        }
-
-
-
-        @*<div class="card col-lg-3 col-md-6 col-sm-10" style="width: 18rem;">
-            <img src="/img/logo2.png" class="card-img-top" alt="card">
+<div class="row">
+    @foreach (var product in Model)
+    {
+        <div class="card col-lg-3 col-md-6 col-sm-10" style="width: 18rem;">
+            <img src="/img/@product.ImgUrl" class="card-img-top" alt="card">
             <div class="card-body">
-                <h5 class="card-title">MISystem</h5>
-                <p class="card-text">Coming soon.</p>
-                <label class="col-form-label">Price: 30$ per month!</label>
+                <h5 class="card-title">@product.Name</h5>
+                <p class="card-text">@product.Description</p>
+                <label class="col-form-label">Price: @product.Price.ToString("f2") BGN per month!</label>
                 <br />
-                <a asp-controller="Shop" asp-action="Buy" class="btn btn-primary container-fluid">Buy</a>
+                <a asp-controller="Shop" asp-action="Buy" asp-route-id="@product.Id" class="btn btn-primary container-fluid col">Buy</a>
+                @if (this.User.IsInRole(GlobalConstants.AdministratorAreaRole))
+                {
+                    <div class="row justify-content-center">
+                        <div class="btn-group btn">
+                            <a asp-area="Administrator" asp-controller="SystemProduct" asp-action="Details" asp-route-id="@product.Id">
+                                <img src="ico/open-iconic-master/png/pencil-2x.png" class="mx-auto" />
+                            </a>
+                        </div>
+                        <div class="btn btn-group">
+                            <a asp-area="Administrator" asp-controller="SystemProduct" asp-action="Delete" asp-route-id="@product.Id">
+                                <img src="ico/open-iconic-master/png/x-2x.png" class="mx-auto" />
+                            </a>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
-        <div class="card col-lg-3 col-md-6 col-sm-10" style="width: 18rem;">
-            <img src="/img/logo2.png" class="card-img-top" alt="card">
-            <div class="card-body">
-                <h5 class="card-title">MISystem</h5>
-                <p class="card-text">Coming soon.</p>
-                <label class="col-form-label">Price: 30$ per month!</label>
-                <br/>
-                <a asp-controller="Shop" asp-action="Buy" class="btn btn-primary container-fluid">Buy</a>
-            </div>
-        </div>
-        <div class="card col-lg-3 col-md-6 col-sm-10" style="width: 18rem;">
-            <img src="/img/logo2.png" class="card-img-top" alt="card">
-            <div class="card-body">
-                <h5 class="card-title">MISystem</h5>
-                <p class="card-text">Coming soon.</p>
-                <label class="col-form-label">Price: 30$ per month!</label>
-                <br/>
-                <a asp-controller="Shop" asp-action="Buy" class="btn btn-primary container-fluid">Buy</a>
-            </div>
-        </div>*@
-    </div>
+    }
+</div>

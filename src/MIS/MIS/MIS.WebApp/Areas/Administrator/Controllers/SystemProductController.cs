@@ -2,6 +2,10 @@
 {
     using System.Threading.Tasks;
 
+    using AutoMapper;
+
+    using BindingModels;
+
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
@@ -15,20 +19,24 @@
     {
         private readonly ISystemProductsService productsService;
         private readonly UserManager<MISUser> userManager;
+        private readonly IMapper mapper;
 
-        public SystemProductController(ISystemProductsService productsService, UserManager<MISUser> userManager)
+        public SystemProductController(ISystemProductsService productsService
+            , UserManager<MISUser> userManager
+            , IMapper mapper)
         {
             this.productsService = productsService;
             this.userManager = userManager;
+            this.mapper = mapper;
         }
 
-        public async Task<IActionResult> CreateSystemProduct()
+        public async Task<IActionResult> Create()
         {
             return await Task.Run(() => this.View());
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateSystemProduct(SystemProductCreateViewModel inputModel)
+        public async Task<IActionResult> Create(SystemProductCreateInputModel input)
         {
             if (!this.ModelState.IsValid)
             {
@@ -37,8 +45,34 @@
 
             var user = await this.userManager.FindByNameAsync(this.User.Identity.Name);
 
-            await this.productsService.CreateSystemProductAsync(inputModel.Name, inputModel.Price, inputModel.ImgUrl, inputModel.Description, user.Id);
-            
+            await this.productsService
+                      .CreateSystemProductAsync(input.Name, input.Price, input.ImgUrl, input.Description, user.Id);
+
+
+            return await Task.Run(() => this.RedirectToAction("Index", "Shop"));
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var product = await this.productsService.GetSystemProductByIdAsync(id);
+
+            var result = this.mapper.Map<SystemProductDetailsViewModel>(product);
+
+            return await Task.Run(() => this.View(result));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Details(SystemProductDetailsBindingModel input)
+        {
+            await this.productsService.UpdateSystemProductByIdAsync(input.Id, input.Name, input.Price, input.ImgUrl, input.Description);
+
+            return await Task.Run(() => this.RedirectToAction("Index", "Shop"));
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            //TODO : Confirm box with js
+            await this.productsService.DeleteSystemProductAsync(id);
 
             return await Task.Run(() => this.RedirectToAction("Index", "Shop"));
         }

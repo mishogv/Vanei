@@ -11,9 +11,5 @@
     [Authorize(Roles = GlobalConstants.AdministratorAreaRole)]
     public class AdministratorController : BaseController
     {
-        public IActionResult Index()
-        {
-            return this.View();
-        }
     }
 }

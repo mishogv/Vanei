@@ -5,24 +5,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ASPSMS" Version="0.0.2" />
     <PackageReference Include="Sendgrid" Version="9.11.0" />
-    <PackageReference Include="Twilio" Version="5.29.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MIS.Data\MIS.Data.csproj" />
     <ProjectReference Include="..\MIS.Models\MIS.Models.csproj" />
+    <ProjectReference Include="..\MIS.ServicesModels\MIS.ServicesModels.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Microsoft.AspNetCore.Identity.UI">
       <HintPath>C:\Users\Mihail\.nuget\packages\microsoft.aspnetcore.identity.ui\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Identity.UI.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Options\" />
   </ItemGroup>
 
 </Project>

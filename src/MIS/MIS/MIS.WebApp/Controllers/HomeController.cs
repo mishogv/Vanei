@@ -3,9 +3,6 @@
     using System.Diagnostics;
     using System.Threading.Tasks;
 
-    using Data;
-
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     using Models;

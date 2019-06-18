@@ -22,8 +22,6 @@
 
     using Services;
 
-    using Stripe;
-
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -82,7 +80,6 @@
                 cfg.AddProfile<MISProfile>();
             }, typeof(MISProfile).Assembly);
 
-            StripeConfiguration.ApiKey = this.Configuration["Stripe:Secret"];
 
             services.AddScoped<ISystemProductsService, SystemProductsService>();
 

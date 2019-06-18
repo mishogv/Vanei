@@ -1,6 +1,5 @@
 ﻿namespace MIS.WebApp.Controllers
 {
-    using System.Security.Cryptography.X509Certificates;
     using System.Threading.Tasks;
 
     using AutoMapper;
@@ -33,9 +32,9 @@
 
         //TODO: BUY System
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var products = await this.productsService.GetAllSystemProductsAsync();
+            var products = this.productsService.GetAllSystemProducts();
 
             var result = this.mapper.Map<SystemProductShowViewModel[]>(products);
 
