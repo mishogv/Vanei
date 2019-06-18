@@ -24,8 +24,9 @@
                             </a>
                         </div>
                         <div class="btn btn-group">
-                            <a asp-area="Administrator" asp-controller="SystemProduct" asp-action="Delete" asp-route-id="@product.Id">
-                                <img src="ico/open-iconic-master/png/x-2x.png" class="mx-auto" />
+                            @*TODO : check for best practices and move script on other file*@
+                            <a asp-area="Administrator" asp-controller="SystemProduct" asp-action="Delete" asp-route-id="@product.Id" onclick="return confirm('Are you sure? You want to delete @product.Name?')">
+                                <img src="ico/open-iconic-master/png/x-2x.png" class="mx-auto"/>
                             </a>
                         </div>
                     </div>

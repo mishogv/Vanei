@@ -22,7 +22,6 @@
 
         public async Task<SystemProductServiceModel> CreateSystemProductAsync(string name, decimal price, string imgUrl, string description, string userId)
         {
-            //TODO: Validate?????
             var systemProduct = new SystemProduct()
             {
                 Name = name,

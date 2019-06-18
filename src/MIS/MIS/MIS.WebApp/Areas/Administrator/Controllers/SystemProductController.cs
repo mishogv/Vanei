@@ -71,7 +71,6 @@
 
         public async Task<IActionResult> Delete(int id)
         {
-            //TODO : Confirm box with js
             await this.productsService.DeleteSystemProductAsync(id);
 
             return await Task.Run(() => this.RedirectToAction("Index", "Shop"));

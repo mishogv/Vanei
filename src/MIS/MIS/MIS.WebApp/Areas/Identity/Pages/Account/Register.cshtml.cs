@@ -100,8 +100,6 @@
                 var result = await this._userManager.CreateAsync(user, this.Input.Password);
                 if (result.Succeeded)
                 {
-                    //TODO : Gmail receive emails in spam ask Niki for fix.
-
                     TempData["ConfirmEmail"] = "Confirm your email please!";
                     this._logger.LogInformation("User created a new account with password.");
 
