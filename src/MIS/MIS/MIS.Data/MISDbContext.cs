@@ -32,6 +32,11 @@
                    .WithOne(x => x.Company)
                    .HasForeignKey<Company>(x => x.OwnerId);
 
+            builder.Entity<Company>()
+                   .HasOne(x => x.WareHouse)
+                   .WithOne(x => x.Company)
+                   .HasForeignKey<Company>(x => x.WareHouseId);
+
             base.OnModelCreating(builder);
         }
     }

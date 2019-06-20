@@ -100,7 +100,7 @@
                 throw new InvalidOperationException($"Unexpected error occurred adding external login for user with ID '{user.Id}'.");
             }
 
-            //TODO : Research this. Facebook developer not hosted and can use only by m_i_h_o@abv.bg
+            //TODO : Facebook developer not hosted and can use only by m_i_h_o@abv.bg
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 

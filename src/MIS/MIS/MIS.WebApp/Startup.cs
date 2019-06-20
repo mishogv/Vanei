@@ -18,6 +18,8 @@
 
     using Microsoft.AspNetCore.Identity.UI.Services;
 
+    using Middlewares;
+
     using Models;
 
     using Services;
@@ -110,6 +112,8 @@
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            app.UseSeedDataMiddleware();
 
             app.UseAuthentication();
 

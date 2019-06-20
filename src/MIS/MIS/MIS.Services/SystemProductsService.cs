@@ -36,6 +36,7 @@
 
             var product = new SystemProductServiceModel()
             {
+                Id = systemProduct.Id,
                 Name = systemProduct.Name,
                 Price = systemProduct.Price,
                 ImgUrl = systemProduct.ImgUrl,
@@ -57,6 +58,7 @@
 
             var product = new SystemProductServiceModel()
             {
+                Id = productFromDb.Id,
                 Name = productFromDb.Name,
                 Price = productFromDb.Price,
                 ImgUrl = productFromDb.ImgUrl,

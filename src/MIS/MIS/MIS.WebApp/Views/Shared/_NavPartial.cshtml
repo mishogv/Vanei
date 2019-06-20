@@ -3,7 +3,7 @@
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Vanei.WebApp</a>
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MIS</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -17,17 +17,7 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Shop" asp-action="Index">Shop</a>
                     </li>
-                    <li class="dropdown nav-item">
-                        <button class="btn btn-link nav-item dropdown-toggle nav-link text-dark" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Warehouse
-                        </button>
-                        <div class="dropdown-menu nav-item" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </li>
-                    @if (this.User.IsInRole(GlobalConstants.AdministratorAreaRole))
+                    @if (User.Identity.IsAuthenticated)
                     {
                         <li class="dropdown nav-item">
                             <button class="btn btn-link nav-item dropdown-toggle nav-link text-dark" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -35,8 +25,18 @@
                             </button>
                             <div class="dropdown-menu nav-item" aria-labelledby="dropdownMenuButton">
                                 <a class="nav-link text-dark" asp-area="Administrator" asp-controller="SystemProduct" asp-action="Create">Create System Product</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
+
+                            </div>
+                        </li>
+                    }
+                    @if (this.User.IsInRole(GlobalConstants.AdministratorAreaRole))
+                    {
+                        <li class="dropdown nav-item">
+                            <button class="btn btn-link nav-item dropdown-toggle nav-link text-dark" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Admin panel
+                            </button>
+                            <div class="dropdown-menu nav-item" aria-labelledby="dropdownMenuButton">
+                                <a class="nav-link text-dark" asp-area="Administrator" asp-controller="SystemProduct" asp-action="Create">Create System Product</a>
                             </div>
                         </li>
                     }

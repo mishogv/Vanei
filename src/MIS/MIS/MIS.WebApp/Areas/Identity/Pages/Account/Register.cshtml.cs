@@ -100,7 +100,7 @@
                 var result = await this._userManager.CreateAsync(user, this.Input.Password);
                 if (result.Succeeded)
                 {
-                    TempData["ConfirmEmail"] = "Confirm your email please!";
+                    this.TempData["ConfirmEmail"] = "Please confirm your email, before you try to login.";
                     this._logger.LogInformation("User created a new account with password.");
 
                     var code = await this._userManager.GenerateEmailConfirmationTokenAsync(user);

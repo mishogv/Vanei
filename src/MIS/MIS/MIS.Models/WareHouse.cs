@@ -15,6 +15,9 @@
         [StringLength(24, MinimumLength = 3)]
         public string Name { get; set; }
 
+        public int CompanyId { get; set; }
+        public virtual Company Company { get; set; }
+
         public virtual ICollection<Product> Products { get; set; }
         public virtual ICollection<Category> Categories { get; set; }
     }
