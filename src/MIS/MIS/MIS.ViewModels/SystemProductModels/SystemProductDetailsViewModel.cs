@@ -1,4 +1,4 @@
-﻿namespace MIS.ViewModels
+﻿namespace MIS.ViewModels.SystemProductModels
 {
     public class SystemProductDetailsViewModel
     {

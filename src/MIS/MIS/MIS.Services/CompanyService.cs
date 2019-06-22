@@ -1,6 +1,6 @@
 ﻿namespace MIS.Services
 {
-    public class CompanyService
+    public class CompanyService : ICompanyService
     {
         
     }

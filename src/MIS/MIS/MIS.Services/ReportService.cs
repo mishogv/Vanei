@@ -1,6 +1,6 @@
 ﻿namespace MIS.Services
 {
-    public class ReportService
+    public class ReportService : IReportService
     {
         
     }

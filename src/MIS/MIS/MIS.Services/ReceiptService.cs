@@ -1,7 +1,8 @@
 ﻿namespace MIS.Services
 {
-    public class ReceiptService
+    public class ReceiptService : IReceiptService
+
     {
-        
+
     }
 }

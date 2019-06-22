@@ -90,6 +90,7 @@
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IReceiptService, ReceiptService>();
             services.AddScoped<IWareHouseService, WareHouseService>();
+            services.AddScoped<IAdministratorService, AdministratorService>();
 
             services.AddTransient<IEmailSender, EmailSender>();
             //services.Configure<AuthMessageSenderOptions>(this.Configuration);

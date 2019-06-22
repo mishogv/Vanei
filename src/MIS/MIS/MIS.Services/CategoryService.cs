@@ -1,6 +1,6 @@
 ﻿namespace MIS.Services
 {
-    public class CategoryService
+    public class CategoryService : ICategoryService
     {
         
     }

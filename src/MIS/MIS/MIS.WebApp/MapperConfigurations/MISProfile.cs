@@ -8,7 +8,8 @@
 
     using ServicesModels;
 
-    using ViewModels;
+    using ViewModels.AdministratorManage;
+    using ViewModels.SystemProductModels;
 
     public class MISProfile : Profile
     {
@@ -18,6 +19,7 @@
             this.CreateMap<SystemProductServiceModel, SystemProductCreateInputModel>().ReverseMap();
             this.CreateMap<SystemProduct, SystemProductShowViewModel>().ReverseMap();
             this.CreateMap<SystemProduct, SystemProductBuyViewModel>().ReverseMap();
+            this.CreateMap<MISUser, AdministratorShowUserViewModel>().ReverseMap();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace MIS.Services
 {
-    public class ProductService
+    public class ProductService : IProductService
     {
         
     }

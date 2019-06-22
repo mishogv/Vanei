@@ -5,5 +5,7 @@
         public const string AdministratorAreaRole = "Administrator";
 
         public const string TempDataConfirmEmail = "ConfrimEmail";
+
+        public const string RootAdminName = "admin";
     }
 }

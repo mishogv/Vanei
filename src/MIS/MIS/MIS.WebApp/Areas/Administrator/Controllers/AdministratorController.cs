@@ -5,11 +5,16 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
+    using Services;
+
     using WebApp.Controllers;
 
     [Area(GlobalConstants.AdministratorAreaRole)]
     [Authorize(Roles = GlobalConstants.AdministratorAreaRole)]
     public class AdministratorController : BaseController
     {
+        public AdministratorController()
+        {
+        }
     }
 }

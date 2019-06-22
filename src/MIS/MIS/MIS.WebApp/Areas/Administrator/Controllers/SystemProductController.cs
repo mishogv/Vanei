@@ -14,6 +14,7 @@
     using Services;
 
     using ViewModels;
+    using ViewModels.SystemProductModels;
 
     [AutoValidateAntiforgeryToken]
     public class SystemProductController : AdministratorController
