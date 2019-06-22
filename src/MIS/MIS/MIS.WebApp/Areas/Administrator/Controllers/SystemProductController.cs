@@ -15,6 +15,7 @@
 
     using ViewModels;
 
+    [AutoValidateAntiforgeryToken]
     public class SystemProductController : AdministratorController
     {
         private readonly ISystemProductsService productsService;
@@ -64,6 +65,11 @@
         [HttpPost]
         public async Task<IActionResult> Details(SystemProductDetailsBindingModel input)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return await this.Details(input.Id);
+            }
+
             await this.productsService.UpdateSystemProductByIdAsync(input.Id, input.Name, input.Price, input.ImgUrl, input.Description);
 
             return await Task.Run(() => this.RedirectToAction("Index", "Shop"));

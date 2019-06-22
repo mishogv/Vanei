@@ -46,7 +46,7 @@
             {
                 var user = new MISUser
                 {
-                    UserName = "admin@gmail.com",
+                    UserName = "admin",
                     Email = "admin@gmail.com",
                     FirstName = "AdminFirstName",
                     LastName = "AdminLastName",

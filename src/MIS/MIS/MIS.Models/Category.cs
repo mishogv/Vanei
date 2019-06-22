@@ -14,7 +14,7 @@
         [StringLength(24, MinimumLength = 2)]
         public string Name { get; set; }
 
-        public ICollection<Product> Products { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
 
         public int WareHouseId { get; set; }
         public virtual WareHouse WareHouse { get; set; }

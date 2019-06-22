@@ -8,6 +8,7 @@
         public Company()
         {
             this.Users = new HashSet<MISUser>();
+            this.Reports = new HashSet<Report>();
         }
 
         [Required]
@@ -25,5 +26,7 @@
         public virtual WareHouse WareHouse { get; set; }
 
         public virtual ICollection<MISUser> Users { get; set; }
+
+        public virtual ICollection<Report> Reports { get; set; }
     }
 }

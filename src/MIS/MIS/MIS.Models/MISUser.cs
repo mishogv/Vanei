@@ -13,6 +13,8 @@
         public MISUser()
         {
             this.SystemProducts = new HashSet<SystemProduct>();
+            this.Receipts = new HashSet<Receipt>();
+            this.Reports = new HashSet<Report>();
         }
 
         [Required]
@@ -28,6 +30,10 @@
         public int? CompanyId { get; set; }
         public virtual Company Company { get; set; }
 
-        public ICollection<SystemProduct> SystemProducts { get; set; }
+        public virtual ICollection<SystemProduct> SystemProducts { get; set; }
+
+        public virtual ICollection<Report> Reports { get; set; }
+
+        public virtual ICollection<Receipt> Receipts { get; set; }
     }
 }
