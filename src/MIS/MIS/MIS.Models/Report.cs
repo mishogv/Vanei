@@ -20,8 +20,8 @@
         public virtual Company Company { get; set; }
         public int CompanyId { get; set; }
 
-        public virtual MISUser User { get; set; }
         public string UserId { get; set; }
+        public virtual MISUser User { get; set; }
 
         public virtual ICollection<Receipt> Receipts { get; set; }
     }

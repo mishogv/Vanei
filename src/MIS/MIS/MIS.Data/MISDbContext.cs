@@ -15,7 +15,11 @@
         {
         }
 
-        public DbSet<Product> Products { get; set; }
+        public DbSet<Product> Products { get; set; } 
+
+        public DbSet<Receipt> Receipts { get; set; } 
+
+        public DbSet<Report> Reports { get; set; } 
 
         public DbSet<SystemProduct> SystemProducts { get; set; }
 
