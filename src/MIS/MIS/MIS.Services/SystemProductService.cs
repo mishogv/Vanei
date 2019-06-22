@@ -11,11 +11,11 @@
 
     using ServicesModels;
 
-    public class SystemProductsService : ISystemProductsService
+    public class SystemProductService : ISystemProductService
     {
         private readonly MISDbContext dbContext;
 
-        public SystemProductsService(MISDbContext dbContext)
+        public SystemProductService(MISDbContext dbContext)
         {
             this.dbContext = dbContext;
         }

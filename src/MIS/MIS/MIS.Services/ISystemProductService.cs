@@ -5,7 +5,7 @@
 
     using ServicesModels;
 
-    public interface ISystemProductsService
+    public interface ISystemProductService
     {
         Task<SystemProductServiceModel> CreateSystemProductAsync(string name, decimal price, string imgUrl, string description, string userId);
 

@@ -26,7 +26,7 @@
 
         
         private MISDbContext db;
-        private ISystemProductsService productsService;
+        private ISystemProductService productService;
 
         [SetUp]
         public void Setup()
@@ -45,13 +45,13 @@
                 });
 
             this.db.SaveChanges();
-            this.productsService = new Mock<SystemProductsService>(this.db).Object;
+            this.productService = new Mock<SystemProductService>(this.db).Object;
         }
 
         [Test]
         public async Task CreateSystemProductAsync_ShouldIncreaseCountInDb_CountShouldBeOne()
         {
-            await this.productsService.CreateSystemProductAsync("gosho", 2m, "gosho00", "Description", "userId" );
+            await this.productService.CreateSystemProductAsync("gosho", 2m, "gosho00", "Description", "userId" );
 
             Assert.IsTrue(this.db.SystemProducts.Any());
         }
@@ -60,7 +60,7 @@
         public async Task CreateSystemProductAsync_ShouldReturnCorrectProduct()
         {
             var user = await this.db.Users.FirstOrDefaultAsync();
-            var product =  await this.productsService.CreateSystemProductAsync("gosho", 2m, "gosho00", "Description", user.Id);
+            var product =  await this.productService.CreateSystemProductAsync("gosho", 2m, "gosho00", "Description", user.Id);
 
             var expectedName = "gosho";
             var expectedPrice = 2m;
@@ -78,7 +78,7 @@
         public async Task CreateSystemProductAsync_ShouldExistInDbAfterCreation()
         {
             var user = await this.db.Users.FirstOrDefaultAsync();
-            await this.productsService.CreateSystemProductAsync("gosho", 2m, "gosho00", "Description", user.Id);
+            await this.productService.CreateSystemProductAsync("gosho", 2m, "gosho00", "Description", user.Id);
 
             var expectedName = "gosho";
             var expectedPrice = 2m;
@@ -99,7 +99,7 @@
         public async Task GetSystemProductByIdAsync_ShouldReturnCorrectSystemProduct()
         {
             var user = await this.db.Users.FirstOrDefaultAsync();
-            var productFromService = await this.productsService.CreateSystemProductAsync("gosho", 2m, "gosho00", "Description", user.Id);
+            var productFromService = await this.productService.CreateSystemProductAsync("gosho", 2m, "gosho00", "Description", user.Id);
             var productId = productFromService.Id;
 
             var expectedName = "gosho";
@@ -107,7 +107,7 @@
             var expectedUrl = "gosho00";
             var expectedDescription = "Description";
 
-            var actualProduct = await this.productsService.GetSystemProductByIdAsync(productId);
+            var actualProduct = await this.productService.GetSystemProductByIdAsync(productId);
 
 
             Assert.AreEqual(expectedName, actualProduct.Name);
@@ -120,9 +120,9 @@
         [Test]
         public async Task GetSystemProductByIdAsync_ShouldReturnNull()
         {
-            await this.productsService.CreateSystemProductAsync("gosho", 2m, "gosho00", "Description", "10");
+            await this.productService.CreateSystemProductAsync("gosho", 2m, "gosho00", "Description", "10");
             var lastProduct = await this.db.SystemProducts.LastOrDefaultAsync();
-            var actualProduct = await this.productsService.GetSystemProductByIdAsync(lastProduct.Id + 1);
+            var actualProduct = await this.productService.GetSystemProductByIdAsync(lastProduct.Id + 1);
 
             Assert.AreEqual(null, actualProduct);
         }
@@ -130,9 +130,9 @@
         [Test]
         public async Task GetAllSystemProducts_ShouldReturnCorrectProductsCount()
         {
-            await this.productsService.CreateSystemProductAsync("gosho", 2m, "gosho00", "Description", "10");
-            await this.productsService.CreateSystemProductAsync("gosho", 2m, "gosho00", "Description", "10");
-            var allProductsCount = this.productsService.GetAllSystemProducts().ToList().Count;
+            await this.productService.CreateSystemProductAsync("gosho", 2m, "gosho00", "Description", "10");
+            await this.productService.CreateSystemProductAsync("gosho", 2m, "gosho00", "Description", "10");
+            var allProductsCount = this.productService.GetAllSystemProducts().ToList().Count;
             
             Assert.AreEqual(2, allProductsCount);
         }

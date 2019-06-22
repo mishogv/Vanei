@@ -83,7 +83,13 @@
             }, typeof(MISProfile).Assembly);
 
 
-            services.AddScoped<ISystemProductsService, SystemProductsService>();
+            services.AddScoped<ISystemProductService, SystemProductService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICompanyService, CompanyService>();
+            services.AddScoped<IReportService, ReportService>();
+            services.AddScoped<IReceiptService, ReceiptService>();
+            services.AddScoped<IWareHouseService, WareHouseService>();
 
             services.AddTransient<IEmailSender, EmailSender>();
             //services.Configure<AuthMessageSenderOptions>(this.Configuration);

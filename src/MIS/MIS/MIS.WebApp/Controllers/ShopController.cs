@@ -17,15 +17,15 @@
 
     public class ShopController : BaseController
     {
-        private readonly ISystemProductsService productsService;
+        private readonly ISystemProductService productService;
         private readonly IMapper mapper;
         private readonly UserManager<MISUser> userManager;
 
-        public ShopController(ISystemProductsService productsService
+        public ShopController(ISystemProductService productService
             , IMapper mapper
             , UserManager<MISUser> userManager)
         {
-            this.productsService = productsService;
+            this.productService = productService;
             this.mapper = mapper;
             this.userManager = userManager;
         }
@@ -34,7 +34,7 @@
 
         public IActionResult Index()
         {
-            var products = this.productsService.GetAllSystemProducts();
+            var products = this.productService.GetAllSystemProducts();
 
             var result = this.mapper.Map<SystemProductShowViewModel[]>(products);
 
@@ -44,7 +44,7 @@
         [Authorize]
         public async Task<IActionResult> Buy(int id)
         {
-            var product = await this.productsService.GetSystemProductByIdAsync(id);
+            var product = await this.productService.GetSystemProductByIdAsync(id);
             var currentUser = await this.userManager.FindByNameAsync(this.User.Identity.Name);
 
             var showViewModel = this.mapper.Map<SystemProductShowViewModel>(product);

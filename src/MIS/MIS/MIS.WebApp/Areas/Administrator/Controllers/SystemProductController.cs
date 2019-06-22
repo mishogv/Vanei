@@ -18,15 +18,15 @@
     [AutoValidateAntiforgeryToken]
     public class SystemProductController : AdministratorController
     {
-        private readonly ISystemProductsService productsService;
+        private readonly ISystemProductService productService;
         private readonly UserManager<MISUser> userManager;
         private readonly IMapper mapper;
 
-        public SystemProductController(ISystemProductsService productsService
+        public SystemProductController(ISystemProductService productService
             , UserManager<MISUser> userManager
             , IMapper mapper)
         {
-            this.productsService = productsService;
+            this.productService = productService;
             this.userManager = userManager;
             this.mapper = mapper;
         }
@@ -46,7 +46,7 @@
 
             var user = await this.userManager.FindByNameAsync(this.User.Identity.Name);
 
-            await this.productsService
+            await this.productService
                       .CreateSystemProductAsync(input.Name, input.Price, input.ImgUrl, input.Description, user.Id);
 
 
@@ -55,7 +55,7 @@
 
         public async Task<IActionResult> Details(int id)
         {
-            var product = await this.productsService.GetSystemProductByIdAsync(id);
+            var product = await this.productService.GetSystemProductByIdAsync(id);
 
             var result = this.mapper.Map<SystemProductDetailsViewModel>(product);
 
@@ -70,14 +70,14 @@
                 return await this.Details(input.Id);
             }
 
-            await this.productsService.UpdateSystemProductByIdAsync(input.Id, input.Name, input.Price, input.ImgUrl, input.Description);
+            await this.productService.UpdateSystemProductByIdAsync(input.Id, input.Name, input.Price, input.ImgUrl, input.Description);
 
             return await Task.Run(() => this.RedirectToAction("Index", "Shop"));
         }
 
         public async Task<IActionResult> Delete(int id)
         {
-            await this.productsService.DeleteSystemProductAsync(id);
+            await this.productService.DeleteSystemProductAsync(id);
 
             return await Task.Run(() => this.RedirectToAction("Index", "Shop"));
         }
