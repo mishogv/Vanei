@@ -9,7 +9,7 @@
     {
         Task<bool> CreateAdministratorByIdAsync(string id);
 
-        Task<bool> DropAdministratorByIdAsync(string id);
+        Task<bool> RemoveAdministratorByIdAsync(string id);
 
         Task<string> GetUserRoleAsync(MISUser user);
 

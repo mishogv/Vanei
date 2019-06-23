@@ -51,7 +51,7 @@
                     FirstName = kvp.Key.FirstName,
                     Email = kvp.Key.Email,
                     Role = kvp.Value,
-                    PhoneNumber = kvp.Key.PhoneNumber,
+                    PhoneNumber = kvp.Key.PhoneNumber ?? "N/A",
                     CompanyName = kvp.Key.Company == null ? "N/A" : kvp.Key.Company.Name,
                     CompanyRole = kvp.Key.Role.ToString("G"),
                     Username = kvp.Key.UserName
@@ -59,6 +59,20 @@
             }
 
             return this.View(result);
+        }
+
+        public async Task<IActionResult> Create(string id)
+        {
+            var result = await this.administratorService.CreateAdministratorByIdAsync(id);
+
+            return this.RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Remove(string id)
+        {
+            var result = await this.administratorService.RemoveAdministratorByIdAsync(id);
+
+            return this.RedirectToAction("Index");
         }
     }
 }

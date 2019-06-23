@@ -1,77 +1,93 @@
-﻿@model IEnumerable<MIS.ViewModels.AdministratorManage.AdministratorShowUserViewModel>
+﻿@using MIS.Common
+@model IEnumerable<MIS.ViewModels.AdministratorManage.AdministratorShowUserViewModel>
 
-@{
-    ViewData["Title"] = "ShowUsers";
-}
+    @{
+    ViewData["Title"] = "Index";
+    }
 
-<h1>ShowUsers</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CompanyRole)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Role)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CompanyName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CompanyRole)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Role)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CompanyName)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <h2>Users</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Username)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Role)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CompanyName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CompanyRole)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @item.Id
+                </td>
+                <td>
+                    @item.Username
+                </td>
+                <td>
+                    @item.FirstName
+                </td>
+                <td>
+                    @item.LastName
+                </td>
+                <td>
+                    @item.Email
+                </td>
+                <td>
+                    @item.PhoneNumber
+                </td>
+                <td>
+                    @item.Role
+                </td>
+                <td>
+                    @item.CompanyName
+                </td>
+                <td>
+                    @item.CompanyRole
+                </td>
+                <td>
+                    @if (item.Username == GlobalConstants.RootAdminName)
+                    {
+                    }
+                    else if (item.Role == GlobalConstants.UserRoleName)
+                    {
+                        <a asp-area="Administrator" asp-controller="AdministratorManage" asp-action="Create" asp-route-id="@item.Id" onclick="return confirm('Are you sure? You want to create |@item.Username| admin?')">
+                            <img src="/ico/open-iconic-master/png/plus-2x.png" class="mx-auto"/>
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-area="Administrator" asp-controller="AdministratorManage" asp-action="Remove" asp-route-id="@item.Id" onclick="return confirm('Are you sure? You want to remove |@item.Username| from admins?')">
+                            <img src="/ico/open-iconic-master/png/x-2x.png" class="mx-auto"/>
+                        </a>
+                    }
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>

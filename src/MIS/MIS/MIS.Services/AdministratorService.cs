@@ -44,7 +44,7 @@
             return true;
         }
 
-        public async Task<bool> DropAdministratorByIdAsync(string id)
+        public async Task<bool> RemoveAdministratorByIdAsync(string id)
         {
             var user = await this.userManager.FindByIdAsync(id);
 

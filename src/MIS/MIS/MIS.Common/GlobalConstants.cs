@@ -7,5 +7,7 @@
         public const string TempDataConfirmEmail = "ConfrimEmail";
 
         public const string RootAdminName = "admin";
+
+        public const string UserRoleName = "User";
     }
 }

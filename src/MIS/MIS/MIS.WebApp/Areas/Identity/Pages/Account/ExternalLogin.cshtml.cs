@@ -1,13 +1,13 @@
 ﻿namespace MIS.WebApp.Areas.Identity.Pages.Account
 {
     using System.ComponentModel.DataAnnotations;
-    using System.Linq;
     using System.Security.Claims;
-    using System.Security.Cryptography.X509Certificates;
+    using System.Text.Encodings.Web;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
@@ -19,16 +19,19 @@
     {
         private readonly SignInManager<MISUser> _signInManager;
         private readonly UserManager<MISUser> _userManager;
+        private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
 
         public ExternalLoginModel(
             SignInManager<MISUser> signInManager,
             UserManager<MISUser> userManager,
-            ILogger<ExternalLoginModel> logger)
+            ILogger<ExternalLoginModel> logger,
+            IEmailSender emailSender)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
+            _emailSender = emailSender;
         }
 
         [BindProperty]
@@ -136,6 +139,14 @@
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
+                        var code = await this._userManager.GenerateEmailConfirmationTokenAsync(user);
+                        var callbackUrl = this.Url.Page(
+                            "/Account/ConfirmEmail",
+                            pageHandler: null,
+                            values: new { userId = user.Id, code = code },
+                            protocol: this.Request.Scheme);
+                        await this._emailSender.SendEmailAsync(this.Input.Email, "Confirm your email",
+                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
                         return LocalRedirect(returnUrl);
