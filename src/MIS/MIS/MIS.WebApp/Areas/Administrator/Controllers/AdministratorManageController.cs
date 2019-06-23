@@ -4,9 +4,8 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using AutoMapper;
+    using Common;
 
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     using Models;
@@ -36,7 +35,7 @@
             foreach (var user in users)
             {
                 var role = await this.administratorService.GetUserRoleAsync(user);
-                var roleToAdd = role ?? "User";
+                var roleToAdd = role ?? GlobalConstants.UserRoleName;
                 dict.Add(user, roleToAdd);
             }
 
@@ -51,8 +50,8 @@
                     FirstName = kvp.Key.FirstName,
                     Email = kvp.Key.Email,
                     Role = kvp.Value,
-                    PhoneNumber = kvp.Key.PhoneNumber ?? "N/A",
-                    CompanyName = kvp.Key.Company == null ? "N/A" : kvp.Key.Company.Name,
+                    PhoneNumber = kvp.Key.PhoneNumber ?? GlobalConstants.NotApplicable,
+                    CompanyName = kvp.Key.Company == null ? GlobalConstants.NotApplicable : kvp.Key.Company.Name,
                     CompanyRole = kvp.Key.Role.ToString("G"),
                     Username = kvp.Key.UserName
                 });

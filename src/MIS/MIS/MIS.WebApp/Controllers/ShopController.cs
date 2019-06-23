@@ -13,7 +13,6 @@
 
     using Services;
 
-    using ViewModels;
     using ViewModels.SystemProductModels;
 
     public class ShopController : BaseController

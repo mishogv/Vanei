@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Data;
@@ -25,6 +26,7 @@
     [TestFixture]
     public class AdministratorServiceTests
     {
+
         private const string UserEmail = "gosho@abv.bg";
         private const string Username = "gosho";
         private const string FirstName = "Gosho";
@@ -37,6 +39,7 @@
         private UserManager<MISUser> userManager;
         private List<MISUser> store;
 
+        //TODO REFACTOR THIS SHIT AND FIX BUGS !!!!!!!!!!!!!!!!!!
         [SetUp]
         public void Setup()
         {
@@ -48,16 +51,7 @@
 
             this.db = new MISDbContext(options);
 
-            this.userManager = new Mock<UserManager<MISUser>>(
-                new Mock<IUserStore<MISUser>>().Object,
-                new Mock<IOptions<IdentityOptions>>().Object,
-                new Mock<IPasswordHasher<MISUser>>().Object,
-                new IUserValidator<MISUser>[0],
-                new IPasswordValidator<MISUser>[0],
-                new Mock<ILookupNormalizer>().Object,
-                new Mock<IdentityErrorDescriber>().Object,
-                new Mock<IServiceProvider>().Object,
-                new Mock<ILogger<UserManager<MISUser>>>().Object).Object;
+            //this.userManager = MockUserManager().Object;
 
             this.administratorService = new Mock<AdministratorService>(this.userManager).Object;
             var user = new MISUser()
@@ -70,7 +64,7 @@
             };
 
             var result = this.userManager.CreateAsync(user).GetAwaiter().GetResult()?.Succeeded;
-            
+            var users = this.userManager.Users;
             this.db.SaveChanges();
             //this.productService = new Mock<SystemProductService>(this.db).Object;
         }
@@ -83,17 +77,43 @@
             Assert.IsTrue(true);
         }
 
-        public static Mock<UserManager<TUser>> MockUserManager<TUser>(List<TUser> ls) where TUser : class
+        public static Mock<UserManager<MISUser>> MockUserManager()
         {
-            var store = new Mock<IUserStore<TUser>>();
-            var mgr = new Mock<UserManager<TUser>>(store.Object, null, null, null, null, null, null, null, null);
-            mgr.Object.UserValidators.Add(new UserValidator<TUser>());
-            mgr.Object.PasswordValidators.Add(new PasswordValidator<TUser>());
+            var mgr = new Mock<UserManager<MISUser>>(
+                new Mock<IUserStore<MISUser>>().Object,
+                new Mock<IOptions<IdentityOptions>>().Object,
+                new Mock<IPasswordHasher<MISUser>>().Object,
+                new IUserValidator<MISUser>[0],
+                new IPasswordValidator<MISUser>[0],
+                new Mock<ILookupNormalizer>().Object,
+                new Mock<IdentityErrorDescriber>().Object,
+                new Mock<IServiceProvider>().Object,
+                new Mock<ILogger<UserManager<MISUser>>>().Object);
 
-            mgr.Setup(x => x.DeleteAsync(It.IsAny<TUser>())).ReturnsAsync(IdentityResult.Success);
-            mgr.Setup(x => x.CreateAsync(It.IsAny<TUser>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success).Callback<TUser, string>((x, y) => ls.Add(x));
-            mgr.Setup(x => x.UpdateAsync(It.IsAny<TUser>())).ReturnsAsync(IdentityResult.Success);
+            var quariable = new List<MISUser>
+            {
+                new MISUser()
+                {
+                    UserName = "gosho",
+                    Id = "d12d12d"
+                }
+            }.AsQueryable();
 
+            mgr.Setup(x => x.DeleteAsync(It.IsAny<MISUser>())).ReturnsAsync(IdentityResult.Success);
+            mgr.Setup(x => x.UpdateAsync(It.IsAny<MISUser>())).ReturnsAsync(IdentityResult.Success);
+            mgr.Setup(x => x.CreateAsync(new MISUser()
+               {
+                Email = UserEmail,
+                UserName = Username,
+                FirstName = FirstName,
+                LastName = LastName,
+                EmailConfirmed = true,
+                PasswordHash = Password
+            }))
+               .ReturnsAsync(IdentityResult.Success)
+               .Callback<MISUser>(x => quariable.ToList().Add(x));
+
+            mgr.Setup(x => x.Users).Returns(quariable);
             return mgr;
         }
     }

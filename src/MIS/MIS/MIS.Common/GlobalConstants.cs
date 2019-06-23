@@ -9,5 +9,7 @@
         public const string RootAdminName = "admin";
 
         public const string UserRoleName = "User";
+
+        public const string NotApplicable = "N/A";
     }
 }

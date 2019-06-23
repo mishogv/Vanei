@@ -8,6 +8,8 @@
 
     public class Program
     {
+        private const string ApiConfigFileName = "ApiConfigurations.json";
+
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build().Run();
@@ -18,7 +20,7 @@
                    .ConfigureAppConfiguration((hosting, config) =>
                        {
                            config.SetBasePath(Directory.GetCurrentDirectory());
-                           config.AddJsonFile("ApiConfigurations.json", true, true);
+                           config.AddJsonFile(ApiConfigFileName, true, true);
                        })
                 .UseStartup<Startup>();
     }

@@ -1,10 +1,5 @@
 ﻿namespace MIS.ViewModels.AdministratorManage
 {
-    using System.Collections.Generic;
-
-    using Models;
-    using Models.Enums;
-
     public class AdministratorShowUserViewModel
     {
         public string Id { get; set; }
