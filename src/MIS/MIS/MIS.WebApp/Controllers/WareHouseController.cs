@@ -24,27 +24,25 @@ namespace MIS.WebApp.Controllers
     {
         private readonly IWareHouseService wareHouseService;
         private readonly UserManager<MISUser> userManager;
-        private readonly IMapper mapper;
         private readonly ICompanyService companyService;
-        private readonly IProductService productService;
+        private readonly IMapper mapper;
 
         public WareHouseController(IWareHouseService wareHouseService, 
             UserManager<MISUser> userManager,
-            IMapper mapper,
             ICompanyService companyService,
-            IProductService productService)
+            IMapper mapper)
         {
             this.wareHouseService = wareHouseService;
             this.userManager = userManager;
-            this.mapper = mapper;
             this.companyService = companyService;
-            this.productService = productService;
+            this.mapper = mapper;
         }
 
         public async Task<IActionResult> Index()
         {
             var currentUser = await this.userManager.GetUserAsync(this.User);
-            var products = this.wareHouseService.GetAllProductsByWarehouseId(currentUser.Company.WareHouseId);
+            var company =  await  this.companyService.GetByUserAsync(currentUser);
+            var products = this.wareHouseService.GetAllProductsByWarehouseId(company.WareHouseId);
             var result = this.mapper.Map<WareHouseIndexProductViewModel[]>(products).ToList();
 
             return this.View(result);

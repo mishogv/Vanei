@@ -55,5 +55,18 @@
 
             return result;
         }
+
+        public async Task<CompanyServiceModel> GetByUserAsync(MISUser user)
+        {
+            var company = await this.dbContext.Companies.FirstOrDefaultAsync(x => x.OwnerId == user.Id);
+            var serviceModel = new CompanyServiceModel()
+            {
+                Address = company.Address,
+                Name = company.Name,
+                OwnerId = company.OwnerId,
+                WareHouseId = company.Id,
+            };
+            return serviceModel;
+        }
     }
 }

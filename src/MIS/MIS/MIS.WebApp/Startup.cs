@@ -91,6 +91,8 @@
             services.AddScoped<IReceiptService, ReceiptService>();
             services.AddScoped<IWareHouseService, WareHouseService>();
             services.AddScoped<IAdministratorService, AdministratorService>();
+            services.AddScoped<IInvitationService, InvitationService>();
+            services.AddScoped<INavigationMenuHelperService, NavigationMenuHelperService>();
 
             services.AddTransient<IEmailSender, EmailSender>();
 
