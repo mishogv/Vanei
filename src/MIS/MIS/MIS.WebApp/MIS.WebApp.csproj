@@ -29,7 +29,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Administrator\Views\Administrator\" />
-    <Folder Include="BindingModels\" />
   </ItemGroup>
 
 </Project>

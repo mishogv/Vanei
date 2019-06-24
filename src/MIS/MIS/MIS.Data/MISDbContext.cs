@@ -17,6 +17,8 @@
 
         public DbSet<Product> Products { get; set; } 
 
+        public DbSet<Invitation> Invitations { get; set; } 
+
         public DbSet<Receipt> Receipts { get; set; } 
 
         public DbSet<Report> Reports { get; set; } 

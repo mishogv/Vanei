@@ -1,0 +1,33 @@
+﻿@using MIS.ViewModels.Product
+@model List<WareHouseIndexProductViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<table class="table table-dark table-hover">
+    <thead>
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Price</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Barcode</th>
+        <th scope="col">Category name</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+    @foreach (var product in Model.OrderBy(x => x.CategoryName))
+    {
+        <tr>
+            <td>@product.Name</td>
+            <td>@product.Price</td>
+            <td>@product.Quantity</td>
+            <td>@product.BarCode</td>
+            <td>@product.CategoryName</td>
+        </tr>
+    }
+    </tbody>
+</table>

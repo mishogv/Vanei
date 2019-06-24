@@ -9,8 +9,10 @@
         public Receipt()
         {
             this.Products = new HashSet<Product>();
+            this.IssuedOn = DateTime.UtcNow;
         }
 
+        //TODO : Maybe make bug DONT FORGET THAT
         [Required]
         public DateTime IssuedOn { get; set; }
 

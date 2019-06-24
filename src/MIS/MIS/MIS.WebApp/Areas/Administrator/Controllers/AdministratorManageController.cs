@@ -6,6 +6,7 @@
 
     using Common;
 
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     using Models;
@@ -17,10 +18,12 @@
     public class AdministratorManageController : AdministratorController
     {
         private readonly IAdministratorService administratorService;
+        private readonly UserManager<MISUser> userManager;
 
-        public AdministratorManageController(IAdministratorService administratorService)
+        public AdministratorManageController(IAdministratorService administratorService, UserManager<MISUser> userManager)
         {
             this.administratorService = administratorService;
+            this.userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
@@ -64,14 +67,20 @@
         {
             var result = await this.administratorService.CreateAdministratorByIdAsync(id);
 
-            return this.RedirectToAction("Index");
+            return this.RedirectToAction(nameof(this.Index));
         }
 
         public async Task<IActionResult> Remove(string id)
         {
+            var currentUserId = this.userManager.GetUserId(this.User);
+
+            if (currentUserId != id)
+            {
+                return this.RedirectToAction(nameof(this.Index));
+            }
             var result = await this.administratorService.RemoveAdministratorByIdAsync(id);
 
-            return this.RedirectToAction("Index");
+            return this.RedirectToAction(nameof(this.Index));
         }
     }
 }

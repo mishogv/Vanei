@@ -93,8 +93,6 @@
             services.AddScoped<IAdministratorService, AdministratorService>();
 
             services.AddTransient<IEmailSender, EmailSender>();
-            //services.Configure<AuthMessageSenderOptions>(this.Configuration);
-
 
             services.AddRouting();
 

@@ -4,6 +4,8 @@
 
     using AutoMapper;
 
+    using BindingModels.Shop;
+
     using Microsoft.AspNetCore.Mvc;
 
     using Microsoft.AspNetCore.Authorization;
@@ -20,18 +22,20 @@
         private readonly ISystemProductService productService;
         private readonly IMapper mapper;
         private readonly UserManager<MISUser> userManager;
+        private readonly ICompanyService companyService;
 
         public ShopController(ISystemProductService productService
             , IMapper mapper
-            , UserManager<MISUser> userManager)
+            , UserManager<MISUser> userManager
+            , ICompanyService companyService)
         {
             this.productService = productService;
             this.mapper = mapper;
             this.userManager = userManager;
+            this.companyService = companyService;
         }
 
         //TODO: BUY System
-
         public IActionResult Index()
         {
             var products = this.productService.GetAllSystemProducts();
@@ -59,6 +63,22 @@
             };
 
             return this.View(result);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Buy(BuyBindingModel input)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return await this.Buy(input.ProductId);
+            }
+
+            var userId = this.userManager.GetUserId(this.User);
+
+            await this.companyService.CreateAsync(input.CompanyName, input.Address, userId);
+
+            return this.RedirectToAction(nameof(this.Index));
         }
     }
 }
