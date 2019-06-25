@@ -17,13 +17,9 @@
 
         public DbSet<Product> Products { get; set; } 
 
-        public DbSet<Invitation> Invitations { get; set; } 
-
         public DbSet<Receipt> Receipts { get; set; } 
 
         public DbSet<Report> Reports { get; set; } 
-
-        public DbSet<SystemProduct> SystemProducts { get; set; }
 
         public DbSet<Category> Categories { get; set; }
 
@@ -33,15 +29,12 @@
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Company>()
-                   .HasOne(x => x.Owner)
-                   .WithOne(x => x.Company)
-                   .HasForeignKey<Company>(x => x.OwnerId);
-
-            builder.Entity<Company>()
-                   .HasOne(x => x.WareHouse)
-                   .WithOne(x => x.Company)
-                   .HasForeignKey<Company>(x => x.WareHouseId);
+            builder.Entity<MISUser>()
+                   .HasOne(x => x.Company)
+                   .WithMany(x => x.Employees)
+                   .HasForeignKey(x => x.CompanyId)
+                   .IsRequired(false)
+                   .OnDelete(DeleteBehavior.SetNull);
 
             base.OnModelCreating(builder);
         }

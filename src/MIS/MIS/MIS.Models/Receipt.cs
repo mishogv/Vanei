@@ -19,7 +19,7 @@
         public decimal Total { get; set; }
 
         public string UserId { get; set; }
-        public MISUser User { get; set; }
+        public virtual MISUser User { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
     }

@@ -4,14 +4,16 @@ using MIS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MIS.Data.Migrations
 {
     [DbContext(typeof(MISDbContext))]
-    partial class MISDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190625112823_SimplifiedDb")]
+    partial class SimplifiedDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,7 +66,7 @@ namespace MIS.Data.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<int?>("CompanyId");
+                    b.Property<int>("CompanyId");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -348,7 +350,7 @@ namespace MIS.Data.Migrations
                     b.HasOne("MIS.Models.Company", "Company")
                         .WithMany("Employees")
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MIS.Models.Product", b =>

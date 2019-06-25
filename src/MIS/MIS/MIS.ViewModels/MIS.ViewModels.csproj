@@ -12,4 +12,8 @@
     <ProjectReference Include="..\MIS.Models\MIS.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="WareHouse\" />
+  </ItemGroup>
+
 </Project>

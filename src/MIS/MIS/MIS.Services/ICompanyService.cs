@@ -8,8 +8,10 @@
 
     public interface ICompanyService
     {
-        Task<CompanyServiceModel> CreateAsync(string name, string address, string ownerId);
+        Task<CompanyServiceModel> CreateAsync(string name, string address);
 
         Task<CompanyServiceModel> GetByUserAsync(MISUser user);
+
+        Task<CompanyServiceModel> AddToCompanyAsync(string name, string username);
     }
 }

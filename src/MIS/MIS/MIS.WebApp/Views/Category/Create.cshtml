@@ -1,11 +1,13 @@
-﻿@using MIS.WebApp.BindingModels.WareHouse;
+﻿@using MIS.WebApp.BindingModels.Category
 @model CreateInputModel
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h4>Create warehouse</h4>
+<h1>Create</h1>
+
+<h4>CreateInputModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -24,6 +26,8 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="WareHouse" asp-action="Index">Back to Warehouse</a>
 </div>
-
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

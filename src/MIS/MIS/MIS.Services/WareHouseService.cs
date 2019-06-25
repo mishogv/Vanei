@@ -23,7 +23,7 @@
 
         public async Task<WareHouseServiceModel> CreateAsync(string name, string userId)
         {
-            var user = await this.dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId);
+            var user = await this.dbContext.Users.Include(x => x.Company).FirstOrDefaultAsync(x => x.Id == userId);
 
             if (user?.CompanyId == null)
             {
@@ -33,10 +33,16 @@
             var warehouse = new WareHouse
             {
                 Name = name,
-                CompanyId = (int) user.CompanyId,
+                CompanyId = (int)user.CompanyId,
             };
 
+
             this.dbContext.Add(warehouse);
+            await this.dbContext.SaveChangesAsync();
+
+            //user.Company.WareHouseId = warehouse.Id;
+            this.dbContext.Update(user.Company);
+
             await this.dbContext.SaveChangesAsync();
 
             var result = new WareHouseServiceModel()

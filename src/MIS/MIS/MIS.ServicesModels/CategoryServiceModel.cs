@@ -1,7 +1,6 @@
 ﻿namespace MIS.ServicesModels
 {
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
 
     using Models;
 
@@ -12,8 +11,6 @@
             this.Products = new HashSet<Product>();
         }
 
-        [Required]
-        [StringLength(24, MinimumLength = 2)]
         public string Name { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }

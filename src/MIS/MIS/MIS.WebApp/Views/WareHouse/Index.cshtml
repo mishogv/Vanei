@@ -7,27 +7,35 @@
 
 <h1>Index</h1>
 
+<div>
+    <span>Categories</span>
+    <a asp-controller="Category" asp-action="Create">Create</a>
+</div>
+<div>
+    <span>Products</span>
+    <a asp-controller="Product" asp-action="Create">Create</a>
+</div>
 <table class="table table-active table-hover">
     <thead>
-    <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Price</th>
-        <th scope="col">Quantity</th>
-        <th scope="col">Barcode</th>
-        <th scope="col">Category name</th>
-    </tr>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Barcode</th>
+            <th scope="col">Category name</th>
+        </tr>
     </thead>
     <tbody>
-    
-    @foreach (var product in Model.OrderBy(x => x.CategoryName))
-    {
-        <tr>
-            <td>@product.Name</td>
-            <td>@product.Price</td>
-            <td>@product.Quantity</td>
-            <td>@product.BarCode</td>
-            <td>@product.CategoryName</td>
-        </tr>
-    }
+
+        @foreach (var product in Model.OrderBy(x => x.CategoryName))
+        {
+            <tr>
+                <td>@product.Name</td>
+                <td>@product.Price</td>
+                <td>@product.Quantity</td>
+                <td>@product.BarCode</td>
+                <td>@product.CategoryName</td>
+            </tr>
+        }
     </tbody>
 </table>

@@ -4,7 +4,7 @@
 
     using Common;
 
-    public class BuyBindingModel
+    public class BuyInputModel
     {
         public int ProductId { get; set; }
 

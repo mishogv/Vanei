@@ -12,10 +12,8 @@
     {
         public MISUser()
         {
-            this.SystemProducts = new HashSet<SystemProduct>();
             this.Receipts = new HashSet<Receipt>();
             this.Reports = new HashSet<Report>();
-            this.Invitations = new HashSet<Invitation>();
         }
 
         [Required]
@@ -30,10 +28,6 @@
 
         public int? CompanyId { get; set; }
         public virtual Company Company { get; set; }
-
-        public virtual ICollection<SystemProduct> SystemProducts { get; set; }
-
-        public virtual ICollection<Invitation> Invitations { get; set; }
 
         public virtual ICollection<Report> Reports { get; set; }
 

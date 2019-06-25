@@ -9,9 +9,12 @@
 
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     using Models;
     using Models.Enums;
+
+    using Services;
 
     public class SeedDataMiddleware
     {
@@ -23,11 +26,12 @@
         }
 
         public async Task InvokeAsync(HttpContext context, UserManager<MISUser> userManager,
+            ICompanyService companyService,
             RoleManager<IdentityRole> roleManager, MISDbContext db)
         {
             SeedRoles(roleManager).GetAwaiter().GetResult();
 
-            SeedUserInRoles(userManager).GetAwaiter().GetResult();
+            SeedUserInRoles(userManager, companyService).GetAwaiter().GetResult();
 
             await _next(context);
         }
@@ -40,7 +44,7 @@
             }
         }
 
-        private static async Task SeedUserInRoles(UserManager<MISUser> userManager)
+        private static async Task SeedUserInRoles(UserManager<MISUser> userManager, ICompanyService companyService)
         {
             if (!userManager.Users.Any())
             {
@@ -55,7 +59,10 @@
                     Role = CompanyRole.Owner
                 };
 
+                var company = await companyService.CreateAsync("MIS EOOD", "Studentski grad Mandja street No 332");
+                
                 var password = "123456";
+                user.CompanyId = company.Id;
 
                 var result = await userManager.CreateAsync(user, password);
 

@@ -82,8 +82,8 @@
                 cfg.AddProfile<MISProfile>();
             }, typeof(MISProfile).Assembly);
 
+            #region Custom services
 
-            services.AddScoped<ISystemProductService, SystemProductService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICompanyService, CompanyService>();
@@ -91,10 +91,10 @@
             services.AddScoped<IReceiptService, ReceiptService>();
             services.AddScoped<IWareHouseService, WareHouseService>();
             services.AddScoped<IAdministratorService, AdministratorService>();
-            services.AddScoped<IInvitationService, InvitationService>();
-            services.AddScoped<INavigationMenuHelperService, NavigationMenuHelperService>();
-
+            services.AddScoped<IUserService, UserService>();
             services.AddTransient<IEmailSender, EmailSender>();
+
+            #endregion
 
             services.AddRouting();
 
@@ -109,7 +109,10 @@
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage(new DeveloperExceptionPageOptions()
+                {
+                    SourceCodeLineCount = 150,
+                });
                 app.UseDatabaseErrorPage();
             }
             else

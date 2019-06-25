@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class CreateBindingModel
+    public class CreateInputModel
     {
         [Required]
         [StringLength(24, MinimumLength = 3)]

@@ -42,19 +42,19 @@ namespace MIS.WebApp.Controllers
         {
             var currentUser = await this.userManager.GetUserAsync(this.User);
             var company =  await  this.companyService.GetByUserAsync(currentUser);
-            var products = this.wareHouseService.GetAllProductsByWarehouseId(company.WareHouseId);
-            var result = this.mapper.Map<WareHouseIndexProductViewModel[]>(products).ToList();
+            //var products = this.wareHouseService.GetAllProductsByWarehouseId();
+            //var result = this.mapper.Map<WareHouseIndexProductViewModel[]>(products).ToList();
 
-            return this.View(result);
+            return this.View(new List<WareHouseIndexProductViewModel>());
         }
 
         public IActionResult Create()
         {
-            return this.View(new CreateBindingModel());
+            return this.View(new CreateInputModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateBindingModel input)
+        public async Task<IActionResult> Create(CreateInputModel input)
         {
             if (!this.ModelState.IsValid)
             {

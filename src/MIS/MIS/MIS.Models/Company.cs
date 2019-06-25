@@ -3,35 +3,31 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using Common;
-
     public class Company : BaseModel<int>
     {
         public Company()
         {
-            this.Users = new HashSet<MISUser>();
-            this.Invitations = new HashSet<Invitation>();
+            this.Employees = new HashSet<MISUser>();
+            this.Receipts = new HashSet<Receipt>();
             this.Reports = new HashSet<Report>();
+            this.WareHouses = new HashSet<WareHouse>();
         }
 
         [Required]
-        [StringLength(GlobalConstants.CompanyNameMaximumLength, MinimumLength = GlobalConstants.CompanyNameMinimumLength)]
+        [StringLength(40, MinimumLength = 4)]
         public string Name { get; set; }
 
         [Required]
-        [StringLength(GlobalConstants.CompanyAddressMaximumLength, MinimumLength = GlobalConstants.CompanyAddressMinimumLength)]
+        [StringLength(40, MinimumLength = 4)]
         public string Address { get; set; }
 
-        public string OwnerId { get; set; }
-        public virtual MISUser Owner { get; set; }
 
-        public int? WareHouseId { get; set; }
-        public virtual WareHouse WareHouse { get; set; }
+        public ICollection<WareHouse> WareHouses { get; set; }
 
-        public ICollection<Invitation> Invitations { get; set; }
+        public ICollection<MISUser> Employees { get; set; }
 
-        public virtual ICollection<MISUser> Users { get; set; }
+        public ICollection<Report> Reports { get; set; }
 
-        public virtual ICollection<Report> Reports { get; set; }
+        public ICollection<Receipt> Receipts { get; set; }
     }
 }
