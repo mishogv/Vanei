@@ -7,6 +7,6 @@
     public interface IUserService
     {
         //Task<int?> GetUserWarehouseIdAsync(string username);
-        //Task<MISUser> GetUserByUsernameAsync(string username);
+        Task<MISUser> GetUserByUsernameAsync(string username);
     }
 }

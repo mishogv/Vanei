@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MIS.Models\MIS.Models.csproj" />
+    <ProjectReference Include="..\MIS.Services.Mapping\MIS.Services.Mapping.csproj" />
   </ItemGroup>
 
 </Project>

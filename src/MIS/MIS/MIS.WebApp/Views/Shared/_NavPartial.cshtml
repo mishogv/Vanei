@@ -25,6 +25,15 @@
                                 <a class="nav-link text-dark" asp-controller="WareHouse" asp-action="Create">Create</a>
                             </div>
                         </li>
+                        <li class="dropdown nav-item">
+                            <button class="btn btn-link nav-item dropdown-toggle nav-link text-dark" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Company
+                            </button>
+                            <div class="dropdown-menu nav-item" aria-labelledby="dropdownMenuButton">
+                                <a class="nav-link text-dark" asp-controller="Company" asp-action="Index">Company</a>
+                                <a class="nav-link text-dark" asp-controller="Company" asp-action="Create">Create</a>
+                            </div>
+                        </li>
                     }
                     @if (this.User.IsInRole(GlobalConstants.AdministratorAreaRole))
                     {

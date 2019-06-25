@@ -4,7 +4,9 @@
 
     using Models;
 
-    public class CompanyServiceModel
+    using Services.Mapping;
+
+    public class CompanyServiceModel : IMapFrom<Company>
     {
         public CompanyServiceModel()
         {

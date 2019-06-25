@@ -39,7 +39,6 @@ namespace MIS.WebApp.Controllers
             var currentUser = await this.userManager.GetUserAsync(this.User);
             var company =  await  this.companyService.GetByUserAsync(currentUser);
             //var products = this.wareHouseService.GetAllProductsByWarehouseId();
-            //var result = this.mapper.Map<WareHouseIndexProductViewModel[]>(products).ToList();
 
             return this.View(new List<WareHouseIndexProductViewModel>());
         }

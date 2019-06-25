@@ -23,6 +23,8 @@
     using Services;
     using Services.Mapping;
 
+    using ServicesModels;
+
     using ViewModels.View.AdministratorManage;
 
     public class Startup
@@ -108,7 +110,8 @@
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            AutoMapperConfig.RegisterMappings(typeof(AdministratorShowUserViewModel).GetTypeInfo().Assembly);
+            AutoMapperConfig.RegisterMappings(typeof(AdministratorShowUserViewModel).GetTypeInfo().Assembly, 
+                typeof(CompanyServiceModel).GetTypeInfo().Assembly);
 
             if (env.IsDevelopment())
             {

@@ -4,7 +4,11 @@
     using System.Threading.Tasks;
     using System.Xml.Linq;
 
+    using AutoMapper.QueryableExtensions;
+
     using Data;
+
+    using Mapping;
 
     using Microsoft.EntityFrameworkCore;
 
@@ -36,6 +40,10 @@
                 CompanyId = (int)user.CompanyId,
             };
 
+            if (!user.Company.WareHouses.Any())
+            {
+                warehouse.IsFavorite = true;
+            }
 
             this.dbContext.Add(warehouse);
             await this.dbContext.SaveChangesAsync();
@@ -45,11 +53,7 @@
 
             await this.dbContext.SaveChangesAsync();
 
-            var result = new WareHouseServiceModel()
-            {
-                Name = warehouse.Name,
-                CompanyId = warehouse.CompanyId,
-            };
+            var result = warehouse.MapTo<WareHouseServiceModel>();
 
             return result;
         }
@@ -58,15 +62,7 @@
         {
             var warehouse = this.dbContext.WareHouses.FirstOrDefaultAsync(x => x.CompanyId == id).GetAwaiter().GetResult();
 
-            return warehouse?.Products.Select(x => new ProductServiceModel()
-            {
-                Name = x.Name,
-                Price = x.Price,
-                BarCode = x.BarCode,
-                WareHouseId = x.WareHouseId,
-                CategoryId = x.CategoryId,
-                Quantity = x.Quantity
-            }).AsQueryable();
+            return warehouse?.Products.AsQueryable().Select(x => x.MapTo<ProductServiceModel>()).AsQueryable();
         }
     }
 }

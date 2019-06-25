@@ -1,14 +1,15 @@
 ﻿namespace MIS.Services
 {
-    using System.Security.Cryptography.X509Certificates;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Data;
 
+    using Mapping;
+
     using Microsoft.EntityFrameworkCore;
 
     using Models;
-    using Models.Enums;
 
     using ServicesModels;
 
@@ -48,7 +49,7 @@
         {
             var company = await this.dbContext.Companies.Include(x => x.Employees).FirstOrDefaultAsync(x => x.Name == name);
             var user = await this.dbContext.Users.FirstOrDefaultAsync(x => x.UserName == username);
-
+            
             company.Employees.Add(user);
             await this.dbContext.SaveChangesAsync();
 
@@ -58,6 +59,22 @@
                 Employees = company.Employees,
                 Name = company.Name,
             };
+        }
+
+        public async Task<CompanyServiceModel> CreateAsync(string name, string address, string username)
+        {
+            var user = await this.userService.GetUserByUsernameAsync(username);
+            var company = new Company()
+            {
+                Address = address,
+                Name = name
+            };
+
+            company.Employees.Add(user);
+            await this.dbContext.AddAsync(company);
+            await this.dbContext.SaveChangesAsync();
+
+            return company.MapTo<CompanyServiceModel>();
         }
 
         public async Task<CompanyServiceModel> GetByUserAsync(MISUser user)

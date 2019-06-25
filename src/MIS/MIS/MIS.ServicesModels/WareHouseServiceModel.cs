@@ -5,7 +5,9 @@
 
     using Models;
 
-    public class WareHouseServiceModel
+    using Services.Mapping;
+
+    public class WareHouseServiceModel : IMapFrom<WareHouse>
     {
         public WareHouseServiceModel()
         {

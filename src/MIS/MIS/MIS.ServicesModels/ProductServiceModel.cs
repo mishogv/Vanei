@@ -2,7 +2,9 @@
 {
     using Models;
 
-    public class ProductServiceModel
+    using Services.Mapping;
+
+    public class ProductServiceModel : IMapFrom<Product>
     {
         public string Name { get; set; }
 

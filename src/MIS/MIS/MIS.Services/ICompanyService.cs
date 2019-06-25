@@ -1,5 +1,6 @@
 ﻿namespace MIS.Services
 {
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Models;
@@ -8,6 +9,8 @@
 
     public interface ICompanyService
     {
+        Task<CompanyServiceModel> CreateAsync(string name, string address, string username);
+
         Task<CompanyServiceModel> CreateAsync(string name, string address);
 
         Task<CompanyServiceModel> GetByUserAsync(MISUser user);
