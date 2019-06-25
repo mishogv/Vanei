@@ -1,7 +1,5 @@
-﻿namespace MIS.ViewModels.Product
+﻿namespace MIS.ViewModels.View.Product
 {
-    using Models;
-
     public class WareHouseIndexProductViewModel
     {
         public string Name { get; set; }

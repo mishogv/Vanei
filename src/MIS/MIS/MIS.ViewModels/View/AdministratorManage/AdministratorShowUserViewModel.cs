@@ -1,4 +1,4 @@
-﻿namespace MIS.ViewModels.AdministratorManage
+﻿namespace MIS.ViewModels.View.AdministratorManage
 {
     public class AdministratorShowUserViewModel
     {

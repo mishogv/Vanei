@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MIS.Common", "MIS.Common\MI
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MIS.Tests", "MIS.Tests\MIS.Tests.csproj", "{788A525C-4D9F-4F92-9D52-A6A88C7943A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIS.ServicesModels", "MIS.ServicesModels\MIS.ServicesModels.csproj", "{5C9D8EEA-8458-4EBD-A0E6-7C66E1A3A166}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MIS.ServicesModels", "MIS.ServicesModels\MIS.ServicesModels.csproj", "{5C9D8EEA-8458-4EBD-A0E6-7C66E1A3A166}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MIS.Services.Mapping", "MIS.Services.Mapping\MIS.Services.Mapping.csproj", "{5910CD32-6FDB-446D-AA26-4ECAECA8F1BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +63,10 @@ Global
 		{5C9D8EEA-8458-4EBD-A0E6-7C66E1A3A166}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C9D8EEA-8458-4EBD-A0E6-7C66E1A3A166}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C9D8EEA-8458-4EBD-A0E6-7C66E1A3A166}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5910CD32-6FDB-446D-AA26-4ECAECA8F1BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5910CD32-6FDB-446D-AA26-4ECAECA8F1BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5910CD32-6FDB-446D-AA26-4ECAECA8F1BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5910CD32-6FDB-446D-AA26-4ECAECA8F1BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,6 +76,7 @@ Global
 		{819F15B5-29BB-4461-AA58-3E1E35CEA39D} = {B252C6E4-C51D-4231-990C-D54C68F4DE67}
 		{D6BBE2BE-BE0A-4D23-B816-34EEE0D53731} = {81A243F3-1DC5-463A-9013-862A524BB626}
 		{5C9D8EEA-8458-4EBD-A0E6-7C66E1A3A166} = {81A243F3-1DC5-463A-9013-862A524BB626}
+		{5910CD32-6FDB-446D-AA26-4ECAECA8F1BA} = {81A243F3-1DC5-463A-9013-862A524BB626}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1404F871-9F8C-4FE8-B1D7-35799192B635}

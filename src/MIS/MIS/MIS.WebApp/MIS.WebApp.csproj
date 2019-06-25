@@ -8,8 +8,6 @@
 
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="8.1.0" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
@@ -22,6 +20,7 @@
     <ProjectReference Include="..\MIS.Common\MIS.Common.csproj" />
     <ProjectReference Include="..\MIS.Data\MIS.Data.csproj" />
     <ProjectReference Include="..\MIS.Models\MIS.Models.csproj" />
+    <ProjectReference Include="..\MIS.Services.Mapping\MIS.Services.Mapping.csproj" />
     <ProjectReference Include="..\MIS.Services\MIS.Services.csproj" />
     <ProjectReference Include="..\MIS.ViewModels\MIS.ViewModels.csproj" />
   </ItemGroup>
@@ -29,7 +28,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Administrator\Views\Administrator\" />
-    <Folder Include="BindingModels\Product\" />
     <Folder Include="Views\Product\" />
   </ItemGroup>
 

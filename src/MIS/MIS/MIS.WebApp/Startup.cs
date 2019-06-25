@@ -1,6 +1,6 @@
 ﻿namespace MIS.WebApp
 {
-    using AutoMapper;
+    using System.Reflection;
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Identity;
@@ -14,8 +14,6 @@
 
     using Data;
 
-    using MapperConfigurations;
-
     using Microsoft.AspNetCore.Identity.UI.Services;
 
     using Middlewares;
@@ -23,6 +21,9 @@
     using Models;
 
     using Services;
+    using Services.Mapping;
+
+    using ViewModels.View.AdministratorManage;
 
     public class Startup
     {
@@ -77,10 +78,10 @@
                         options.AppSecret = this.Configuration["Facebook:Secret"];
                     });
 
-            services.AddAutoMapper(cfg =>
-            {
-                cfg.AddProfile<MISProfile>();
-            }, typeof(MISProfile).Assembly);
+            //services.AddAutoMapper(cfg =>
+            //{
+            //    cfg.AddProfile<MISProfile>();
+            //}, typeof(MISProfile).Assembly);
 
             #region Custom services
 
@@ -107,6 +108,8 @@
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            AutoMapperConfig.RegisterMappings(typeof(AdministratorShowUserViewModel).GetTypeInfo().Assembly);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage(new DeveloperExceptionPageOptions()

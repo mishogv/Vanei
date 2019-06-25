@@ -2,11 +2,11 @@
 {
     using System.Threading.Tasks;
 
-    using BindingModels.Category;
-
     using Microsoft.AspNetCore.Mvc;
 
     using Services;
+
+    using ViewModels.Input.Category;
 
     public class CategoryController : AuthenticationController
     {

@@ -8,8 +8,6 @@ namespace MIS.WebApp.Controllers
 
     using AutoMapper;
 
-    using BindingModels.WareHouse;
-
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
 
@@ -17,7 +15,8 @@ namespace MIS.WebApp.Controllers
 
     using Services;
 
-    using ViewModels.Product;
+    using ViewModels.Input.WareHouse;
+    using ViewModels.View.Product;
 
     [Authorize]
     public class WareHouseController : AuthenticationController
@@ -25,17 +24,14 @@ namespace MIS.WebApp.Controllers
         private readonly IWareHouseService wareHouseService;
         private readonly UserManager<MISUser> userManager;
         private readonly ICompanyService companyService;
-        private readonly IMapper mapper;
 
         public WareHouseController(IWareHouseService wareHouseService, 
             UserManager<MISUser> userManager,
-            ICompanyService companyService,
-            IMapper mapper)
+            ICompanyService companyService)
         {
             this.wareHouseService = wareHouseService;
             this.userManager = userManager;
             this.companyService = companyService;
-            this.mapper = mapper;
         }
 
         public async Task<IActionResult> Index()

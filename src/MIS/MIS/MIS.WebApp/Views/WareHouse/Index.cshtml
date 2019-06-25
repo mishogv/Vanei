@@ -1,4 +1,4 @@
-﻿@using MIS.ViewModels.Product
+﻿@using MIS.ViewModels.View.Product
 @model List<WareHouseIndexProductViewModel>
 
 @{
@@ -26,8 +26,10 @@
         </tr>
     </thead>
     <tbody>
+        
+    @*TODO : CATEGORIZE ??*@
 
-        @foreach (var product in Model.OrderBy(x => x.CategoryName))
+    @foreach (var product in Model.OrderBy(x => x.CategoryName))
         {
             <tr>
                 <td>@product.Name</td>

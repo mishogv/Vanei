@@ -1,4 +1,4 @@
-﻿namespace MIS.WebApp.BindingModels.Shop
+﻿namespace MIS.ViewModels.Input.Shop
 {
     using System.ComponentModel.DataAnnotations;
 

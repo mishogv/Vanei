@@ -13,7 +13,7 @@
 
     using Services;
 
-    using ViewModels.AdministratorManage;
+    using ViewModels.View.AdministratorManage;
 
     public class AdministratorManageController : AdministratorController
     {
