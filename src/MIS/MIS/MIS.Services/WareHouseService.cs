@@ -1,10 +1,8 @@
 ﻿namespace MIS.Services
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using System.Xml.Linq;
-
-    using AutoMapper.QueryableExtensions;
 
     using Data;
 
@@ -15,6 +13,8 @@
     using Models;
 
     using ServicesModels;
+
+    using ViewModels.Input.Category;
 
     public class WareHouseService : IWareHouseService
     {
@@ -27,7 +27,10 @@
 
         public async Task<WareHouseServiceModel> CreateAsync(string name, string userId)
         {
-            var user = await this.dbContext.Users.Include(x => x.Company).FirstOrDefaultAsync(x => x.Id == userId);
+            var user = await this.dbContext.Users
+                                 .Include(x => x.Company)
+                                 .ThenInclude(x => x.WareHouses)
+                                 .FirstOrDefaultAsync(x => x.Id == userId);
 
             if (user?.CompanyId == null)
             {
@@ -37,7 +40,8 @@
             var warehouse = new WareHouse
             {
                 Name = name,
-                CompanyId = (int)user.CompanyId,
+                Company = user.Company,
+                IsFavorite = false
             };
 
             if (!user.Company.WareHouses.Any())
@@ -48,7 +52,6 @@
             this.dbContext.Add(warehouse);
             await this.dbContext.SaveChangesAsync();
 
-            //user.Company.WareHouseId = warehouse.Id;
             this.dbContext.Update(user.Company);
 
             await this.dbContext.SaveChangesAsync();
@@ -58,7 +61,42 @@
             return result;
         }
 
-        public IQueryable<ProductServiceModel> GetAllProductsByWarehouseId(int? id)
+        public async Task<WareHouseServiceModel> GetWareHouseByUserNameAsync(string username)
+        {
+            var user = await this.dbContext.Users
+                           .Include(x => x.Company)
+                           .ThenInclude(x => x.WareHouses)
+                           .FirstOrDefaultAsync(x => x.UserName == username);
+
+            var warehouse = user.Company.WareHouses.FirstOrDefault(x => x.IsFavorite);
+
+            return warehouse.MapTo<WareHouseServiceModel>();
+        }
+
+        public async Task<WareHouseServiceModel> GetWareHouseByNameAsync(string name)
+        {
+           var wareHouse =  await this.dbContext.WareHouses.FirstOrDefaultAsync(x => x.Name == name);
+           var result = wareHouse?.MapTo<WareHouseServiceModel>();
+
+           return result;
+        }
+
+        public IEnumerable<CreateCategoryWareHouseModel> GetAllUserWareHousesByUserName(string username)
+        {
+            var result = this.dbContext.Users
+                                 .Include(x => x.Company)
+                                 .ThenInclude(x => x.WareHouses)
+                                 .FirstOrDefaultAsync(x => x.UserName == username).GetAwaiter().GetResult()
+                                 .Company
+                                 .WareHouses
+                                 .OrderByDescending(x => x.IsFavorite)
+                                 .Select(x => x.MapTo<CreateCategoryWareHouseModel>())
+                                 .ToList();
+
+            return result;
+        }
+
+        public IQueryable<ProductServiceModel> GetAllProductsByWarehouseId(int id)
         {
             var warehouse = this.dbContext.WareHouses.FirstOrDefaultAsync(x => x.CompanyId == id).GetAwaiter().GetResult();
 

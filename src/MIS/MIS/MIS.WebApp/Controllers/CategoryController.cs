@@ -1,5 +1,6 @@
 ﻿namespace MIS.WebApp.Controllers
 {
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
@@ -10,13 +11,13 @@
 
     public class CategoryController : AuthenticationController
     {
-        private readonly IUserService userService;
         private readonly ICategoryService categoryService;
+        private readonly IWareHouseService wareHouseService;
 
-        public CategoryController(IUserService userService, ICategoryService categoryService)
+        public CategoryController(ICategoryService categoryService, IWareHouseService wareHouseService)
         {
-            this.userService = userService;
             this.categoryService = categoryService;
+            this.wareHouseService = wareHouseService;
         }
 
         public IActionResult Create()
@@ -25,21 +26,23 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateInputModel input)
+        public async Task<IActionResult> Create(CreateCategoryInputModel categoryInput)
         {
-            //if (!this.ModelState.IsValid)
-            //{
-            //    return this.View();
-            //}
+            if (!this.ModelState.IsValid)
+            {
+                return this.View();
+            }
 
-            ////var wareHouseId = await this.userService.GetUserWarehouseIdAsync(this.User.Identity.Name);
+            //var warehouse = await this.wareHouseService.GetWareHouseByUserNameAsync(this.User.Identity.Name);
 
-            //if (wareHouseId == null)
-            //{
-            //    return this.View();
-            //}
+            var usernames = this.wareHouseService.GetAllUserWareHousesByUserName(this.User.Identity.Name);
 
-            //await this.categoryService.CreateAsync(input.Name, (int) wareHouseId);
+            if (usernames.Select(x => x.Name).Contains(categoryInput.WareHouseName))
+            {
+                return this.View();
+            }
+
+            await this.categoryService.CreateAsync(categoryInput.Name, categoryInput.WareHouseName);
 
             return this.RedirectToAction("Index", "WareHouse");
         }

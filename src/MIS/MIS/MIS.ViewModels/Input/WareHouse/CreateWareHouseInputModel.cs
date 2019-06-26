@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class CreateInputModel
+    public class CreateWareHouseInputModel
     {
         [Required]
         [StringLength(24, MinimumLength = 3)]

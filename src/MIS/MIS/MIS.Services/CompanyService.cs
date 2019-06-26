@@ -1,6 +1,5 @@
 ﻿namespace MIS.Services
 {
-    using System.Linq;
     using System.Threading.Tasks;
 
     using Data;
@@ -79,16 +78,12 @@
 
         public async Task<CompanyServiceModel> GetByUserAsync(MISUser user)
         {
-            //TODO : REFACTOR
-            var company = await this.dbContext.Companies.FirstOrDefaultAsync();
-            var serviceModel = new CompanyServiceModel()
-            {
-                Address = company.Address,
-                Name = company.Name,
-                WareHouses = company.WareHouses,
-                Employees = company.Employees,
-                Id = company.Id,
-            };
+            var company = await this.dbContext.Companies
+                                    .Include(x => x.WareHouses)
+                                    .Include(x => x.Employees)
+                                    .FirstOrDefaultAsync(x => x.Employees.Contains(user));
+
+            var serviceModel = company.MapTo<CompanyServiceModel>();
 
             return serviceModel;
         }

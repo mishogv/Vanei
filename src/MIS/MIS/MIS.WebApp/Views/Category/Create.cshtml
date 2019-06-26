@@ -1,13 +1,14 @@
-﻿@using MIS.ViewModels.Input.Category
-@model CreateInputModel
-
+﻿@using MIS.Services
+@using MIS.ViewModels.Input.Category
+@model CreateCategoryInputModel
+@inject IWareHouseService Service
 @{
     ViewData["Title"] = "Create";
 }
 
 <h1>Create</h1>
 
-<h4>CreateInputModel</h4>
+<h4>CreateCategoryInputModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -18,6 +19,12 @@
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+            <select asp-for="WareHouseName">
+                @foreach (var item in Service.GetAllUserWareHousesByUserName(this.User.Identity.Name))
+                {
+                    <option value="@item.Name" >@item.Name</option>
+                }
+            </select>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

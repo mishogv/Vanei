@@ -4,6 +4,8 @@
 
     using Data;
 
+    using Mapping;
+
     using Models;
 
     using ServicesModels;
@@ -19,27 +21,21 @@
             this.dbContext = dbContext;
         }
 
-        public async Task<CategoryServiceModel> CreateAsync(string name, int warehouseId)
+        public async Task<CategoryServiceModel> CreateAsync(string name, string wareHouseName)
         {
-            //this.wareHouseService.GetWareHouseByIdAsync(warehouseId);
+            var wareHouseServiceModel = await this.wareHouseService.GetWareHouseByNameAsync(wareHouseName);
+            var wareHouse = wareHouseServiceModel.MapTo<WareHouse>();
+
             var category = new Category()
             {
                 Name = name,
-                WareHouseId = warehouseId
+                WareHouse = wareHouse
             };
 
             this.dbContext.Add(category);
             await this.dbContext.SaveChangesAsync();
 
-            
-
-            return new CategoryServiceModel()
-            {
-                Name = category.Name,
-                WareHouseId = category.WareHouseId,
-                WareHouse = category.WareHouse,
-                Products = category.Products
-            };
+            return category.MapTo<CategoryServiceModel>();
         }
     }
 }

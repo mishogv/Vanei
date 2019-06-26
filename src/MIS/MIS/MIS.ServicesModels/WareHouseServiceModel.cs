@@ -7,7 +7,7 @@
 
     using Services.Mapping;
 
-    public class WareHouseServiceModel : IMapFrom<WareHouse>
+    public class WareHouseServiceModel : IMapFrom<WareHouse>, IMapTo<WareHouse>
     {
         public WareHouseServiceModel()
         {
@@ -16,6 +16,8 @@
         }
 
         public string Name { get; set; }
+
+        public bool IsFavorite { get; set; }
 
         public int CompanyId { get; set; }
         public virtual Company Company { get; set; }

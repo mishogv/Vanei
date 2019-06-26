@@ -7,6 +7,7 @@ namespace MIS.WebApp.Controllers
     using System.Threading.Tasks;
 
     using AutoMapper;
+    using AutoMapper.QueryableExtensions;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
@@ -14,6 +15,7 @@ namespace MIS.WebApp.Controllers
     using Models;
 
     using Services;
+    using Services.Mapping;
 
     using ViewModels.Input.WareHouse;
     using ViewModels.View.Product;
@@ -38,18 +40,27 @@ namespace MIS.WebApp.Controllers
         {
             var currentUser = await this.userManager.GetUserAsync(this.User);
             var company =  await  this.companyService.GetByUserAsync(currentUser);
-            //var products = this.wareHouseService.GetAllProductsByWarehouseId();
 
-            return this.View(new List<WareHouseIndexProductViewModel>());
+            var wareHouse = company.WareHouses.FirstOrDefault(x => x.IsFavorite);
+
+            //TODO : Logic
+            if (wareHouse == null)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            var products = wareHouse.Products.Select(x => x.MapTo<WareHouseIndexProductViewModel>()).ToList();
+
+            return this.View(products);
         }
 
         public IActionResult Create()
         {
-            return this.View(new CreateInputModel());
+            return this.View(new CreateWareHouseInputModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateInputModel input)
+        public async Task<IActionResult> Create(CreateWareHouseInputModel wareHouseInput)
         {
             if (!this.ModelState.IsValid)
             {
@@ -59,7 +70,7 @@ namespace MIS.WebApp.Controllers
             var userId = this.userManager.GetUserId(this.User);
             
 
-            var serviceModel = await this.wareHouseService.CreateAsync(input.Name,  userId);
+            var serviceModel = await this.wareHouseService.CreateAsync(wareHouseInput.Name,  userId);
 
             return this.RedirectToAction(nameof(this.Index));
         }

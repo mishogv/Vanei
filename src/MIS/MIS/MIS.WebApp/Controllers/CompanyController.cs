@@ -6,7 +6,7 @@ namespace MIS.WebApp.Controllers
 
     using Services;
 
-    using ViewModels.Input.Category;
+    using ViewModels.Input.Company;
 
     public class CompanyController : AuthenticationController
     {
@@ -19,11 +19,11 @@ namespace MIS.WebApp.Controllers
 
         public IActionResult Create()
         {
-            return this.View(new CreateInputModel());
+            return this.View(new CreateCompanyInputModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateInputModel input)
+        public async Task<IActionResult> Create(CreateCompanyInputModel input)
         {
             if (!this.ModelState.IsValid)
             {
