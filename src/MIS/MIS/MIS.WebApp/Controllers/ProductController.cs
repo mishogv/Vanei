@@ -4,6 +4,8 @@
 
     using Microsoft.AspNetCore.Mvc;
 
+    using ViewModels.Input.Product;
+
     public class ProductController : AuthenticationController
     {
         public IActionResult Index()
@@ -17,7 +19,7 @@
         }
 
         [HttpPost]
-        public IActionResult Create(string ad = "asd")
+        public IActionResult Create(CreateProductInputModel input)
         {
             return View();
         }

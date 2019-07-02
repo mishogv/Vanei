@@ -30,16 +30,14 @@
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View();
+                return this.View(categoryInput);
             }
-
-            //var warehouse = await this.wareHouseService.GetWareHouseByUserNameAsync(this.User.Identity.Name);
 
             var usernames = this.wareHouseService.GetAllUserWareHousesByUserName(this.User.Identity.Name);
 
             if (!usernames.Select(x => x.Name).Contains(categoryInput.WareHouseName))
             {
-                return this.View();
+                return this.View(categoryInput);
             }
 
             await this.categoryService.CreateAsync(categoryInput.Name, categoryInput.WareHouseName);

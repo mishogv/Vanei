@@ -13,6 +13,8 @@
 
     using Models;
 
+    using ValidationAttributes;
+
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
@@ -52,6 +54,7 @@
 
             [Required]
             [StringLength(30, MinimumLength = 1)]
+            [Username]
             [Display(Name = "User name")]
             public string Username { get; set; }
 

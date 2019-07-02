@@ -10,6 +10,7 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
 
     using Models;
@@ -77,6 +78,20 @@
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.EmailOrUsername, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+
+                if (!result.Succeeded)
+                {
+                    var user = await _signInManager
+                                         .UserManager.Users.FirstOrDefaultAsync(x => x.Email == Input.EmailOrUsername);
+
+                    if (user != null)
+                    {
+                        var username = user.UserName;
+                        result = await this._signInManager.PasswordSignInAsync(username, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                    }
+
+                }
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
