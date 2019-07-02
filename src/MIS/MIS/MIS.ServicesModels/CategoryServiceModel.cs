@@ -4,7 +4,9 @@
 
     using Models;
 
-    public class CategoryServiceModel
+    using Services.Mapping;
+
+    public class CategoryServiceModel : IMapFrom<Category>
     {
         public CategoryServiceModel()
         {

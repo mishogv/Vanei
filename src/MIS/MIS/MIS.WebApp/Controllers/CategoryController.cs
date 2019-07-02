@@ -37,7 +37,7 @@
 
             var usernames = this.wareHouseService.GetAllUserWareHousesByUserName(this.User.Identity.Name);
 
-            if (usernames.Select(x => x.Name).Contains(categoryInput.WareHouseName))
+            if (!usernames.Select(x => x.Name).Contains(categoryInput.WareHouseName))
             {
                 return this.View();
             }

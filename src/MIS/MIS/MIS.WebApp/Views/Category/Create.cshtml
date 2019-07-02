@@ -19,13 +19,13 @@
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <select asp-for="WareHouseName">
+            <select asp-for="WareHouseName" class="form-control">
                 @foreach (var item in Service.GetAllUserWareHousesByUserName(this.User.Identity.Name))
                 {
                     <option value="@item.Name" >@item.Name</option>
                 }
             </select>
-            <div class="form-group">
+            <div class="form-group mt-3">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

@@ -80,11 +80,6 @@
                         options.AppSecret = this.Configuration["Facebook:Secret"];
                     });
 
-            //services.AddAutoMapper(cfg =>
-            //{
-            //    cfg.AddProfile<MISProfile>();
-            //}, typeof(MISProfile).Assembly);
-
             #region Custom services
 
             services.AddScoped<IProductService, ProductService>();
