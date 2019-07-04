@@ -19,6 +19,7 @@ namespace MIS.WebApp.Controllers
 
     using ViewModels.Input.WareHouse;
     using ViewModels.View.Product;
+    using ViewModels.View.WareHouse;
 
     [Authorize]
     public class WareHouseController : AuthenticationController
@@ -51,7 +52,13 @@ namespace MIS.WebApp.Controllers
 
             var products = wareHouse.Products.Select(x => x.MapTo<WareHouseIndexProductViewModel>()).ToList();
 
-            return this.View(products);
+            var result = new IndexWarehouseViewModel
+            {
+                Products = products,
+                WareHouseName = wareHouse.Name
+            };
+
+            return this.View(result);
         }
 
         public IActionResult Create()

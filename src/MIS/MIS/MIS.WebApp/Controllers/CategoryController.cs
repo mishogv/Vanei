@@ -33,9 +33,9 @@
                 return this.View(categoryInput);
             }
 
-            var usernames = this.wareHouseService.GetAllUserWareHousesByUserName(this.User.Identity.Name);
+            var wareHouses = this.wareHouseService.GetAllUserWareHousesByUserName(this.User.Identity.Name);
 
-            if (!usernames.Select(x => x.Name).Contains(categoryInput.WareHouseName))
+            if (!wareHouses.Select(x => x.Name).Contains(categoryInput.WareHouseName))
             {
                 return this.View(categoryInput);
             }

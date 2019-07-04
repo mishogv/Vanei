@@ -96,6 +96,21 @@
             return result;
         }
 
+        public async Task<IEnumerable<string>> GetAllCategoriesNamesAsync(string wareHouseName, string username)
+        {
+            var user = await this.dbContext.Users
+                                      .Include(x => x.Company)
+                                      .ThenInclude(x => x.WareHouses)
+                                      .ThenInclude(x => x.Categories)
+                                      .FirstOrDefaultAsync(x => x.UserName == username);
+
+            var warehouse = user.Company.WareHouses.FirstOrDefault(x => x.Name == wareHouseName);
+
+            var categories = warehouse?.Categories.Select(x => x.Name);
+
+            return categories;
+        }
+
         public IQueryable<ProductServiceModel> GetAllProductsByWarehouseId(int id)
         {
             var warehouse = this.dbContext.WareHouses.FirstOrDefaultAsync(x => x.CompanyId == id).GetAwaiter().GetResult();

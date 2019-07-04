@@ -1,5 +1,5 @@
-﻿@using MIS.ViewModels.View.Product
-@model List<WareHouseIndexProductViewModel>
+﻿@using MIS.ViewModels.View.WareHouse
+@model IndexWarehouseViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -13,7 +13,7 @@
 </div>
 <div>
     <span>Products</span>
-    <a asp-controller="Product" asp-action="Create">Create</a>
+    <a asp-controller="Product" asp-action="Create" asp-route-wareHouseName="@Model.WareHouseName">Create</a>
 </div>
 <table class="table table-active table-hover">
     <thead>
@@ -29,7 +29,7 @@
         
     @*TODO : CATEGORIZE ??*@
 
-    @foreach (var product in Model.OrderBy(x => x.CategoryName))
+    @foreach (var product in Model.Products.OrderBy(x => x.CategoryName))
         {
             <tr>
                 <td>@product.Name</td>

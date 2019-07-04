@@ -12,6 +12,7 @@
 
     public class AdministratorService : IAdministratorService
     {
+        //TODO : REFACTOR 
         private readonly UserManager<MISUser> userManager;
 
         public AdministratorService(UserManager<MISUser> userManager)

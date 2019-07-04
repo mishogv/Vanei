@@ -15,12 +15,10 @@
     public class CompanyService : ICompanyService
     {
         private readonly MISDbContext dbContext;
-        private readonly IUserService userService;
 
-        public CompanyService(MISDbContext dbContext, IUserService userService)
+        public CompanyService(MISDbContext dbContext)
         {
             this.dbContext = dbContext;
-            this.userService = userService;
         }
 
         public async Task<CompanyServiceModel> CreateAsync(string name, string address)
@@ -62,7 +60,7 @@
 
         public async Task<CompanyServiceModel> CreateAsync(string name, string address, string username)
         {
-            var user = await this.userService.GetUserByUsernameAsync(username);
+            var user = await this.dbContext.Users.FirstOrDefaultAsync(x => x.UserName == username);
             var company = new Company()
             {
                 Address = address,

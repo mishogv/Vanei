@@ -89,7 +89,6 @@
             services.AddScoped<IReceiptService, ReceiptService>();
             services.AddScoped<IWareHouseService, WareHouseService>();
             services.AddScoped<IAdministratorService, AdministratorService>();
-            services.AddScoped<IUserService, UserService>();
             services.AddTransient<IEmailSender, EmailSender>();
 
             #endregion

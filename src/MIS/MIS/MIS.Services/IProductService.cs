@@ -6,6 +6,6 @@
 
     public interface IProductService
     {
-        Task<ProductServiceModel> Create(string name, decimal price, double quantity, string barcode);
+        Task<ProductServiceModel> CreateAsync(string name, decimal price, double quantity, string barcode, string categoryName, string wareHouseName, string username);
     }
 }

@@ -6,6 +6,8 @@
 
     using Mapping;
 
+    using Microsoft.EntityFrameworkCore;
+
     using Models;
 
     using ServicesModels;
@@ -23,8 +25,7 @@
 
         public async Task<CategoryServiceModel> CreateAsync(string name, string wareHouseName)
         {
-            var wareHouseServiceModel = await this.wareHouseService.GetWareHouseByNameAsync(wareHouseName);
-            var wareHouse = wareHouseServiceModel.MapTo<WareHouse>();
+            var wareHouse = await this.dbContext.WareHouses.FirstOrDefaultAsync(x => x.Name == wareHouseName);
 
             var category = new Category()
             {

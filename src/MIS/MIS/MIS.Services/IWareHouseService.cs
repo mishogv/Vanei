@@ -20,6 +20,8 @@
 
         IEnumerable<CreateCategoryWareHouseModel> GetAllUserWareHousesByUserName(string username);
 
+        Task<IEnumerable<string>> GetAllCategoriesNamesAsync(string wareHouseName, string username);
+
         IQueryable<ProductServiceModel> GetAllProductsByWarehouseId(int id);
     }
 }

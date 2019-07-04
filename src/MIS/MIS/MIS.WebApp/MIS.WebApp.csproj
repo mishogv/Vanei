@@ -28,7 +28,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Administrator\Views\Administrator\" />
-    <Folder Include="Views\Product\" />
   </ItemGroup>
 
 </Project>
