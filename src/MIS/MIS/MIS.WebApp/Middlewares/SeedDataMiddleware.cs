@@ -9,7 +9,6 @@
 
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     using Models;
     using Models.Enums;

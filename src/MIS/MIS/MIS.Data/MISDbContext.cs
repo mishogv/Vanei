@@ -1,5 +1,6 @@
 ﻿namespace MIS.Data
 {
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +20,8 @@
 
         public DbSet<Receipt> Receipts { get; set; } 
 
+        public DbSet<ReceiptProduct> ReceiptProducts { get; set; } 
+
         public DbSet<Report> Reports { get; set; } 
 
         public DbSet<Category> Categories { get; set; }
@@ -35,6 +38,14 @@
                    .HasForeignKey(x => x.CompanyId)
                    .IsRequired(false)
                    .OnDelete(DeleteBehavior.SetNull);
+
+            builder.Entity<ReceiptProduct>()
+                   .HasOne(x => x.Product)
+                   .WithMany(x => x.ReceiptProducts);
+
+            builder.Entity<ReceiptProduct>()
+                   .HasOne(x => x.Receipt)
+                   .WithMany(x => x.ReceiptProducts);
 
             base.OnModelCreating(builder);
         }

@@ -5,8 +5,6 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
-    using Services;
-
     using WebApp.Controllers;
 
     [Area(GlobalConstants.AdministratorAreaRole)]

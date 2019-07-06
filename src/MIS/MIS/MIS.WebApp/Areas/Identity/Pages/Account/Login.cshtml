@@ -1,6 +1,10 @@
 ﻿@page
+@using Microsoft.Extensions.Configuration
+@using Microsoft.Extensions.Options
 @using MIS.Common
+@using reCAPTCHA.AspNetCore
 @model LoginModel
+@inject IOptions<RecaptchaSettings> RecaptchaSettings
 
 @{
     ViewData["Title"] = "Log in";
@@ -38,6 +42,7 @@
                         </label>
                     </div>
                 </div>
+                @Html.Recaptcha(RecaptchaSettings.Value)
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Log in</button>
                 </div>
@@ -86,4 +91,5 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://www.google.com/recaptcha/api.js"></script>
 }

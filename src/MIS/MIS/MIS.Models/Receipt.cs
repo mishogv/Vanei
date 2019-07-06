@@ -8,7 +8,7 @@
     {
         public Receipt()
         {
-            this.Products = new HashSet<Product>();
+            this.ReceiptProducts = new HashSet<ReceiptProduct>();
             this.IssuedOn = DateTime.UtcNow;
         }
 
@@ -21,6 +21,9 @@
         public string UserId { get; set; }
         public virtual MISUser User { get; set; }
 
-        public virtual ICollection<Product> Products { get; set; }
+        public string CompanyId { get; set; }
+        public virtual Company Company { get; set; }
+
+        public virtual ICollection<ReceiptProduct> ReceiptProducts { get; set; }
     }
 }

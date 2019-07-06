@@ -38,6 +38,7 @@
                 PlainTextContent = message,
                 HtmlContent = message
             };
+
             msg.AddTo(new EmailAddress(email));
 
             // Disable click tracking.

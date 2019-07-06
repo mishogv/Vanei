@@ -20,6 +20,8 @@
 
     using Models;
 
+    using reCAPTCHA.AspNetCore;
+
     using Services;
     using Services.Mapping;
 
@@ -91,6 +93,8 @@
             services.AddScoped<IAdministratorService, AdministratorService>();
             services.AddTransient<IEmailSender, EmailSender>();
 
+            services.Configure<RecaptchaSettings>(this.Configuration.GetSection("Google"));
+            services.AddTransient<IRecaptchaService, RecaptchaService>();
             #endregion
 
             services.AddRouting();

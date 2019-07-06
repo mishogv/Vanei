@@ -1,6 +1,10 @@
 ﻿namespace MIS.ViewModels.View.Product
 {
-    public class WareHouseIndexProductViewModel
+    using Models;
+
+    using Services.Mapping;
+
+    public class WareHouseIndexProductViewModel : IMapFrom<Product>
     {
         public string Name { get; set; }
 
@@ -9,6 +13,7 @@
         public double Quantity { get; set; }
 
         public string BarCode { get; set; }
+
 
         public string CategoryName { get; set; }
     }

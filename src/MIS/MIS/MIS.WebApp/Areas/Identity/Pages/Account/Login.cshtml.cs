@@ -15,16 +15,20 @@
 
     using Models;
 
+    using reCAPTCHA.AspNetCore;
+
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
         private readonly SignInManager<MISUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IRecaptchaService recaptchaService;
 
-        public LoginModel(SignInManager<MISUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<MISUser> signInManager, ILogger<LoginModel> logger, IRecaptchaService recaptchaService)
         {
             _signInManager = signInManager;
             _logger = logger;
+            this.recaptchaService = recaptchaService;
         }
 
         [BindProperty]
@@ -72,6 +76,13 @@
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
+
+            var recaptcha = await this.recaptchaService.Validate(this.Request);
+
+            if (!recaptcha.success)
+            {
+                this.ModelState.AddModelError("", "There was an error validating recatpcha. Please try again!");
+            }
 
             if (ModelState.IsValid)
             {

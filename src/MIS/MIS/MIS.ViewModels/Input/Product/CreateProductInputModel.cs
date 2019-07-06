@@ -14,7 +14,7 @@
         [Range(typeof(decimal), "0.01", "79228162514264337593543950335")]
         public decimal Price { get; set; }
 
-        [Range(double.MinValue, double.MaxValue)]
+        [Range(0, double.MaxValue)]
         public double Quantity { get; set; }
 
         [Required]
@@ -23,8 +23,10 @@
 
         public IEnumerable<string> CategoryNames { get; set; }
 
+        [Required]
         public string WareHouseName { get; set; }
 
+        [Required]
         public string CategoryName { get; set; }
     }
 }

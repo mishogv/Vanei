@@ -4,14 +4,16 @@ using MIS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MIS.Data.Migrations
 {
     [DbContext(typeof(MISDbContext))]
-    partial class MISDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190704140016_AddedReceiptProduct")]
+    partial class AddedReceiptProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

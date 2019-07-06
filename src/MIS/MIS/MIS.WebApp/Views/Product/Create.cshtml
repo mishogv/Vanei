@@ -37,12 +37,16 @@
             <div class="form-group">
                 <input asp-for="WareHouseName" type="hidden" value="@Model.WareHouseName"/>
             </div>
-            <select class="form-control" asp-for="CategoryName">
-                @foreach (var item in Model.CategoryNames)
-                {
-                    <option value="@item">@item</option>
-                }
-            </select>
+            <div class="form-group">
+                <label asp-for="CategoryName"></label>
+                <select class="form-control" asp-for="CategoryName">
+                    @foreach (var item in Model.CategoryNames)
+                    {
+                        <option value="@item">@item</option>
+                    }
+                </select>
+                <span asp-validation-for="CategoryName" class="text-danger"></span>
+            </div>
             <div class="form-group mt-3">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

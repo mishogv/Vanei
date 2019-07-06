@@ -78,6 +78,8 @@
         {
             var company = await this.dbContext.Companies
                                     .Include(x => x.WareHouses)
+                                    .ThenInclude(x => x.Categories)
+                                    .ThenInclude(x => x.Products)
                                     .Include(x => x.Employees)
                                     .FirstOrDefaultAsync(x => x.Employees.Contains(user));
 

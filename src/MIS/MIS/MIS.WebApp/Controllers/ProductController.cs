@@ -28,6 +28,11 @@
 
         public async Task<IActionResult> Create(string wareHouseName)
         {
+            if (wareHouseName == null)
+            {
+                return this.RedirectToAction("Index", "WareHouse");
+            }
+
             var warehouseCategories = await this.wareHouseService.GetAllCategoriesNamesAsync(wareHouseName, this.User.Identity.Name);
 
             var result = new CreateProductInputModel()
@@ -48,7 +53,6 @@
             }
 
 
-            //TODO : Security if it need more
             var wareHouses = this.wareHouseService.GetAllUserWareHousesByUserName(this.User.Identity.Name);
 
             if (!wareHouses.Select(x => x.Name).Contains(input.WareHouseName))
