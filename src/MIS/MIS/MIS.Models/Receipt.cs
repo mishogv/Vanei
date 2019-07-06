@@ -9,12 +9,9 @@
         public Receipt()
         {
             this.ReceiptProducts = new HashSet<ReceiptProduct>();
-            this.IssuedOn = DateTime.UtcNow;
         }
 
-        //TODO : Maybe make bug DONT FORGET THAT
-        [Required]
-        public DateTime IssuedOn { get; set; }
+        public DateTime? IssuedOn { get; set; }
 
         public decimal Total { get; set; }
 

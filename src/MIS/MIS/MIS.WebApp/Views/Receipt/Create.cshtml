@@ -1,0 +1,34 @@
+﻿@using MIS.ViewModels.View.Receipt
+@model CreateReceiptViewModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create Receipt</h1>
+
+<table class="table table-active table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Barcode</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Total</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    @foreach (var product in Model.Products)
+    {
+        <tr>
+            <td>@product.Id</td>
+            <td>@product.Name</td>
+            <td>@product.Barcode</td>
+            <td>@product.Price</td>
+            <td>@product.Quantity</td>
+            <td>@product.Total</td>
+        </tr>
+    }
+    </tbody>
+</table>
