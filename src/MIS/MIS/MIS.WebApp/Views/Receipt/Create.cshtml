@@ -5,8 +5,15 @@
 }
 
 <h1>Create Receipt</h1>
+<div>
+    <ul>
+        <li>
+            Please add product by name.
+        </li>
+    </ul>
+</div>
 
-<table class="table table-active table-hover">
+<table class="table table-active table-hover col-md-8 col-6 col-lg-12 col-sm-4">
     <thead>
         <tr>
             <th scope="col">Id</th>
@@ -18,17 +25,106 @@
         </tr>
     </thead>
     <tbody>
-
-    @foreach (var product in Model.Products)
+        @foreach (var product in Model.Products)
     {
         <tr>
-            <td>@product.Id</td>
-            <td>@product.Name</td>
-            <td>@product.Barcode</td>
-            <td>@product.Price</td>
-            <td>@product.Quantity</td>
-            <td>@product.Total</td>
+            <form asp-controller="Receipt" asp-action="AddProduct" class="form-group bg-light">
+                <div asp-validation-summary="All"></div>
+                <td>
+                    <div>
+                        <input asp-for="@product.Id" class="form-control" value="@product.Id" type="number" min="1" max="@int.MaxValue" onkeypress="findById(@product.Id)" />
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <input asp-for="@product.Name" class="form-control" id="@product.Id" value="@product.Name"  placeholder="Product name"  onkeypress="findById(@product.Id)" />
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <input asp-for="@product.Barcode" class="form-control" value="@product.Barcode" placeholder="Product barcode" />
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <input asp-for="@product.Price" class="form-control" value="@product.Price" type="number" disabled="disabled" />
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <input asp-for="@product.Quantity" class="form-control" value="@product.Quantity" type="number" step="0.5" />
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <input asp-for="@product.Total" class="form-control" value="@product.Total" disabled="disabled" />
+                    </div>
+                </td>
+            </form>
         </tr>
     }
+        <tr class="align-content-center">
+            <th>
+
+            </th>
+            <th>
+            </th>
+            <th>
+                <input type="submit" class="btn btn-dark" value="Finish receipt" />
+
+            <td>
+                Total sum : @Model.Total.ToString("F2") $
+            </td>
+            </th>
+            <th>
+
+            </th>
+            <th>
+
+            </th>
+        </tr>
     </tbody>
 </table>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    
+    <script>
+        function findById(id) {
+            //Find product and load current product information
+            //And create new row
+            $( function() {
+                var availableTags = [
+                    "ActionScript",
+                    "AppleScript",
+                    "Asp",
+                    "BASIC",
+                    "C",
+                    "C++",
+                    "Clojure",
+                    "COBOL",
+                    "ColdFusion",
+                    "Erlang",
+                    "Fortran",
+                    "Groovy",
+                    "Haskell",
+                    "Java",
+                    "JavaScript",
+                    "Lisp",
+                    "Perl",
+                    "PHP",
+                    "Python",
+                    "Ruby",
+                    "Scala",
+                    "Scheme"
+                ];
+                var selector = '#' + id;
+                console.log(selector);
+
+                $( selector ).autocomplete({
+                    source: availableTags
+                });
+            } );
+        }
+    </script>
+}

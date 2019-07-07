@@ -30,15 +30,17 @@
                                         .OrderByDescending(x => x.AddedOn)
                                         .Select(x => new ShowReceiptProductViewModel
                 {
+                    Id = x.Id,
                     Name = x.Product.Name,
                     Quantity = x.Quantity,
                     Price = x.Product.Price,
                     Total = x.Product.Price * (decimal) x.Quantity,
-                    Id = x.Id,
                     Barcode = x.Product.BarCode,
                 }).ToList(),
                 Total = openedReceipt.Products.Select(x => x.Total).Sum()
             };
+
+            result.Products.Add(new ShowReceiptProductViewModel());
 
             return this.View(result);
         }
