@@ -1,5 +1,6 @@
 ﻿namespace MIS.WebApp.Controllers
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -68,8 +69,8 @@
             return View();
         }
 
-        [HttpGet("/All/ProductsNames")]
-        public async Task<ActionResult<string[]>> AllProducts(/*AddReceiptProductInputModel input*/)
+        [HttpGet("/All/Products")]
+        public async Task<ActionResult<IList<ShowReceiptProductViewModel>>> AllProducts()
         {
             // AJAX
             // user
@@ -77,9 +78,9 @@
             // Add product to opened receipt 
             // return added product
             // security ??
-            var products = await this.productService.GetAllProductsNamesByUsernameAsync(this.User.Identity.Name);
+            var products = await this.productService.GetAllProductsByUsernameAsync(this.User.Identity.Name);
 
-            return products.ToArray();
+            return products.ToList();
         }
 
         public IActionResult RemoveProduct()

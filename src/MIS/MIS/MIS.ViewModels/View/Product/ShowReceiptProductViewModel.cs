@@ -1,6 +1,10 @@
 ﻿namespace MIS.ViewModels.View.Product
 {
-    public class ShowReceiptProductViewModel
+    using Models;
+
+    using Services.Mapping;
+
+    public class ShowReceiptProductViewModel : IMapFrom<Product>
     {
         public int Id { get; set; }
 

@@ -4,6 +4,8 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using AutoMapper.QueryableExtensions;
+
     using Data;
 
     using Mapping;
@@ -13,6 +15,8 @@
     using Models;
 
     using ServicesModels;
+
+    using ViewModels.View.Product;
 
     public class ProductService : IProductService
     {
@@ -50,9 +54,9 @@
             return product.MapTo<ProductServiceModel>();
         }
 
-        public async Task<IEnumerable<string>> GetAllProductsNamesByUsernameAsync(string username)
+        public async Task<IEnumerable<ShowReceiptProductViewModel>> GetAllProductsByUsernameAsync(string username)
         {
-            var user = this.db.Users
+            var products = this.db.Users
                                     .Include(x => x.Company)
                                     .ThenInclude(x => x.WareHouses)
                                     .ThenInclude(x => x.Products)
@@ -60,12 +64,11 @@
                                     .Take(1)
                                     .SelectMany(x => x.Company.WareHouses)
                                     .SelectMany(x => x.Products)
-                                    .Select(x => x.Name)
+                                    .ProjectTo<ShowReceiptProductViewModel>()
                                     .ToList();
+            await Task.CompletedTask;
 
-            //var names = user.Company.WareHouses.SelectMany(x => x.Products).Select(x => x.Name);
-
-            return user;
+            return products;
         }
     }
 }

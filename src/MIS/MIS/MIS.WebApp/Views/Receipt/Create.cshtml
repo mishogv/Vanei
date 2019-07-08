@@ -60,32 +60,32 @@
                     <td class="row">
                         <input class="ml-2 mt-3 " type="checkbox"/>
                         <div>
-                            <input asp-for="@product.Id" class="form-control" value="@product.Id" type="number" min="1" max="@int.MaxValue" disabled="disabled"/>
+                            <input asp-for="@product.Id" class="form-control" id="product-id-number-@i" value="@product.Id" type="number" min="1" max="@int.MaxValue" disabled="disabled"/>
                         </div>
                     </td>
                     <td>
                         <div>
-                            <input asp-for="@product.Name" class="form-control" id="@product.Id" value="@product.Name" placeholder="Product name" onkeypress="loadData(@product.Id)"/>
+                            <input asp-for="@product.Name" class="form-control" id="product-name-number-@i" value="@product.Name" placeholder="Product name" onkeypress="loadData(@i)"/>
                         </div>
                     </td>
                     <td>
                         <div>
-                            <input asp-for="@product.Quantity" class="form-control" value="@product.Quantity" type="number" step="0.5"/>
+                            <input asp-for="@product.Quantity" class="form-control" id="product-quantity-number-@i" value="@product.Quantity" type="number" step="0.5"/>
                         </div>
                     </td>
                     <td>
                         <div>
-                            <input asp-for="@product.Barcode" class="form-control" value="@product.Barcode" placeholder="Product barcode"/>
+                            <input asp-for="@product.Barcode" class="form-control" id="product-barcode-number-@i" value="@product.Barcode" placeholder="Product barcode"/>
                         </div>
                     </td>
                     <td>
                         <div>
-                            <input asp-for="@product.Price" class="form-control" value="@product.Price" type="number" disabled="disabled"/>
+                            <input asp-for="@product.Price" class="form-control" id="product-price-number-@i" value="@product.Price" type="number" disabled="disabled"/>
                         </div>
                     </td>
                     <td>
                         <div>
-                            <input asp-for="@product.Total" class="form-control" value="@product.Total" disabled="disabled"/>
+                            <input asp-for="@product.Total" class="form-control" id="product-total-number-@i" value="@product.Total" disabled="disabled"/>
                         </div>
                     </td>
                 </form>
@@ -123,16 +123,21 @@
         //And create new row
         //TODO : Make ajax and load data from server. disable product when is already added
         var products = null;
-
-        function loadData(id) {
-            var selector = '#' + id;
+        let productsNames = [];
+    
+    function loadData(id) {
+        
+        var selector = '#product-name-number-' + id;
 
             if (products == null) {
                 $(function () {
                     $.ajax({
-                        url: "/All/ProductsNames",
+                        url: "/All/Products",
                         success: function load(data) {
                             products = data;
+                            for (let product of data) {
+                                productsNames.push(product.name);
+                            }
                         },
                         error: function error() {
                             alert('error');
@@ -141,18 +146,23 @@
                 });
             }
 
-            $(selector).autocomplete({
-                minLength: 2,
-                source: products,
-                focus: function (event, ui) {
-                    $(selector).val(ui.item.label);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $(selector).val(ui.item.label);
-                    return false;
-                }
-            });
+            console.log(products);
+
+            if (productsNames.length > 0) {
+                console.log(selector);
+                $(selector).autocomplete({
+                    minLength: 2,
+                    source: productsNames,
+                    focus: function (event, ui) {
+                        $(selector).val(ui.item.label);
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        $(selector).val(ui.item.label);
+                        return false;
+                    }
+                });
+            }
         }
     </script>
 }
