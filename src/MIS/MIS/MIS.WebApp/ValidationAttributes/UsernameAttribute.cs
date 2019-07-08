@@ -5,19 +5,22 @@
 
     using Data;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class UsernameAttribute : ValidationAttribute
     {
+
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var db = (MISDbContext) validationContext.GetService(typeof(MISDbContext));
+            var db = validationContext.GetService<MISDbContext>();
             var isAvailable = !db.Users.Select(x => x.UserName).Contains(value.ToString());
 
-            if (isAvailable)
+            if (!isAvailable)
             {
-                return base.IsValid(value, validationContext);
+                return new ValidationResult("Username is already used.");
             }
 
-            return new ValidationResult("Username is already used.");
+            return ValidationResult.Success;
         }
     }
 }
