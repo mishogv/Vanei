@@ -1,5 +1,6 @@
 ﻿namespace MIS.Services
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -47,6 +48,24 @@
             await this.db.SaveChangesAsync();
 
             return product.MapTo<ProductServiceModel>();
+        }
+
+        public async Task<IEnumerable<string>> GetAllProductsNamesByUsernameAsync(string username)
+        {
+            var user = this.db.Users
+                                    .Include(x => x.Company)
+                                    .ThenInclude(x => x.WareHouses)
+                                    .ThenInclude(x => x.Products)
+                                    .Where(x => x.UserName == username)
+                                    .Take(1)
+                                    .SelectMany(x => x.Company.WareHouses)
+                                    .SelectMany(x => x.Products)
+                                    .Select(x => x.Name)
+                                    .ToList();
+
+            //var names = user.Company.WareHouses.SelectMany(x => x.Products).Select(x => x.Name);
+
+            return user;
         }
     }
 }

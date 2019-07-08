@@ -14,10 +14,12 @@
     public class ReceiptController : AuthenticationController
     {
         private readonly IReceiptService receiptService;
+        private readonly IProductService productService;
 
-        public ReceiptController(IReceiptService receiptService)
+        public ReceiptController(IReceiptService receiptService, IProductService productService)
         {
             this.receiptService = receiptService;
+            this.productService = productService;
         }
 
         public async Task<IActionResult> Create()
@@ -64,6 +66,20 @@
             // security ??
 
             return View();
+        }
+
+        [HttpGet("/All/ProductsNames")]
+        public async Task<ActionResult<string[]>> AllProducts(/*AddReceiptProductInputModel input*/)
+        {
+            // AJAX
+            // user
+            // find opened receipt
+            // Add product to opened receipt 
+            // return added product
+            // security ??
+            var products = await this.productService.GetAllProductsNamesByUsernameAsync(this.User.Identity.Name);
+
+            return products.ToArray();
         }
 
         public IActionResult RemoveProduct()
