@@ -74,10 +74,11 @@
         {
             var currentUserId = this.userManager.GetUserId(this.User);
 
-            if (currentUserId != id)
+            if (currentUserId == id)
             {
                 return this.RedirectToAction(nameof(this.Index));
             }
+
             var result = await this.administratorService.RemoveAdministratorByIdAsync(id);
 
             return this.RedirectToAction(nameof(this.Index));

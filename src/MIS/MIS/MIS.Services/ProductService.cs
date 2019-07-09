@@ -29,6 +29,7 @@
 
         public async Task<ProductServiceModel> CreateAsync(string name, decimal price, double quantity, string barcode, string categoryName, string wareHouseName, string username)
         {
+            // TODO : Validate barcode and product name must be unique
             var user = await this.db.Users
                                  .Include(x => x.Company)
                                  .ThenInclude(x => x.WareHouses)

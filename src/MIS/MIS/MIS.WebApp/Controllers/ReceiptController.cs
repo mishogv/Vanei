@@ -25,6 +25,7 @@
 
         public async Task<IActionResult> Create()
         {
+            //TODO : refactor use automapper
             var openedReceipt = await this.receiptService.GetCurrentOpenedReceiptByUsernameAsync(this.User.Identity.Name);
             var result = new CreateReceiptViewModel()
             {
@@ -98,6 +99,7 @@
         [HttpPost]
         public async Task<IActionResult> Finish()
         {
+            //TODO : validate is working correctly
             await this.receiptService.FinishCurrentOpenReceiptByUsernameAsync(this.User.Identity.Name);
 
             return this.RedirectToAction("Create");

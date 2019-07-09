@@ -14,7 +14,6 @@
 
         public string BarCode { get; set; }
 
-
         public string CategoryName { get; set; }
     }
 }
