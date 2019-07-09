@@ -57,6 +57,7 @@
 
         public async Task<IEnumerable<ShowReceiptProductViewModel>> GetAllProductsByUsernameAsync(string username)
         {
+            //TODO : Refactor
             var products = this.db.Users
                                     .Include(x => x.Company)
                                     .ThenInclude(x => x.WareHouses)
@@ -67,6 +68,7 @@
                                     .SelectMany(x => x.Products)
                                     .ProjectTo<ShowReceiptProductViewModel>()
                                     .ToList();
+
             await Task.CompletedTask;
 
             return products;

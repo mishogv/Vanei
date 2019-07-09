@@ -8,6 +8,7 @@
 
     using Services;
 
+    using ViewModels.Input.Category;
     using ViewModels.Input.Product;
 
     public class ProductController : AuthenticationController
@@ -55,8 +56,18 @@
 
             var wareHouses = this.wareHouseService.GetAllUserWareHousesByUserName(this.User.Identity.Name);
 
-            if (!wareHouses.Select(x => x.Name).Contains(input.WareHouseName))
+            var createCategoryWareHouseModels = wareHouses as CreateCategoryWareHouseModel[] ?? wareHouses.ToArray();
+
+            if (!createCategoryWareHouseModels.Select(x => x.Name).Contains(input.WareHouseName))
             {
+                return await this.Create(input.WareHouseName);
+            }
+
+            if (createCategoryWareHouseModels.SelectMany(x => x.Products).Select(x => x.Name).Contains(input.Name)
+            || createCategoryWareHouseModels.SelectMany(x => x.Products).Select(x => x.BarCode).Contains(input.BarCode))
+            {
+                // Thats should validate that product have unique name and barcode
+                this.ModelState.AddModelError("Product", "You can't add product that is already registered in your company.");
                 return await this.Create(input.WareHouseName);
             }
 

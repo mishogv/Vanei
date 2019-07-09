@@ -46,6 +46,7 @@ function autoCompleteShowData(productsNames, selector) {
             minLength: 2,
             source: productsNames,
             focus: function (event, ui) {
+                //TODO : add category under product
                 $(selector).val(ui.item.label);
                 return false;
             },
@@ -60,7 +61,6 @@ function autoCompleteShowData(productsNames, selector) {
 function setData(productsNames, selector, products, index, numberInSequence) {
     if (productsNames.includes($(selector).val())) {
         index = products.findIndex(x => x.name === $(selector).val());
-
         $('#product-id-number-' + numberInSequence).val(products[index].id).prop('disabled', true);
         $('#product-barcode-number-' + numberInSequence).val(products[index].barcode).prop('disabled', true);
         $('#product-price-number-' + numberInSequence).val(products[index].price);
@@ -68,4 +68,9 @@ function setData(productsNames, selector, products, index, numberInSequence) {
             .prop('title', 'In stock there are: ' + products[index].quantity)
             .tooltip({ placement: "top" });
     };
+}
+
+function ajaxAddProduct() {
+    console.log(numberInSequence);
+    console.log(index);
 }

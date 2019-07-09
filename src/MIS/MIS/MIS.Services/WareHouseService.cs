@@ -86,6 +86,7 @@
             var result = this.dbContext.Users
                                  .Include(x => x.Company)
                                  .ThenInclude(x => x.WareHouses)
+                                 .ThenInclude(x => x.Products)
                                  .FirstOrDefaultAsync(x => x.UserName == username).GetAwaiter().GetResult()
                                  .Company
                                  .WareHouses

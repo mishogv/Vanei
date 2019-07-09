@@ -37,9 +37,10 @@
     </div>
 </div>
 
-<table class="table table-active table-hover col-md-8 col-6 col-lg-12 col-sm-4">
+<table class="table table-active table-hover">
     <thead>
         <tr>
+            <th scope="col">Select</th>
             <th scope="col">Id</th>
             <th scope="col">Name</th>
             <th scope="col">Quantity</th>
@@ -57,8 +58,11 @@
                 }
                 <form asp-controller="Receipt" asp-action="AddProduct" class="form-group bg-light">
                     <div asp-validation-summary="All"></div>
-                    <td class="row">
-                        <input class="ml-2 mt-3 " type="checkbox" />
+                    <td>
+                        <input class="ml-2 mt-3" type="checkbox" />
+                    </td>
+                    <td>
+                        @*TODO : REFACTOR THIS*@
                         <div>
                             <input asp-for="@product.Id" class="form-control" id="product-id-number-@i" value="@product.Id" type="number" min="1" max="@int.MaxValue" disabled="disabled" />
                         </div>
