@@ -12,7 +12,7 @@
 
         public double Quantity { get; set; }
 
-        public DateTime AddedOn { get; set; } = DateTime.UtcNow;
+        public DateTime AddedOn { get; set; }
 
         public decimal Total { get; set; }
     }

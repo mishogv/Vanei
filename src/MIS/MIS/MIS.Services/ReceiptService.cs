@@ -50,6 +50,37 @@
             return result;
         }
 
+        public async Task<ReceiptServiceModel> AddProductToOpenedReceiptByUsernameAsync(string username, int id, double quantity)
+        {
+            var user = await this.dbContext.Users
+                                 .Include(x => x.Receipts)
+                                 .Include(x => x.Company)
+                                 .FirstOrDefaultAsync(x => x.UserName == username);
+
+            var receipt = user.Receipts.FirstOrDefault(x => x.IssuedOn == null);
+
+            if (receipt == null)
+            {
+                return null;
+            }
+
+            var product = await this.dbContext.Products.FirstOrDefaultAsync(x => x.Id == id);
+
+            var receiptProduct = new ReceiptProduct
+            {
+                AddedOn = DateTime.UtcNow,
+                Receipt = receipt,
+                Product = product,
+                Quantity = quantity,
+                Total = (decimal) quantity * product.Price
+            };
+
+            await this.dbContext.AddAsync(receiptProduct);
+            await this.dbContext.SaveChangesAsync();
+
+            return receipt.MapTo<ReceiptServiceModel>();
+        }
+
         public async Task<ReceiptServiceModel> FinishCurrentOpenReceiptByUsernameAsync(string username)
         {
             var user = await this.dbContext.Users

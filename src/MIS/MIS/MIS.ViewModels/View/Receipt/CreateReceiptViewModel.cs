@@ -6,7 +6,7 @@
 
     public class CreateReceiptViewModel
     {
-        public decimal Total { get; set; }
+        public string Total { get; set; }
 
         public string Username { get; set; }
 

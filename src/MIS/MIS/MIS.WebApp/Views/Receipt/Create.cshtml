@@ -40,7 +40,6 @@
 <table class="table table-active table-hover">
     <thead>
         <tr>
-            <th scope="col">Select</th>
             <th scope="col">Id</th>
             <th scope="col">Name</th>
             <th scope="col">Quantity</th>
@@ -50,76 +49,22 @@
         </tr>
     </thead>
     <tbody>
-        @for (int i = 0; i < products.Count; i++)
-        {
-            <tr>
-                @{
-                    var product = products[i];
-                }
-                <form asp-controller="Receipt" asp-action="AddProduct" class="form-group bg-light">
-                    <div asp-validation-summary="All"></div>
-                    <td>
-                        <input class="ml-2 mt-3" type="checkbox" />
-                    </td>
-                    <td>
-                        @*TODO : REFACTOR THIS*@
-                        <div>
-                            <input asp-for="@product.Id" class="form-control" id="product-id-number-@i" value="@product.Id" type="number" min="1" max="@int.MaxValue" disabled="disabled" />
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <input asp-for="@product.Name" class="form-control" id="product-name-number-@i" value="@product.Name" placeholder="Product name" onkeypress="loadData(@i)" />
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <input asp-for="@product.Quantity" class="form-control" id="product-quantity-number-@i" data-toggle="tooltip" title="" value="@product.Quantity" type="number" step="0.5" />
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <input asp-for="@product.Barcode" class="form-control" id="product-barcode-number-@i" value="@product.Barcode" placeholder="Product barcode" />
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <input asp-for="@product.Price" class="form-control" id="product-price-number-@i" value="@product.Price" type="number" disabled="disabled" />
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <input asp-for="@product.Total" class="form-control" id="product-total-number-@i" value="@product.Total" disabled="disabled" />
-                        </div>
-                    </td>
-                </form>
-            </tr>
-        }
-        <tr class="align-content-center">
-            <th>
-                <input type="submit" class="btn btn-dark container-fluid" value="Delete products" />
-            </th>
-            <th>
-                <input type="submit" class="btn btn-dark container-fluid" value="Add product" />
-            </th>
-            <th>
-                <input type="submit" class="btn btn-dark container-fluid" value="Finish receipt" />
-            </th>
-            <th>
-                <input type="submit" class="btn btn-dark container-fluid" value="Delete receipt" />
-            </th>
-            <th>
-            <td class="d-flex justify-content-center">
-                <span class="d-flex justify-content-center mt-2 h5">
-                    Total sum : @Model.Total.ToString("F2") $
-                </span>
-            </td>
-            </th>
-        </tr>
+        @*TODO : AJAX LOADING TABLE RENDERING IN HTML*@
     </tbody>
 </table>
 
+<input onclick="" />
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-    <script src="~/js/createrecipt.js" asp-append-version="true"></script>
+<partial name="_ValidationScriptsPartial" />
+<script>
+    function getReceipt() {
+        $.get({
+            url: "Receipt/Get/"
+        });
+    }
+    function asd() {
+        console.log('gosho');
+    }
+</script>
+<script src="~/js/createrecipt.js" asp-append-version="true"></script>
 }

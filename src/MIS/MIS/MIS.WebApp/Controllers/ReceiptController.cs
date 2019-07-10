@@ -9,6 +9,9 @@
     using Services;
     using Services.Mapping;
 
+    using ServicesModels;
+
+    using ViewModels.Input.Receipt;
     using ViewModels.View.Product;
     using ViewModels.View.Receipt;
 
@@ -23,7 +26,12 @@
             this.productService = productService;
         }
 
-        public async Task<IActionResult> Create()
+        public IActionResult Index()
+        {
+            return this.View();
+        }
+
+        public async Task<ActionResult<CreateReceiptViewModel>> LoadReceipt()
         {
             //TODO : refactor use automapper
             var openedReceipt = await this.receiptService.GetCurrentOpenedReceiptByUsernameAsync(this.User.Identity.Name);
@@ -41,12 +49,21 @@
                     Total = x.Product.Price * (decimal) x.Quantity,
                     Barcode = x.Product.BarCode,
                 }).ToList(),
-                Total = openedReceipt.Products.Select(x => x.Total).Sum()
+                Total = openedReceipt.Products.Select(x => x.Total).Sum().ToString("f2")
             };
 
-            result.Products.Add(new ShowReceiptProductViewModel());
+            result.Products.Add(new ShowReceiptProductViewModel()
+            {
+                Name = "asd",
+                Id = 2,
+                Price = 2.3m,
+                Barcode = "hgas",
+                Total = 2.6m,
+                Quantity = 23
+            });
+            result.Total = "23.2";
 
-            return this.View(result);
+            return result;
         }
 
         public IActionResult Delete()
@@ -58,7 +75,7 @@
             return View();
         }
 
-        public IActionResult AddProduct(/*AddReceiptProductInputModel input*/)
+        public async Task<ActionResult<ReceiptServiceModel>> AddProduct(AddReceiptProductInputModel input)
         {
             // AJAX
             // user
@@ -66,11 +83,31 @@
             // Add product to opened receipt 
             // return added product
             // security ??
+            var receipt = await this.receiptService
+                                    .AddProductToOpenedReceiptByUsernameAsync(this.User.Identity.Name, input.Id, input.Quantity);
 
-            return View();
+            var result = new CreateReceiptViewModel()
+            {
+                Username = receipt.User.UserName,
+                Products = receipt.Products
+                                        .OrderByDescending(x => x.AddedOn)
+                                        .Select(x => new ShowReceiptProductViewModel
+                                        {
+                                            Id = x.Id,
+                                            Name = x.Product.Name,
+                                            Quantity = x.Quantity,
+                                            Price = x.Product.Price,
+                                            Total = x.Product.Price * (decimal)x.Quantity,
+                                            Barcode = x.Product.BarCode,
+                                        }).ToList(),
+
+                Total = receipt.Products.Select(x => x.Total).Sum().ToString("F2")
+            };
+
+            return receipt;
         }
 
-        [HttpGet("/All/Products")]
+        [HttpGet("/Receipt/AllPorducts")]
         public async Task<ActionResult<IList<ShowReceiptProductViewModel>>> AllProducts()
         {
             // AJAX

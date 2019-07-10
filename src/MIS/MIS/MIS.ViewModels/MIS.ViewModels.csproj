@@ -13,8 +13,4 @@
     <ProjectReference Include="..\MIS.Services.Mapping\MIS.Services.Mapping.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Input\Receipt\" />
-  </ItemGroup>
-
 </Project>
