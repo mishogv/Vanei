@@ -5,6 +5,7 @@ var products = [];
 var productsNames = [];
 var index = { index: -1 };
 var numberInSequence = { number: -1 };
+var total = { total: -1 };
 
 function loadData(num) {
     numberInSequence.number = num;
@@ -74,7 +75,7 @@ function ajaxAddProduct() {
     $.ajax({
         url: "/Receipt/Add",
         success: function (data) {
-            // render messages 
+            renderProduct(data);
         },
         error: function error() {
             //TODO Log in console
@@ -83,20 +84,34 @@ function ajaxAddProduct() {
     });
 }
 
+function renderProduct(product) {
+    //TODO : disable product and render new empty product
+    renderEmptyProduct(numberInSequence.number + 1);
+    $('#table-menu').remove();
+    renderMenu(total);
+}
+
 function getReceipt() {
     $.get({
         url: "/Receipt/LoadReceipt",
         success: function success(data) {
-            console.log(data);
             renderReceipt(data);
+            total.total = data.total;
         },
         error: function error(errorMessage) {
             console.log(errorMessage);
         }
-    })
+    });
 }
 
 function renderReceipt(data) {
+    let last = data.products.length;
+    renderProducts(data);
+    renderEmptyProduct(last);
+    renderMenu(data);
+}
+
+function renderProducts(data) {
     for (let i = 0; i < data.products.length; i++) {
         $('#table-products').append(
             '<tr>'
@@ -140,9 +155,48 @@ function renderReceipt(data) {
             '</tr>'
         );
     }
+}
 
+function renderEmptyProduct(last) {
+    numberInSequence.number = last;
     $('#table-products').append(
-        '<tr>'
+        '<tr>' +
+        '<td>' +
+        '<input type="number" class="form-control" id="product-id-number-' +
+        last +
+        '" value="0' +
+        '" disabled="disabled"  />' +
+        '</td>' +
+        '<td>' +
+        '<input type="text" class="form-control" id="product-name-number-' +
+        last + '" placeholder="Name" onkeypress="loadData(' + last + ')" />' +
+        '</td>' +
+        '<td>' +
+        '<input type="number" class="form-control" id="product-quantity-number-' +
+        last +
+        '" value="0" step="0.5" />' +
+        '</td>' +
+        '<td>' +
+        '<input type="text" class="form-control" id="product-barcode-number-' +
+        last +
+        '" placeholder="Barcode"/>' +
+        '</td>' +
+        '<td>' +
+        '<input type="number" class="form-control" id="product-price-number-' +
+        last +
+        '" placeholder="Price" disabled="disabled"  />' +
+        '</td>' +
+        '<td>' +
+        '<input type="number" class="form-control" id="product-total-number-' +
+        last +
+        '" placeholder="Total" disabled="disabled"  />' +
+        '</td>' +
+        '</tr>');
+}
+
+function renderMenu(total) {
+    $('#table-products').append(
+        '<tr id="table-menu">'
         +
         '<th>'
         +
@@ -174,7 +228,7 @@ function renderReceipt(data) {
         +
         '<span class="d-flex justify-content-center mt-2 h5">'
         +
-        'Total sum: ' + data.total + '$'
+        'Total sum: ' + total.total + '$'
         +
         '</span>'
         +

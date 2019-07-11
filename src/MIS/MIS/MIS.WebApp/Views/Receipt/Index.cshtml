@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create Receipt</h1>
+
+
+<table class="table table-active table-hover" id="table-products">
+    <thead>
+    <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Barcode</th>
+        <th scope="col">Price</th>
+        <th scope="col">Total</th>
+    </tr>
+    </thead>
+    <tbody>
+            @*TODO : AJAX LOADING TABLE RENDERING IN HTML*@
+    </tbody>
+</table>
+
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+<script src="~/js/createrecipt.js" asp-append-version="true"></script>
+}

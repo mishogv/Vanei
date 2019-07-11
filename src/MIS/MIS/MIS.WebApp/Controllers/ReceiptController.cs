@@ -75,7 +75,8 @@
             return View();
         }
 
-        public async Task<ActionResult<ReceiptServiceModel>> AddProduct(AddReceiptProductInputModel input)
+        [HttpGet("/Receipt/Add")]
+        public async Task<ActionResult<ShowReceiptProductViewModel>> AddProduct(/*AddReceiptProductInputModel input*/)
         {
             // AJAX
             // user
@@ -83,28 +84,20 @@
             // Add product to opened receipt 
             // return added product
             // security ??
-            var receipt = await this.receiptService
-                                    .AddProductToOpenedReceiptByUsernameAsync(this.User.Identity.Name, input.Id, input.Quantity);
+            //var receipt = await this.receiptService
+            //                        .AddProductToOpenedReceiptByUsernameAsync(this.User.Identity.Name, input.Id, input.Quantity);
 
-            var result = new CreateReceiptViewModel()
+            var product = new ShowReceiptProductViewModel()
             {
-                Username = receipt.User.UserName,
-                Products = receipt.Products
-                                        .OrderByDescending(x => x.AddedOn)
-                                        .Select(x => new ShowReceiptProductViewModel
-                                        {
-                                            Id = x.Id,
-                                            Name = x.Product.Name,
-                                            Quantity = x.Quantity,
-                                            Price = x.Product.Price,
-                                            Total = x.Product.Price * (decimal)x.Quantity,
-                                            Barcode = x.Product.BarCode,
-                                        }).ToList(),
-
-                Total = receipt.Products.Select(x => x.Total).Sum().ToString("F2")
+                Name = "asdasd",
+                Id = 444,
+                Price = 2.3m,
+                Barcode = "23-12-323210",
+                Quantity = 23,
+                Total = 2550m
             };
 
-            return receipt;
+            return product;
         }
 
         [HttpGet("/Receipt/AllPorducts")]
