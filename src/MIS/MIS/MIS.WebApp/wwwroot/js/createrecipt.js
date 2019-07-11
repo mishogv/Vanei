@@ -5,7 +5,7 @@ var products = [];
 var productsNames = [];
 var index = { index: -1 };
 var numberInSequence = { number: -1 };
-var total = { total: -1 };
+var total = { total: 0 };
 
 function loadData(num) {
     numberInSequence.number = num;
@@ -75,7 +75,8 @@ function ajaxAddProduct() {
     $.ajax({
         url: "/Receipt/Add",
         success: function (data) {
-            renderProduct(data);
+            disableLastProduct();
+            addProduct(data);
         },
         error: function error() {
             //TODO Log in console
@@ -84,7 +85,17 @@ function ajaxAddProduct() {
     });
 }
 
-function renderProduct(product) {
+function disableLastProduct() {
+    $('#product-name-number-' + numberInSequence.number).prop('disabled', true);
+    $('#product-barcode-number-' + numberInSequence.number).prop('disabled', true);
+    $('#product-quantity-number-' + numberInSequence.number).prop('disabled', true);
+    let price = parseFloat($('#product-price-number-' + numberInSequence.number).val());
+    let quantity = parseFloat($('#product-quantity-number-' + numberInSequence.number).val());
+    total.total = (parseFloat(total.total) + (price * quantity)).toPrecision(6);
+    $('#product-total-number-' + numberInSequence.number).val(((price * quantity)).toPrecision(6));
+}
+
+function addProduct(product) {
     //TODO : disable product and render new empty product
     renderEmptyProduct(numberInSequence.number + 1);
     $('#table-menu').remove();

@@ -58,10 +58,10 @@
                 Id = 2,
                 Price = 2.3m,
                 Barcode = "hgas",
-                Total = 2.6m,
+                Total = (23 * 2.6m),
                 Quantity = 23
             });
-            result.Total = "23.2";
+            result.Total = (23 * 2.6m).ToString("f2");
 
             return result;
         }
@@ -94,7 +94,7 @@
                 Price = 2.3m,
                 Barcode = "23-12-323210",
                 Quantity = 23,
-                Total = 2550m
+                Total = 23*2.3m
             };
 
             return product;
