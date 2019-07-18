@@ -55,7 +55,6 @@
                     LastName = "AdminLastName",
                     EmailConfirmed = true,
                     PhoneNumber = "0882713999",
-                    Role = CompanyRole.Owner
                 };
 
                 var company = await companyService.CreateAsync("MIS EOOD", "Studentski grad Mandja street No 332");

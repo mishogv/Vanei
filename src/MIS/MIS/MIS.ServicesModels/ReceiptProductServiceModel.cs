@@ -4,8 +4,12 @@
 
     using Models;
 
-    public class ReceiptProductServiceModel
+    using Services.Mapping;
+
+    public class ReceiptProductServiceModel : IMapFrom<ReceiptProduct>
     {
+        public int Id { get; set; }
+
         public int ReceiptId { get; set; }
         public Receipt Receipt { get; set; }
 

@@ -11,7 +11,7 @@
     {
         public ReceiptServiceModel()
         {
-            this.Products = new HashSet<ReceiptProduct>();
+            this.ReceiptProducts = new HashSet<ReceiptProduct>();
         }
 
         public DateTime? IssuedOn { get; set; }
@@ -21,6 +21,6 @@
         public string UserId { get; set; }
         public MISUser User { get; set; }
 
-        public virtual ICollection<ReceiptProduct> Products { get; set; }
+        public virtual ICollection<ReceiptProduct> ReceiptProducts { get; set; }
     }
 }

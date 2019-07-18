@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MIS.Data.Migrations
 {
     [DbContext(typeof(MISDbContext))]
-    [Migration("20190624064209_AddedInvitation")]
-    partial class AddedInvitation
+    [Migration("20190718055838_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,52 +48,15 @@ namespace MIS.Data.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasMaxLength(150);
+                        .HasMaxLength(40);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(30);
-
-                    b.Property<string>("OwnerId");
-
-                    b.Property<int?>("WareHouseId");
+                        .HasMaxLength(40);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OwnerId")
-                        .IsUnique()
-                        .HasFilter("[OwnerId] IS NOT NULL");
-
-                    b.HasIndex("WareHouseId")
-                        .IsUnique()
-                        .HasFilter("[WareHouseId] IS NOT NULL");
 
                     b.ToTable("Companies");
-                });
-
-            modelBuilder.Entity("MIS.Models.Invitation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CompanyId");
-
-                    b.Property<string>("Description")
-                        .IsRequired();
-
-                    b.Property<string>("From")
-                        .IsRequired();
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Invitation");
                 });
 
             modelBuilder.Entity("MIS.Models.MISUser", b =>
@@ -137,8 +100,6 @@ namespace MIS.Data.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<int>("Role");
-
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
@@ -180,15 +141,11 @@ namespace MIS.Data.Migrations
 
                     b.Property<double>("Quantity");
 
-                    b.Property<int?>("ReceiptId");
-
                     b.Property<int>("WareHouseId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("ReceiptId");
 
                     b.HasIndex("WareHouseId");
 
@@ -201,7 +158,9 @@ namespace MIS.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("IssuedOn");
+                    b.Property<int>("CompanyId");
+
+                    b.Property<DateTime?>("IssuedOn");
 
                     b.Property<int?>("ReportId");
 
@@ -211,11 +170,38 @@ namespace MIS.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CompanyId");
+
                     b.HasIndex("ReportId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Receipts");
+                });
+
+            modelBuilder.Entity("MIS.Models.ReceiptProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("AddedOn");
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<double>("Quantity");
+
+                    b.Property<int>("ReceiptId");
+
+                    b.Property<decimal>("Total");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ReceiptId");
+
+                    b.ToTable("ReceiptProducts");
                 });
 
             modelBuilder.Entity("MIS.Models.Report", b =>
@@ -241,33 +227,6 @@ namespace MIS.Data.Migrations
                     b.ToTable("Reports");
                 });
 
-            modelBuilder.Entity("MIS.Models.SystemProduct", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .IsRequired();
-
-                    b.Property<string>("ImgUrl")
-                        .IsRequired();
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.Property<decimal>("Price");
-
-                    b.Property<string>("UserId")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("SystemProducts");
-                });
-
             modelBuilder.Entity("MIS.Models.WareHouse", b =>
                 {
                     b.Property<int>("Id")
@@ -276,11 +235,15 @@ namespace MIS.Data.Migrations
 
                     b.Property<int>("CompanyId");
 
+                    b.Property<bool>("IsFavorite");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(24);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
 
                     b.ToTable("WareHouses");
                 });
@@ -403,34 +366,12 @@ namespace MIS.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MIS.Models.Company", b =>
-                {
-                    b.HasOne("MIS.Models.MISUser", "Owner")
-                        .WithOne("Company")
-                        .HasForeignKey("MIS.Models.Company", "OwnerId");
-
-                    b.HasOne("MIS.Models.WareHouse", "WareHouse")
-                        .WithOne("Company")
-                        .HasForeignKey("MIS.Models.Company", "WareHouseId");
-                });
-
-            modelBuilder.Entity("MIS.Models.Invitation", b =>
-                {
-                    b.HasOne("MIS.Models.Company", "Company")
-                        .WithMany("Invitations")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MIS.Models.MISUser", "User")
-                        .WithMany("Invitations")
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("MIS.Models.MISUser", b =>
                 {
-                    b.HasOne("MIS.Models.Company")
-                        .WithMany("Users")
-                        .HasForeignKey("CompanyId");
+                    b.HasOne("MIS.Models.Company", "Company")
+                        .WithMany("Employees")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 
             modelBuilder.Entity("MIS.Models.Product", b =>
@@ -440,10 +381,6 @@ namespace MIS.Data.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MIS.Models.Receipt")
-                        .WithMany("Products")
-                        .HasForeignKey("ReceiptId");
-
                     b.HasOne("MIS.Models.WareHouse", "WareHouse")
                         .WithMany("Products")
                         .HasForeignKey("WareHouseId")
@@ -452,6 +389,11 @@ namespace MIS.Data.Migrations
 
             modelBuilder.Entity("MIS.Models.Receipt", b =>
                 {
+                    b.HasOne("MIS.Models.Company", "Company")
+                        .WithMany("Receipts")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("MIS.Models.Report")
                         .WithMany("Receipts")
                         .HasForeignKey("ReportId");
@@ -459,6 +401,19 @@ namespace MIS.Data.Migrations
                     b.HasOne("MIS.Models.MISUser", "User")
                         .WithMany("Receipts")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("MIS.Models.ReceiptProduct", b =>
+                {
+                    b.HasOne("MIS.Models.Product", "Product")
+                        .WithMany("ReceiptProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MIS.Models.Receipt", "Receipt")
+                        .WithMany("ReceiptProducts")
+                        .HasForeignKey("ReceiptId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MIS.Models.Report", b =>
@@ -473,11 +428,11 @@ namespace MIS.Data.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("MIS.Models.SystemProduct", b =>
+            modelBuilder.Entity("MIS.Models.WareHouse", b =>
                 {
-                    b.HasOne("MIS.Models.MISUser", "User")
-                        .WithMany("SystemProducts")
-                        .HasForeignKey("UserId")
+                    b.HasOne("MIS.Models.Company", "Company")
+                        .WithMany("WareHouses")
+                        .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -98,8 +98,6 @@ namespace MIS.Data.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<int>("Role");
-
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
@@ -158,9 +156,7 @@ namespace MIS.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CompanyId");
-
-                    b.Property<int?>("CompanyId1");
+                    b.Property<int>("CompanyId");
 
                     b.Property<DateTime?>("IssuedOn");
 
@@ -172,7 +168,7 @@ namespace MIS.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyId1");
+                    b.HasIndex("CompanyId");
 
                     b.HasIndex("ReportId");
 
@@ -186,6 +182,8 @@ namespace MIS.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("AddedOn");
 
                     b.Property<int>("ProductId");
 
@@ -391,7 +389,8 @@ namespace MIS.Data.Migrations
                 {
                     b.HasOne("MIS.Models.Company", "Company")
                         .WithMany("Receipts")
-                        .HasForeignKey("CompanyId1");
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("MIS.Models.Report")
                         .WithMany("Receipts")

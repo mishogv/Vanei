@@ -20,9 +20,10 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <select asp-for="WareHouseName" class="form-control">
+                @*TODO REFACTOR THIS*@
                 @foreach (var item in Service.GetAllUserWareHousesByUserName(this.User.Identity.Name))
                 {
-                    <option value="@item.Name" >@item.Name</option>
+                    <option value="@item.Name">@item.Name</option>
                 }
             </select>
             <div class="form-group mt-3">

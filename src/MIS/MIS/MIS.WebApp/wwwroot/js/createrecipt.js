@@ -72,15 +72,29 @@ function setData(productsNames, selector, products, index, numberInSequence) {
 }
 
 function ajaxAddProduct() {
-    $.ajax({
+    let idValue = $('#product-id-number-' + numberInSequence.number).val();
+    let quantityValue = $('#product-quantity-number-' + numberInSequence.number).val();
+    $.post({
         url: "/Receipt/Add",
-        success: function (data) {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: JSON.stringify({
+            //TODO : FIND LAST PRODUCT AND GET INFO
+            id: idValue,
+            quantity: quantityValue
+        }),
+        success: function(data) {
             disableLastProduct();
             addProduct(data);
         },
-        error: function error() {
-            //TODO Log in console
-            alert('error');
+        error: function error(errors) {
+            let result = "";
+            for (let error in errors.responseJSON) {
+                result = result + (error + " : ");
+                result =  result + (errors.responseJSON[error][0]) + " ";
+            }
+            alert(result);
         }
     });
 }
@@ -96,7 +110,7 @@ function disableLastProduct() {
 }
 
 function addProduct(product) {
-    //TODO : disable product and render new empty product
+    //TODO : disable product and render new empty product and security
     renderEmptyProduct(numberInSequence.number + 1);
     $('#table-menu').remove();
     renderMenu(total);
@@ -106,8 +120,21 @@ function getReceipt() {
     $.get({
         url: "/Receipt/LoadReceipt",
         success: function success(data) {
+            $('#table-tbody').empty();
             renderReceipt(data);
             total.total = data.total;
+        },
+        error: function error(errorMessage) {
+            console.log(errorMessage);
+        }
+    });
+}
+
+function finishReceipt() {
+    $.get({
+        url: "/Receipt/Finish",
+        success: function success() {
+            getReceipt();
         },
         error: function error(errorMessage) {
             console.log(errorMessage);
@@ -223,13 +250,13 @@ function renderMenu(total) {
         +
         '<th>'
         +
-        '<input type="submit" class="btn btn-dark container-fluid" value="Finish receipt" />'
+        '<input type="submit" class="btn btn-dark container-fluid" value="Finish receipt" onclick="finishReceipt()" />'
         +
         '</th>'
         +
         '<th>'
         +
-        '<input type="submit" class="btn btn-dark container-fluid" value="Delete receipt" />'
+        '<input type="submit" class="btn btn-dark container-fluid" value="Delete receipt" onclick="deleteReceipt()" />'
         +
         '</th>'
         +
@@ -249,6 +276,10 @@ function renderMenu(total) {
         +
         '</tr>'
     );
+}
+
+function deleteReceipt() {
+    getReceipt();
 }
 
 $(document).ready(() => {

@@ -24,8 +24,6 @@
         [StringLength(30, MinimumLength = 3)]
         public string LastName { get; set; }
 
-        public CompanyRole Role { get; set; } = CompanyRole.Employee;
-
         public int? CompanyId { get; set; }
         public virtual Company Company { get; set; }
 

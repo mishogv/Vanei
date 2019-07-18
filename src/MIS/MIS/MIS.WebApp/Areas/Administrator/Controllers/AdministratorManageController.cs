@@ -55,7 +55,6 @@
                     Role = kvp.Value,
                     PhoneNumber = kvp.Key.PhoneNumber ?? GlobalConstants.NotApplicable,
                     CompanyName = kvp.Key.Company == null ? GlobalConstants.NotApplicable : kvp.Key.Company.Name,
-                    CompanyRole = kvp.Key.Role.ToString("G"),
                     Username = kvp.Key.UserName
                 });
             }

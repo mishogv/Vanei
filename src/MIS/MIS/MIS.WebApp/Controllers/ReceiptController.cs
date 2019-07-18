@@ -1,5 +1,6 @@
 ﻿namespace MIS.WebApp.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -38,45 +39,32 @@
             var result = new CreateReceiptViewModel()
             {
                 Username = openedReceipt.User.UserName,
-                Products = openedReceipt.Products
+                Products = openedReceipt.ReceiptProducts
                                         .OrderByDescending(x => x.AddedOn)
                                         .Select(x => new ShowReceiptProductViewModel
-                {
-                    Id = x.Id,
-                    Name = x.Product.Name,
-                    Quantity = x.Quantity,
-                    Price = x.Product.Price,
-                    Total = x.Product.Price * (decimal) x.Quantity,
-                    Barcode = x.Product.BarCode,
-                }).ToList(),
-                Total = openedReceipt.Products.Select(x => x.Total).Sum().ToString("f2")
+                                        {
+                                            Id = x.Id,
+                                            Name = x.Product.Name,
+                                            Quantity = x.Quantity,
+                                            Price = x.Product.Price,
+                                            Total = x.Product.Price * (decimal)x.Quantity,
+                                            Barcode = x.Product.BarCode,
+                                        }).ToList(),
+                Total = openedReceipt.ReceiptProducts.Select(x => x.Total).Sum().ToString("f2")
             };
-
-            result.Products.Add(new ShowReceiptProductViewModel()
-            {
-                Name = "asd",
-                Id = 2,
-                Price = 2.3m,
-                Barcode = "hgas",
-                Total = (23 * 2.6m),
-                Quantity = 23
-            });
-            result.Total = (23 * 2.6m).ToString("f2");
 
             return result;
         }
 
         public IActionResult Delete()
         {
-            // user
-            // find opened receipt
-            // load data
 
             return View();
         }
 
-        [HttpGet("/Receipt/Add")]
-        public async Task<ActionResult<ShowReceiptProductViewModel>> AddProduct(/*AddReceiptProductInputModel input*/)
+        [IgnoreAntiforgeryToken]
+        [HttpPost("/Receipt/Add")]
+        public async Task<ActionResult<ShowReceiptProductViewModel>> AddProduct([FromBody]AddReceiptProductInputModel input)
         {
             // AJAX
             // user
@@ -84,20 +72,25 @@
             // Add product to opened receipt 
             // return added product
             // security ??
-            //var receipt = await this.receiptService
-            //                        .AddProductToOpenedReceiptByUsernameAsync(this.User.Identity.Name, input.Id, input.Quantity);
-
-            var product = new ShowReceiptProductViewModel()
+            if (!this.ModelState.IsValid)
             {
-                Name = "asdasd",
-                Id = 444,
-                Price = 2.3m,
-                Barcode = "23-12-323210",
-                Quantity = 23,
-                Total = 23*2.3m
+                return this.BadRequest(this.ModelState);
+            }
+
+            var product = await this.receiptService
+                                    .AddProductToOpenedReceiptByUsernameAsync(this.User.Identity.Name, input.Id, input.Quantity);
+
+            var result = new ShowReceiptProductViewModel()
+            {
+                Id = product.Id,
+                Name = product.Product.Name,
+                Quantity = product.Quantity,
+                Price = product.Product.Price,
+                Total = product.Product.Price * (decimal) product.Quantity,
+                Barcode = product.Product.BarCode,
             };
 
-            return product;
+            return result;
         }
 
         [HttpGet("/Receipt/AllPorducts")]
@@ -126,13 +119,13 @@
         }
 
 
-        [HttpPost]
-        public async Task<IActionResult> Finish()
+        [HttpGet]
+        public async Task<ActionResult> Finish()
         {
             //TODO : validate is working correctly
             await this.receiptService.FinishCurrentOpenReceiptByUsernameAsync(this.User.Identity.Name);
 
-            return this.RedirectToAction("Create");
+            return this.Ok();
         }
     }
 }

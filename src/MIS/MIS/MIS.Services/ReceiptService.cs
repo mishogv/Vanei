@@ -1,6 +1,7 @@
 ﻿namespace MIS.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -27,6 +28,8 @@
         {
             var user = await this.dbContext.Users
                            .Include(x => x.Receipts)
+                           .ThenInclude(x => x.ReceiptProducts)
+                           .ThenInclude(x => x.Product)
                            .Include(x => x.Company)
                            .FirstOrDefaultAsync(x => x.UserName == username);
 
@@ -50,7 +53,7 @@
             return result;
         }
 
-        public async Task<ReceiptServiceModel> AddProductToOpenedReceiptByUsernameAsync(string username, int id, double quantity)
+        public async Task<ReceiptProductServiceModel> AddProductToOpenedReceiptByUsernameAsync(string username, int id, double quantity)
         {
             var user = await this.dbContext.Users
                                  .Include(x => x.Receipts)
@@ -78,25 +81,36 @@
             await this.dbContext.AddAsync(receiptProduct);
             await this.dbContext.SaveChangesAsync();
 
-            return receipt.MapTo<ReceiptServiceModel>();
+            return receiptProduct.MapTo<ReceiptProductServiceModel>();
         }
 
         public async Task<ReceiptServiceModel> FinishCurrentOpenReceiptByUsernameAsync(string username)
         {
             var user = await this.dbContext.Users
                                  .Include(x => x.Receipts)
+                                 .ThenInclude(x => x.ReceiptProducts)
+                                 .ThenInclude(x => x.Product)
                                  .Include(x => x.Company)
-
                                  .FirstOrDefaultAsync(x => x.UserName == username);
 
             var receipt = user.Receipts.FirstOrDefault(x => x.IssuedOn == null);
 
-            if (receipt == null)
+            if (receipt == null || receipt.ReceiptProducts.Count == 0)
             {
                 return null;
             }
 
+            var products = new List<Product>();
+
+            foreach (var receiptProduct in receipt.ReceiptProducts)
+            {
+                receipt.Total += receiptProduct.Total;
+                receiptProduct.Product.Quantity -= receiptProduct.Quantity;
+                products.Add(receiptProduct.Product);
+            }
+
             receipt.IssuedOn = DateTime.UtcNow;
+            this.dbContext.UpdateRange(products);
             this.dbContext.Update(receipt);
             await this.dbContext.SaveChangesAsync();
 
