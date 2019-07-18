@@ -21,6 +21,7 @@
 
         public async Task<IActionResult> Contact()
         {
+            //TODO : implement logic for sending emails
             return await Task.Run(() => this.View());
         }
 

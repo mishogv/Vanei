@@ -253,13 +253,13 @@ function renderMenu(total) {
         +
         '<th>'
         +
-        '<input type="submit" class="btn btn-success" value="Finish receipt" onclick="finishReceipt()" />'
+        '<input type="submit" class="btn btn-info" value="Finish receipt" onclick="finishReceipt()" />'
         +
         '</th>'
         +
         '<th>'
         +
-        '<input type="submit" class="btn btn-danger" value="Delete receipt" onclick="deleteReceipt()" />'
+        '<input type="submit" class="btn btn-info" value="Delete receipt" onclick="deleteReceipt()" />'
         +
         '</th>'
         +
