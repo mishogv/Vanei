@@ -15,21 +15,44 @@
     <span>Products</span>
     <a asp-controller="Product" asp-action="Create" asp-route-wareHouseName="@Model.WareHouseName">Create</a>
 </div>
-<table class="table table-active table-hover">
+@*<table class="table table-active table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Barcode</th>
+                <th scope="col">Category</th>
+            </tr>
+        </thead>
+        <tbody>
+
+
+            @foreach (var product in Model.Products.OrderBy(x => x.CategoryName))
+            {
+                <tr>
+                    <td>@product.Name</td>
+                    <td>@product.Price</td>
+                    <td>@product.Quantity</td>
+                    <td>@product.BarCode</td>
+                    <td>@product.CategoryName</td>
+                </tr>
+            }
+        </tbody>
+    </table>*@
+
+<table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
     <thead>
         <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Price</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Barcode</th>
-            <th scope="col">Category</th>
+            <th class="th-sm">Name</th>
+            <th class="th-sm">Price</th>
+            <th class="th-sm">Quantity</th>
+            <th class="th-sm">Barcode</th>
+            <th class="th-sm">Category</th>
         </tr>
     </thead>
     <tbody>
-        
-    @*TODO : CATEGORIZE ??*@
-
-    @foreach (var product in Model.Products.OrderBy(x => x.CategoryName))
+        @foreach (var product in Model.Products.OrderBy(x => x.CategoryName))
         {
             <tr>
                 <td>@product.Name</td>
@@ -41,3 +64,15 @@
         }
     </tbody>
 </table>
+
+@section Scripts {
+    <!-- MDBootstrap Datatables  -->
+    <script type="text/javascript" src="js/addons/datatables.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $('#dtBasicExample').DataTable();
+            $('.dataTables_length').addClass('bs-select');
+        });
+    </script>
+}

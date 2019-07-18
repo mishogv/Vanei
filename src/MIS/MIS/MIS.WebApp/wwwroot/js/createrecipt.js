@@ -21,24 +21,28 @@ function loadData(num) {
 function ajaxLoadData(products, productsNames) {
     if (products.length === 0) {
         $(function () {
-            $.ajax({
-                url: "/Receipt/AllPorducts",
-                success: function load(data) {
-                    for (let product of data) {
-                        productsNames.push(product.name);
-                    }
-
-                    for (let product of data) {
-                        products.push(product);
-                    }
-                },
-                error: function error() {
-                    //TODO Log in console
-                    alert('error');
-                }
-            });
+            getAllProducts(products, productsNames);
         });
     }
+}
+
+function getAllProducts(products, productsNames) {
+    $.ajax({
+        url: "/Receipt/AllPorducts",
+        success: function load(data) {
+            for (let product of data) {
+                productsNames.push(product.name);
+            }
+
+            for (let product of data) {
+                products.push(product);
+            }
+        },
+        error: function error() {
+            //TODO Log in console
+            alert('error');
+        }
+    });
 }
 
 function autoCompleteShowData(productsNames, selector) {
@@ -80,7 +84,6 @@ function ajaxAddProduct() {
             'Content-Type': 'application/json'
         },
         data: JSON.stringify({
-            //TODO : FIND LAST PRODUCT AND GET INFO
             id: idValue,
             quantity: quantityValue
         }),
@@ -109,8 +112,7 @@ function disableLastProduct() {
     $('#product-total-number-' + numberInSequence.number).val(((price * quantity)).toPrecision(6));
 }
 
-function addProduct(product) {
-    //TODO : disable product and render new empty product and security
+function addProduct() {
     renderEmptyProduct(numberInSequence.number + 1);
     $('#table-menu').remove();
     renderMenu(total);
@@ -135,6 +137,9 @@ function finishReceipt() {
         url: "/Receipt/Finish",
         success: function success() {
             getReceipt();
+            products = [];
+            productsNames = [];
+            getAllProducts(products, productsNames);
         },
         error: function error(errorMessage) {
             console.log(errorMessage);
@@ -238,25 +243,23 @@ function renderMenu(total) {
         +
         '<th>'
         +
-        '<input type="submit" class="btn btn-dark container-fluid" value="Delete products" />'
+        '</th>'
+        +
+        '<th>'
+        +
+        '<input type="submit" class="btn btn-info" value="Add product" onclick="ajaxAddProduct()" />'
         +
         '</th>'
         +
         '<th>'
         +
-        '<input type="submit" class="btn btn-dark container-fluid" value="Add product" onclick="ajaxAddProduct()" />'
+        '<input type="submit" class="btn btn-success" value="Finish receipt" onclick="finishReceipt()" />'
         +
         '</th>'
         +
         '<th>'
         +
-        '<input type="submit" class="btn btn-dark container-fluid" value="Finish receipt" onclick="finishReceipt()" />'
-        +
-        '</th>'
-        +
-        '<th>'
-        +
-        '<input type="submit" class="btn btn-dark container-fluid" value="Delete receipt" onclick="deleteReceipt()" />'
+        '<input type="submit" class="btn btn-danger" value="Delete receipt" onclick="deleteReceipt()" />'
         +
         '</th>'
         +
@@ -279,7 +282,15 @@ function renderMenu(total) {
 }
 
 function deleteReceipt() {
-    getReceipt();
+    $.get({
+        url: "/Receipt/Delete",
+        success: function success() {
+            getReceipt();
+        },
+        error: function error(errorMessage) {
+            console.log(errorMessage);
+        }
+    });
 }
 
 $(document).ready(() => {

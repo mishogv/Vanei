@@ -116,5 +116,29 @@
 
             return receipt.MapTo<ReceiptServiceModel>();
         }
+
+        public async Task<ReceiptServiceModel> DeleteReceiptAsync(string username)
+        {
+            var user = await this.dbContext.Users
+                                 .Include(x => x.Receipts)
+                                 .ThenInclude(x => x.ReceiptProducts)
+                                 .ThenInclude(x => x.Product)
+                                 .Include(x => x.Company)
+                                 .FirstOrDefaultAsync(x => x.UserName == username);
+
+            var receipt = user.Receipts.FirstOrDefault(x => x.IssuedOn == null);
+
+            if (receipt == null)
+            {
+                return null;
+            }
+
+            receipt.ReceiptProducts.Clear();
+
+            this.dbContext.Update(receipt);
+            await this.dbContext.SaveChangesAsync();
+
+            return receipt.MapTo<ReceiptServiceModel>();
+        }
     }
 }

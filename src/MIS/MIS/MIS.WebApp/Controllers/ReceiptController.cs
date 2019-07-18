@@ -56,22 +56,17 @@
             return result;
         }
 
-        public IActionResult Delete()
+        [HttpGet("/Receipt/Delete")]
+        public async Task<ActionResult> Delete()
         {
-
-            return View();
+            await this.receiptService.DeleteReceiptAsync(this.User.Identity.Name);
+            return this.Ok();
         }
 
         [IgnoreAntiforgeryToken]
         [HttpPost("/Receipt/Add")]
         public async Task<ActionResult<ShowReceiptProductViewModel>> AddProduct([FromBody]AddReceiptProductInputModel input)
         {
-            // AJAX
-            // user
-            // find opened receipt
-            // Add product to opened receipt 
-            // return added product
-            // security ??
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest(this.ModelState);
@@ -86,7 +81,7 @@
                 Name = product.Product.Name,
                 Quantity = product.Quantity,
                 Price = product.Product.Price,
-                Total = product.Product.Price * (decimal) product.Quantity,
+                Total = product.Product.Price * (decimal)product.Quantity,
                 Barcode = product.Product.BarCode,
             };
 
@@ -96,26 +91,9 @@
         [HttpGet("/Receipt/AllPorducts")]
         public async Task<ActionResult<IList<ShowReceiptProductViewModel>>> AllProducts()
         {
-            // AJAX
-            // user
-            // find opened receipt
-            // Add product to opened receipt 
-            // return added product
-            // security ??
             var products = await this.productService.GetAllProductsByUsernameAsync(this.User.Identity.Name);
 
             return products.ToList();
-        }
-
-        public IActionResult RemoveProduct()
-        {
-            // AJAX
-            // user
-            // find opened receipt
-            // remove from opened receipt 
-            // delete product to frontend
-
-            return View();
         }
 
 
