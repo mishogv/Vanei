@@ -24,15 +24,12 @@ namespace MIS.WebApp.Controllers
     {
         private readonly IWareHouseService wareHouseService;
         private readonly UserManager<MISUser> userManager;
-        private readonly ICompanyService companyService;
 
         public WareHouseController(IWareHouseService wareHouseService,
-            UserManager<MISUser> userManager,
-            ICompanyService companyService)
+            UserManager<MISUser> userManager)
         {
             this.wareHouseService = wareHouseService;
             this.userManager = userManager;
-            this.companyService = companyService;
         }
 
         public async Task<IActionResult> Index(int? id)
@@ -70,6 +67,8 @@ namespace MIS.WebApp.Controllers
             //TODO : auto mapper 
             var result = new IndexWarehouseViewModel
             {
+                Id = currentWarehouse.Id,
+                IsFavorite = currentWarehouse.IsFavorite,
                 Products = products,
                 WareHouseName = currentWarehouse.Name,
                 WarehouseDropdown = wareHouseServiceModels.Select(x => x.MapTo<IndexWarehouseDropdownViewModel>())
@@ -98,6 +97,16 @@ namespace MIS.WebApp.Controllers
             var serviceModel = await this.wareHouseService.CreateAsync(wareHouseInput.Name, user.CompanyId);
 
             return this.RedirectToAction(nameof(this.Index));
+        }
+
+        public async Task<IActionResult> Favorite(int id)
+        {
+            var user = await this.userManager.GetUserAsync(this.User);
+
+            //TODO : PARAMETER TAMPERING SECURITY
+            await this.wareHouseService.MakeFavoriteAsync(id, user.CompanyId);
+
+            return this.RedirectToAction("Index");
         }
     }
 }

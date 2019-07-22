@@ -8,8 +8,13 @@
 <link href="~/css/addons/datatables.min.css" rel="stylesheet">
 
 <div class="row">
-<h1>@Model.WareHouseName</h1>
-<button class="btn btn-primary ml-5">Make it Favorite</button>
+    <h1>@Model.WareHouseName</h1>
+    @if (!Model.IsFavorite)
+    {
+        <form asp-controller="WareHouse" asp-action="Favorite" asp-route-id="@Model.Id" method="get">
+            <input class="btn btn-primary ml-5" value="Make it Favorite" type="submit" />
+        </form>
+    }
 </div>
 <div>
     <span>Categories</span>
@@ -26,7 +31,7 @@
        aria-haspopup="true" aria-expanded="false">Warehouse</a>
 
     <div class="dropdown-menu dropdown-primary">
-        @foreach(var warehouse in Model.WarehouseDropdown)
+        @foreach (var warehouse in Model.WarehouseDropdown)
         {
             <a asp-controller="WareHouse" asp-action="Index" asp-route-id="@warehouse.Id" class="dropdown-item">@warehouse.Name</a>
         }
@@ -62,7 +67,7 @@
     <script type="text/javascript" src="~/js/addons/datatables.min.js"></script>
 
     <script>
-        //TODO : move in other file 
+        //TODO : move in other file
         $(document).ready(function () {
             $('#dtBasicExample').DataTable();
             $('.dataTables_length').addClass('bs-select');

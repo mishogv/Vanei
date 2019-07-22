@@ -12,6 +12,8 @@
     {
         Task<WareHouseServiceModel> CreateAsync(string name, int? companyId);
 
+        Task<WareHouseServiceModel> MakeFavoriteAsync(int id, int? companyId);
+
         Task<WareHouseServiceModel> GetWareHouseByUserNameAsync(string username);
 
         IEnumerable<WareHouseServiceModel> GetWarehousesByCompanyId(int? companyId);

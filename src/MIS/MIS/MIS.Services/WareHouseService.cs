@@ -44,6 +44,27 @@
             return result;
         }
 
+        public async Task<WareHouseServiceModel> MakeFavoriteAsync(int id, int? companyId)
+        {
+            var warehouseFromDb = await this.dbContext.Companies
+                                 .Include(x => x.WareHouses)
+                                 .Where(x => x.Id == companyId)
+                                 .SelectMany(x => x.WareHouses)
+                                 .Where(x => x.IsFavorite)
+                                 .FirstOrDefaultAsync();
+
+            warehouseFromDb.IsFavorite = false;
+
+            var currentWarehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync(x => x.Id == id);
+            currentWarehouse.IsFavorite = true;
+            this.dbContext.Update(warehouseFromDb);
+            this.dbContext.Update(currentWarehouse);
+
+            await this.dbContext.SaveChangesAsync();
+
+            return currentWarehouse.MapTo<WareHouseServiceModel>();
+        }
+
         public async Task<WareHouseServiceModel> GetWareHouseByUserNameAsync(string username)
         {
             var user = await this.dbContext.Users
