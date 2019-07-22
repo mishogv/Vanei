@@ -14,26 +14,24 @@
 
     public class CategoryService : ICategoryService
     {
-        private readonly IWareHouseService wareHouseService;
         private readonly MISDbContext dbContext;
 
         public CategoryService(IWareHouseService wareHouseService, MISDbContext dbContext)
         {
-            this.wareHouseService = wareHouseService;
             this.dbContext = dbContext;
         }
 
-        public async Task<CategoryServiceModel> CreateAsync(string name, string wareHouseName)
+        public async Task<CategoryServiceModel> CreateAsync(string name, int warehouseId)
         {
-            var wareHouse = await this.dbContext.WareHouses.FirstOrDefaultAsync(x => x.Name == wareHouseName);
-
+            var currentWarehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync(x => x.Id == warehouseId);
             var category = new Category()
             {
-                Name = name,
-                WareHouse = wareHouse
+                Name = name
             };
 
-            this.dbContext.Add(category);
+            currentWarehouse.Categories.Add(category);
+
+            this.dbContext.Update(currentWarehouse);
             await this.dbContext.SaveChangesAsync();
 
             return category.MapTo<CategoryServiceModel>();

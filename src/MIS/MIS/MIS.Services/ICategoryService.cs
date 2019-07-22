@@ -6,6 +6,6 @@
 
     public interface ICategoryService
     {
-        Task<CategoryServiceModel> CreateAsync(string name, string warehouseId);
+        Task<CategoryServiceModel> CreateAsync(string name, int warehouseId);
     }
 }

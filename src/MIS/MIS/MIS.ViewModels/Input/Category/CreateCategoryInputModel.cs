@@ -4,11 +4,10 @@
 
     public class CreateCategoryInputModel
     {
+        public int Id { get; set; }
+
         [Required]
         [StringLength(24, MinimumLength = 2)]
         public string Name { get; set; }
-        
-        [Required]
-        public string WareHouseName { get; set; }
     }
 }

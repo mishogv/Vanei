@@ -12,17 +12,15 @@
     public class CategoryController : AuthenticationController
     {
         private readonly ICategoryService categoryService;
-        private readonly IWareHouseService wareHouseService;
 
-        public CategoryController(ICategoryService categoryService, IWareHouseService wareHouseService)
+        public CategoryController(ICategoryService categoryService)
         {
             this.categoryService = categoryService;
-            this.wareHouseService = wareHouseService;
         }
 
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
-            return this.View();
+            return this.View(new CreateCategoryInputModel { Id = id});
         }
 
         [HttpPost]
@@ -33,14 +31,9 @@
                 return this.View(categoryInput);
             }
 
-            var wareHouses = this.wareHouseService.GetAllUserWareHousesByUserName(this.User.Identity.Name);
+            //TODO : VALIDATE AND SECURITY
 
-            if (!wareHouses.Select(x => x.Name).Contains(categoryInput.WareHouseName))
-            {
-                return this.View(categoryInput);
-            }
-
-            await this.categoryService.CreateAsync(categoryInput.Name, categoryInput.WareHouseName);
+            await this.categoryService.CreateAsync(categoryInput.Name, categoryInput.Id);
 
             return this.RedirectToAction("Index", "WareHouse");
         }
