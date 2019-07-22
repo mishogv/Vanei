@@ -4,6 +4,10 @@ namespace MIS.WebApp.Controllers
 {
     using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Identity;
+
+    using Models;
+
     using Services;
 
     using ViewModels.Input.Company;
@@ -11,10 +15,12 @@ namespace MIS.WebApp.Controllers
     public class CompanyController : AuthenticationController
     {
         private readonly ICompanyService companyService;
+        private readonly UserManager<MISUser> userManager;
 
-        public CompanyController(ICompanyService companyService)
+        public CompanyController(ICompanyService companyService, UserManager<MISUser> userManager)
         {
             this.companyService = companyService;
+            this.userManager = userManager;
         }
 
         public IActionResult Create()
@@ -30,9 +36,13 @@ namespace MIS.WebApp.Controllers
                 return this.View();
             }
 
-            var result = await this.companyService.CreateAsync(input.Name, input.Address, this.User.Identity.Name);
+            var userId = this.userManager.GetUserId(this.User);
+
+            await this.companyService.CreateAsync(input.Name, input.Address, userId);
 
             return this.RedirectToAction("Index" , "Home");
         }
+
+        //TODO : DETAILS DELETE AND INVITE AND CHAT MAYBE
     }
 }

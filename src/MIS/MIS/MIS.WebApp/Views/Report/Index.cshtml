@@ -1,0 +1,44 @@
+﻿@using MIS.ViewModels.View.Report
+@model IEnumerable<IndexReportViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<link href="~/css/addons/datatables.min.css" rel="stylesheet">
+
+<h1>Index</h1>
+
+<table id="dtBasicExample" class="table table-striped table-bordered table-sm " cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th class="th-sm">Company name</th>
+            <th class="th-sm">User name</th>
+            <th class="th-sm">From</th>
+            <th class="th-sm">To</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var report in Model)
+        {
+            <tr>
+                <td>@report.CompanyName</td>
+                <td>@report.UserUsername</td>
+                <td>@report.From.ToString("G")</td>
+                <td>@report.To.ToString("G")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <!-- MDBootstrap Datatables  -->
+    <script type="text/javascript" src="js/addons/datatables.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            $('#dtBasicExample').DataTable();
+            $('.dataTables_length').addClass('bs-select');
+        });
+    </script>
+}

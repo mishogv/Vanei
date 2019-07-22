@@ -4,17 +4,17 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Models;
-
     using ServicesModels;
 
     using ViewModels.Input.Category;
 
     public interface IWareHouseService
     {
-        Task<WareHouseServiceModel> CreateAsync(string name, string userId);
+        Task<WareHouseServiceModel> CreateAsync(string name, int? companyId);
 
         Task<WareHouseServiceModel> GetWareHouseByUserNameAsync(string username);
+
+        IEnumerable<WareHouseServiceModel> GetWarehousesByCompanyId(int? companyId);
 
         Task<WareHouseServiceModel> GetWareHouseByNameAsync(string name);
 

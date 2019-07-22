@@ -3,8 +3,6 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using Enums;
-
     using Microsoft.AspNetCore.Identity;
 
     // Add profile data for application users by adding properties to the MISUser class

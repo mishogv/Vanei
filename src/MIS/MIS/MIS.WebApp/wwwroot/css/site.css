@@ -63,3 +63,8 @@ body {
 .row {
     width: 98%;
 }
+
+.custom-img {
+    width: 20%;
+    height: 20%;
+}

@@ -25,35 +25,18 @@
             this.dbContext = dbContext;
         }
 
-        public async Task<WareHouseServiceModel> CreateAsync(string name, string userId)
+        public async Task<WareHouseServiceModel> CreateAsync(string name, int? companyId)
         {
-            var user = await this.dbContext.Users
-                                 .Include(x => x.Company)
-                                 .ThenInclude(x => x.WareHouses)
-                                 .FirstOrDefaultAsync(x => x.Id == userId);
+            var company = await this.dbContext.Companies.FirstOrDefaultAsync(x => x.Id == companyId);
 
-            if (user?.CompanyId == null)
+            var warehouse = new WareHouse()
             {
-                return null;
-            }
-
-            var warehouse = new WareHouse
-            {
-                Name = name,
-                Company = user.Company,
-                IsFavorite = false
+                Name = name
             };
 
-            if (!user.Company.WareHouses.Any())
-            {
-                warehouse.IsFavorite = true;
-            }
+            company.WareHouses.Add(warehouse);
 
-            this.dbContext.Add(warehouse);
-            await this.dbContext.SaveChangesAsync();
-
-            this.dbContext.Update(user.Company);
-
+            this.dbContext.Update(company);
             await this.dbContext.SaveChangesAsync();
 
             var result = warehouse.MapTo<WareHouseServiceModel>();
@@ -71,6 +54,20 @@
             var warehouse = user.Company.WareHouses.FirstOrDefault(x => x.IsFavorite);
 
             return warehouse.MapTo<WareHouseServiceModel>();
+        }
+
+        public IEnumerable<WareHouseServiceModel> GetWarehousesByCompanyId(int? companyId)
+        {
+            var wareHouses = this.dbContext
+                              .Companies
+                              .Include(x => x.WareHouses)
+                              .ThenInclude(x => x.Products)
+                              .Where(x => x.Id == companyId)
+                              .SelectMany(x => x.WareHouses)
+                              .To<WareHouseServiceModel>()
+                              .ToList();
+
+            return wareHouses;
         }
 
         public async Task<WareHouseServiceModel> GetWareHouseByNameAsync(string name)

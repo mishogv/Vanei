@@ -11,8 +11,6 @@
     using Microsoft.AspNetCore.Identity;
 
     using Models;
-    using Models.Enums;
-
     using Services;
 
     public class SeedDataMiddleware

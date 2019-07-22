@@ -1,7 +1,6 @@
 ﻿namespace MIS.ServicesModels
 {
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
 
     using Models;
 
@@ -14,6 +13,8 @@
             this.Categories = new HashSet<Category>();
             this.Products = new HashSet<Product>();
         }
+
+        public int Id { get; set; }
 
         public string Name { get; set; }
 

@@ -7,8 +7,10 @@
 
 <link href="~/css/addons/datatables.min.css" rel="stylesheet">
 
-<h1>Index</h1>
-
+<div class="row">
+<h1>@Model.WareHouseName</h1>
+<button class="btn btn-primary ml-5">Make it Favorite</button>
+</div>
 <div>
     <span>Categories</span>
     <a asp-controller="Category" asp-action="Create">Create</a>
@@ -18,7 +20,20 @@
     <a asp-controller="Product" asp-action="Create" asp-route-wareHouseName="@Model.WareHouseName">Create</a>
 </div>
 
-<table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+<div>Choose other warehouse</div>
+<div class="dropdown">
+    <a class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
+       aria-haspopup="true" aria-expanded="false">Warehouse</a>
+
+    <div class="dropdown-menu dropdown-primary">
+        @foreach(var warehouse in Model.WarehouseDropdown)
+        {
+            <a asp-controller="WareHouse" asp-action="Index" asp-route-id="@warehouse.Id" class="dropdown-item">@warehouse.Name</a>
+        }
+    </div>
+</div>
+
+<table id="dtBasicExample" class="table table-striped table-bordered table-sm " cellspacing="0" width="100%">
     <thead>
         <tr>
             <th class="th-sm">Name</th>
@@ -44,10 +59,10 @@
 
 @section Scripts {
     <!-- MDBootstrap Datatables  -->
-    <script type="text/javascript" src="js/addons/datatables.min.js"></script>
+    <script type="text/javascript" src="~/js/addons/datatables.min.js"></script>
 
     <script>
-
+        //TODO : move in other file 
         $(document).ready(function () {
             $('#dtBasicExample').DataTable();
             $('.dataTables_length').addClass('bs-select');

@@ -13,6 +13,8 @@ namespace MIS.WebApp.Controllers
     using Services;
     using Services.Mapping;
 
+    using ServicesModels;
+
     using ViewModels.Input.WareHouse;
     using ViewModels.View.Product;
     using ViewModels.View.WareHouse;
@@ -24,7 +26,7 @@ namespace MIS.WebApp.Controllers
         private readonly UserManager<MISUser> userManager;
         private readonly ICompanyService companyService;
 
-        public WareHouseController(IWareHouseService wareHouseService, 
+        public WareHouseController(IWareHouseService wareHouseService,
             UserManager<MISUser> userManager,
             ICompanyService companyService)
         {
@@ -33,25 +35,44 @@ namespace MIS.WebApp.Controllers
             this.companyService = companyService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            var currentUser = await this.userManager.GetUserAsync(this.User);
-            var company =  await  this.companyService.GetByUserAsync(currentUser);
+            //TODO : Security
+            var user = await this.userManager.GetUserAsync(this.User);
 
-            var wareHouse = company.WareHouses.FirstOrDefault(x => x.IsFavorite);
-
-            //TODO : Logic
-            if (wareHouse == null)
+            if (user.CompanyId == null)
             {
-                return this.RedirectToAction("Index", "Home");
+                return this.RedirectToAction("Create", "Company");
             }
 
-            var products = wareHouse.Products.Select(x => x.MapTo<WareHouseIndexProductViewModel>()).ToList();
+            var warehouses = this.wareHouseService.GetWarehousesByCompanyId(user.CompanyId);
 
+            WareHouseServiceModel currentWarehouse = null;
+            var wareHouseServiceModels = warehouses as WareHouseServiceModel[] ?? warehouses.ToArray();
+
+            if (id == null)
+            {
+                currentWarehouse = wareHouseServiceModels.FirstOrDefault(x => x.IsFavorite);
+            }
+            else
+            {
+                currentWarehouse = wareHouseServiceModels.FirstOrDefault(x => x.Id == id);
+            }
+
+
+            if (currentWarehouse == null)
+            {
+                return this.RedirectToAction("Create", "WareHouse");
+            }
+
+            var products = currentWarehouse.Products.Select(x => x.MapTo<WareHouseIndexProductViewModel>()).ToList();
+
+            //TODO : auto mapper 
             var result = new IndexWarehouseViewModel
             {
                 Products = products,
-                WareHouseName = wareHouse.Name
+                WareHouseName = currentWarehouse.Name,
+                WarehouseDropdown = wareHouseServiceModels.Select(x => x.MapTo<IndexWarehouseDropdownViewModel>())
             };
 
             return this.View(result);
@@ -65,15 +86,16 @@ namespace MIS.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateWareHouseInputModel wareHouseInput)
         {
+            //TODO : SECURITY
+
             if (!this.ModelState.IsValid)
             {
-                return this.RedirectToAction(nameof(Create));
+                return this.View(wareHouseInput);
             }
 
-            var userId = this.userManager.GetUserId(this.User);
-            
+            var user = await this.userManager.GetUserAsync(this.User);
 
-            var serviceModel = await this.wareHouseService.CreateAsync(wareHouseInput.Name,  userId);
+            var serviceModel = await this.wareHouseService.CreateAsync(wareHouseInput.Name, user.CompanyId);
 
             return this.RedirectToAction(nameof(this.Index));
         }

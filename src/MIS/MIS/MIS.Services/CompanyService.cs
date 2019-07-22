@@ -58,9 +58,9 @@
             };
         }
 
-        public async Task<CompanyServiceModel> CreateAsync(string name, string address, string username)
+        public async Task<CompanyServiceModel> CreateAsync(string name, string address, string userId)
         {
-            var user = await this.dbContext.Users.FirstOrDefaultAsync(x => x.UserName == username);
+            var user = await this.dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId);
             var company = new Company()
             {
                 Address = address,
@@ -72,20 +72,6 @@
             await this.dbContext.SaveChangesAsync();
 
             return company.MapTo<CompanyServiceModel>();
-        }
-
-        public async Task<CompanyServiceModel> GetByUserAsync(MISUser user)
-        {
-            var company = await this.dbContext.Companies
-                                    .Include(x => x.WareHouses)
-                                    .ThenInclude(x => x.Categories)
-                                    .ThenInclude(x => x.Products)
-                                    .Include(x => x.Employees)
-                                    .FirstOrDefaultAsync(x => x.Employees.Contains(user));
-
-            var serviceModel = company.MapTo<CompanyServiceModel>();
-
-            return serviceModel;
         }
     }
 }
