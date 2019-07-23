@@ -7,6 +7,7 @@
     using Microsoft.AspNetCore.Mvc;
 
     using Services;
+    using Services.Mapping;
 
     using ViewModels.Input.Category;
     using ViewModels.Input.Product;
@@ -22,58 +23,45 @@
             this.productService = productService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Create(int id)
         {
-            return View();
-        }
+            //TODO : Security parameter tampering
 
-        public async Task<IActionResult> Create(string wareHouseName)
-        {
-            if (wareHouseName == null)
-            {
-                return this.RedirectToAction("Index", "WareHouse");
-            }
-
-            var warehouseCategories = await this.wareHouseService.GetAllCategoriesNamesAsync(wareHouseName, this.User.Identity.Name);
+            var categories = this.wareHouseService.GetAllCategories(id);
 
             var result = new CreateProductInputModel()
             {
-                CategoryNames = warehouseCategories,
-                WareHouseName = wareHouseName
+                Categories = categories,
+                WarehouseId = id
             };
 
-            return View(result);
+            await Task.CompletedTask;
+
+            return this.View(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateProductInputModel input)
         {
+            //TODO : VALIDATION AND SECURITY PARAMETER TAMPERING
+            ;
             if (!this.ModelState.IsValid)
             {
-                return await this.Create(input.WareHouseName);
+                return await this.Create(input.WarehouseId);
             }
 
 
-            var wareHouses = this.wareHouseService.GetAllUserWareHousesByUserName(this.User.Identity.Name);
-
-            var createCategoryWareHouseModels = wareHouses as CreateCategoryWareHouseModel[] ?? wareHouses.ToArray();
-
-            if (!createCategoryWareHouseModels.Select(x => x.Name).Contains(input.WareHouseName))
-            {
-                return await this.Create(input.WareHouseName);
-            }
-
-            if (createCategoryWareHouseModels.SelectMany(x => x.Products).Select(x => x.Name).Contains(input.Name)
-            || createCategoryWareHouseModels.SelectMany(x => x.Products).Select(x => x.BarCode).Contains(input.BarCode))
-            {
-                // Thats should validate that product have unique name and barcode
-                this.ModelState.AddModelError("Product", "You can't add product that is already registered in your company.");
-                return await this.Create(input.WareHouseName);
-            }
+            //if (createCategoryWareHouseModels.SelectMany(x => x.Products).Select(x => x.Name).Contains(input.Name)
+            //|| createCategoryWareHouseModels.SelectMany(x => x.Products).Select(x => x.BarCode).Contains(input.BarCode))
+            //{
+            //    // That's should validate that product have unique name and barcode
+            //    this.ModelState.AddModelError("Product", "You can't add product that is already registered in your company.");
+            //    return await this.Create(input.WareHouseName);
+            //}
 
             await this.productService
                       .CreateAsync(input.Name, input.Price, input.Quantity,
-                          input.BarCode, input.CategoryName, input.WareHouseName, this.User.Identity.Name);
+                          input.BarCode, input.CategoryId, input.WarehouseId);
 
             return this.RedirectToAction("Index", "WareHouse");
         }

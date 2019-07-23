@@ -22,6 +22,8 @@
 
         IEnumerable<CreateCategoryWareHouseModel> GetAllUserWareHousesByUserName(string username);
 
+        IEnumerable<CreateCategoryWareHouseModel> GetAllCategories(int warehouseId);
+
         Task<IEnumerable<string>> GetAllCategoriesNamesAsync(string wareHouseName, string username);
 
         IQueryable<ProductServiceModel> GetAllProductsByWarehouseId(int id);

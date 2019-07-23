@@ -3,6 +3,8 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using Category;
+
     using Models;
 
     public class CreateProductInputModel
@@ -14,19 +16,19 @@
         [Range(typeof(decimal), "0.01", "79228162514264337593543950335")]
         public decimal Price { get; set; }
 
-        [Range(0, double.MaxValue)]
+        [Range(0.0001, double.MaxValue)]
         public double Quantity { get; set; }
 
         [Required]
         [RegularExpression(@"^8[0-9]{11}([0-9]{2})?$")]
         public string BarCode { get; set; }
 
-        public IEnumerable<string> CategoryNames { get; set; }
+        public IEnumerable<CreateCategoryWareHouseModel> Categories { get; set; }
 
-        [Required]
-        public string WareHouseName { get; set; }
+        [Range(1, int.MaxValue)]
+        public int CategoryId { get; set; }
 
-        [Required]
-        public string CategoryName { get; set; }
+        [Range(1, int.MaxValue)]
+        public int WarehouseId { get; set; }
     }
 }

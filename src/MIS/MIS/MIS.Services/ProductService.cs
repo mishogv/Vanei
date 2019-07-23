@@ -27,28 +27,22 @@
             this.db = db;
         }
 
-        public async Task<ProductServiceModel> CreateAsync(string name, decimal price, double quantity, string barcode, string categoryName, string wareHouseName, string username)
+        public async Task<ProductServiceModel> CreateAsync(string name, decimal price, double quantity, string barcode, int categoryId, int warehouseId)
         {
-            // TODO : Validate barcode and product name must be unique
-            var user = await this.db.Users
-                                 .Include(x => x.Company)
-                                 .ThenInclude(x => x.WareHouses)
-                                 .ThenInclude(x => x.Categories)
-                                 .FirstOrDefaultAsync(x => x.UserName == username);
-
-            var warehouse = user.Company.WareHouses.FirstOrDefault(x => x.Name == wareHouseName);
-            var category = warehouse?.Categories.FirstOrDefault(x => x.Name == categoryName);
-
-            var product = new Product
+            var product = new Product()
             {
-                Name = name,
                 BarCode = barcode,
+                Name = name,
                 Price = price,
                 Quantity = quantity,
-                WareHouse = warehouse,
-                Category = category
             };
 
+            var category = await this.db.Categories
+                                     .Include(x => x.WareHouse)
+                                     .FirstOrDefaultAsync(x => x.Id == categoryId);
+
+            product.WareHouse = category.WareHouse;
+            category.Products.Add(product);
             await this.db.AddAsync(product);
             await this.db.SaveChangesAsync();
 

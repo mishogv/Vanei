@@ -4,6 +4,8 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using AutoMapper.QueryableExtensions;
+
     using Data;
 
     using Mapping;
@@ -115,19 +117,18 @@
             return result;
         }
 
-        public async Task<IEnumerable<string>> GetAllCategoriesNamesAsync(string wareHouseName, string username)
+        public IEnumerable<CreateCategoryWareHouseModel> GetAllCategories(int warehouseId)
         {
-            var user = await this.dbContext.Users
-                                      .Include(x => x.Company)
-                                      .ThenInclude(x => x.WareHouses)
-                                      .ThenInclude(x => x.Categories)
-                                      .FirstOrDefaultAsync(x => x.UserName == username);
+            return this.dbContext
+                       .Categories
+                       .Where(x => x.WareHouseId == warehouseId)
+                       .ProjectTo<CreateCategoryWareHouseModel>()
+                       .ToList();
+        }
 
-            var warehouse = user.Company.WareHouses.FirstOrDefault(x => x.Name == wareHouseName);
-
-            var categories = warehouse?.Categories.Select(x => x.Name);
-
-            return categories;
+        public Task<IEnumerable<string>> GetAllCategoriesNamesAsync(string wareHouseName, string username)
+        {
+            throw new System.NotImplementedException();
         }
 
         public IQueryable<ProductServiceModel> GetAllProductsByWarehouseId(int id)
