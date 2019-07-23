@@ -29,12 +29,20 @@
 
         public async Task<WareHouseServiceModel> CreateAsync(string name, int? companyId)
         {
-            var company = await this.dbContext.Companies.FirstOrDefaultAsync(x => x.Id == companyId);
+            var company = await this.dbContext
+                                    .Companies
+                                    .Include(x => x.WareHouses)
+                                    .FirstOrDefaultAsync(x => x.Id == companyId);
 
             var warehouse = new WareHouse()
             {
-                Name = name
+                Name = name,
             };
+
+            if (company.WareHouses.Count(x => x.IsFavorite) == 0)
+            {
+                warehouse.IsFavorite = true;
+            }
 
             company.WareHouses.Add(warehouse);
 

@@ -24,6 +24,8 @@
 
         public DbSet<Report> Reports { get; set; } 
 
+        public DbSet<ReceiptReport> ReceiptReports { get; set; } 
+
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Company> Companies { get; set; }
@@ -46,6 +48,16 @@
             builder.Entity<ReceiptProduct>()
                    .HasOne(x => x.Receipt)
                    .WithMany(x => x.ReceiptProducts);
+
+            builder.Entity<ReceiptReport>()
+                   .HasOne(x => x.Receipt)
+                   .WithMany(x => x.ReceiptReports)
+                   .HasForeignKey(x => x.ReceiptId);
+
+            builder.Entity<ReceiptReport>()
+                   .HasOne(x => x.Report)
+                   .WithMany(x => x.ReceiptReports)
+                   .HasForeignKey(x => x.ReportId);
 
             base.OnModelCreating(builder);
         }

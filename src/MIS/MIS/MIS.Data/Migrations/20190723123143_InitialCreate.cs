@@ -198,6 +198,34 @@ namespace MIS.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Receipts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    IssuedOn = table.Column<DateTime>(nullable: true),
+                    Total = table.Column<decimal>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    CompanyId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Receipts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Receipts_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Receipts_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Reports",
                 columns: table => new
                 {
@@ -246,36 +274,27 @@ namespace MIS.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Receipts",
+                name: "ReceiptReports",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    IssuedOn = table.Column<DateTime>(nullable: true),
-                    Total = table.Column<decimal>(nullable: false),
-                    UserId = table.Column<string>(nullable: true),
-                    CompanyId = table.Column<int>(nullable: false),
-                    ReportId = table.Column<int>(nullable: true)
+                    ReceiptId = table.Column<int>(nullable: false),
+                    ReportId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Receipts", x => x.Id);
+                    table.PrimaryKey("PK_ReceiptReports", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Receipts_Companies_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "Companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Receipts_Reports_ReportId",
-                        column: x => x.ReportId,
-                        principalTable: "Reports",
+                        name: "FK_ReceiptReports_Receipts_ReceiptId",
+                        column: x => x.ReceiptId,
+                        principalTable: "Receipts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Receipts_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        name: "FK_ReceiptReports_Reports_ReportId",
+                        column: x => x.ReportId,
+                        principalTable: "Reports",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -307,7 +326,7 @@ namespace MIS.Data.Migrations
                         column: x => x.WareHouseId,
                         principalTable: "WareHouses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -336,7 +355,7 @@ namespace MIS.Data.Migrations
                         column: x => x.ReceiptId,
                         principalTable: "Receipts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -393,10 +412,10 @@ namespace MIS.Data.Migrations
                 table: "Products",
                 column: "CategoryId");
 
-            //migrationBuilder.CreateIndex(
-            //    name: "IX_Products_WareHouseId",
-            //    table: "Products",
-            //    column: "WareHouseId");
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_WareHouseId",
+                table: "Products",
+                column: "WareHouseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ReceiptProducts_ProductId",
@@ -409,14 +428,19 @@ namespace MIS.Data.Migrations
                 column: "ReceiptId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ReceiptReports_ReceiptId",
+                table: "ReceiptReports",
+                column: "ReceiptId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReceiptReports_ReportId",
+                table: "ReceiptReports",
+                column: "ReportId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Receipts_CompanyId",
                 table: "Receipts",
                 column: "CompanyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Receipts_ReportId",
-                table: "Receipts",
-                column: "ReportId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Receipts_UserId",
@@ -460,6 +484,9 @@ namespace MIS.Data.Migrations
                 name: "ReceiptProducts");
 
             migrationBuilder.DropTable(
+                name: "ReceiptReports");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -469,16 +496,16 @@ namespace MIS.Data.Migrations
                 name: "Receipts");
 
             migrationBuilder.DropTable(
-                name: "Categories");
-
-            migrationBuilder.DropTable(
                 name: "Reports");
 
             migrationBuilder.DropTable(
-                name: "WareHouses");
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "WareHouses");
 
             migrationBuilder.DropTable(
                 name: "Companies");

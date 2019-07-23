@@ -8,7 +8,7 @@
     {
         public Report()
         {
-            this.Receipts = new HashSet<Receipt>();
+            this.ReceiptReports = new HashSet<ReceiptReport>();
         }
 
         [Required]
@@ -23,6 +23,6 @@
         public string UserId { get; set; }
         public virtual MISUser User { get; set; }
 
-        public virtual ICollection<Receipt> Receipts { get; set; }
+        public virtual ICollection<ReceiptReport> ReceiptReports { get; set; }
     }
 }

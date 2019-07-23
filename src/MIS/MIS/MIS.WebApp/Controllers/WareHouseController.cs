@@ -106,7 +106,7 @@ namespace MIS.WebApp.Controllers
             //TODO : PARAMETER TAMPERING SECURITY
             await this.wareHouseService.MakeFavoriteAsync(id, user.CompanyId);
 
-            return this.RedirectToAction("Index");
+            return this.RedirectToAction(nameof(this.Index));
         }
     }
 }

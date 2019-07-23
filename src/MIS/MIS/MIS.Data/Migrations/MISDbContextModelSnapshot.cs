@@ -160,8 +160,6 @@ namespace MIS.Data.Migrations
 
                     b.Property<DateTime?>("IssuedOn");
 
-                    b.Property<int?>("ReportId");
-
                     b.Property<decimal>("Total");
 
                     b.Property<string>("UserId");
@@ -169,8 +167,6 @@ namespace MIS.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
-
-                    b.HasIndex("ReportId");
 
                     b.HasIndex("UserId");
 
@@ -200,6 +196,25 @@ namespace MIS.Data.Migrations
                     b.HasIndex("ReceiptId");
 
                     b.ToTable("ReceiptProducts");
+                });
+
+            modelBuilder.Entity("MIS.Models.ReceiptReport", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ReceiptId");
+
+                    b.Property<int>("ReportId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiptId");
+
+                    b.HasIndex("ReportId");
+
+                    b.ToTable("ReceiptReports");
                 });
 
             modelBuilder.Entity("MIS.Models.Report", b =>
@@ -392,10 +407,6 @@ namespace MIS.Data.Migrations
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MIS.Models.Report")
-                        .WithMany("Receipts")
-                        .HasForeignKey("ReportId");
-
                     b.HasOne("MIS.Models.MISUser", "User")
                         .WithMany("Receipts")
                         .HasForeignKey("UserId");
@@ -411,6 +422,19 @@ namespace MIS.Data.Migrations
                     b.HasOne("MIS.Models.Receipt", "Receipt")
                         .WithMany("ReceiptProducts")
                         .HasForeignKey("ReceiptId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MIS.Models.ReceiptReport", b =>
+                {
+                    b.HasOne("MIS.Models.Receipt", "Receipt")
+                        .WithMany("ReceiptReports")
+                        .HasForeignKey("ReceiptId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MIS.Models.Report", "Report")
+                        .WithMany("ReceiptReports")
+                        .HasForeignKey("ReportId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
