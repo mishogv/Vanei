@@ -140,5 +140,35 @@
 
             return receipt.MapTo<ReceiptServiceModel>();
         }
+
+        public async Task<ReceiptServiceModel> GetReceiptAsync(int id)
+        {
+          var receipt =  await this.dbContext
+                .Receipts
+                .Include(x => x.User)
+                .Include(x => x.ReceiptProducts)
+                .ThenInclude(x => x.Product)
+                .ThenInclude(x => x.Category)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+          return receipt.MapTo<ReceiptServiceModel>();
+        }
+
+        public async Task<ReceiptServiceModel> DeleteReceiptByIdAsync(int id)
+        {
+            var receipt = await this.dbContext.Receipts
+                                    .Include(x => x.ReceiptReports)
+                                    .Include(x => x.ReceiptProducts)
+                                    .FirstOrDefaultAsync(x => x.Id == id);
+
+            this.dbContext.RemoveRange(receipt.ReceiptReports);
+            this.dbContext.RemoveRange(receipt.ReceiptProducts);
+            //TODO : if null
+
+            this.dbContext.Remove(receipt);
+            await this.dbContext.SaveChangesAsync();
+
+            return receipt.MapTo<ReceiptServiceModel>();
+        }
     }
 }

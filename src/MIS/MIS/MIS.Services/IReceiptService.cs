@@ -15,5 +15,9 @@
         Task<ReceiptServiceModel> FinishCurrentOpenReceiptByUsernameAsync(string username);
 
         Task<ReceiptServiceModel> DeleteReceiptAsync(string username);
+
+        Task<ReceiptServiceModel> GetReceiptAsync(int id);
+
+        Task<ReceiptServiceModel> DeleteReceiptByIdAsync(int id);
     }
 }

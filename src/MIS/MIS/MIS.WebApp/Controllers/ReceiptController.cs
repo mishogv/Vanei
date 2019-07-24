@@ -1,5 +1,6 @@
 ﻿namespace MIS.WebApp.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -7,6 +8,7 @@
     using Microsoft.AspNetCore.Mvc;
 
     using Services;
+    using Services.Mapping;
 
     using ViewModels.Input.Receipt;
     using ViewModels.View.Product;
@@ -96,10 +98,33 @@
         [HttpGet]
         public async Task<ActionResult> Finish()
         {
-            //TODO : validate is working correctly
             await this.receiptService.FinishCurrentOpenReceiptByUsernameAsync(this.User.Identity.Name);
 
             return this.Ok();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var receipt = await this.receiptService.GetReceiptAsync(id);
+
+            var result = new DetailsReceiptViewModel()
+            {
+                Id = receipt.Id,
+                IssuedOn = (DateTime) receipt.IssuedOn,
+                Username = receipt.User.UserName,
+                Products = receipt.ReceiptProducts.Select(x => x.MapTo<DetailsReceiptProductViewModel>())
+            };
+
+            return this.View(result);
+        }
+
+
+        public async Task<IActionResult> DeleteReceipt(int id)
+        {
+            var receipt = await this.receiptService.DeleteReceiptByIdAsync(id);
+
+            return this.RedirectToAction("Index", "Report");
         }
     }
 }

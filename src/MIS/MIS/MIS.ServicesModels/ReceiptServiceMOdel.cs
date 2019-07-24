@@ -14,6 +14,8 @@
             this.ReceiptProducts = new HashSet<ReceiptProduct>();
         }
 
+        public int Id { get; set; }
+
         public DateTime? IssuedOn { get; set; }
 
         public decimal Total { get; set; } 

@@ -1,0 +1,20 @@
+﻿@using MIS.ViewModels.View.Receipt
+@model DetailsReceiptViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<a class="btn btn-primary" asp-controller="Receipt" asp-action="DeleteReceipt" asp-route-id="@Model.Id">Delete</a>
+
+@foreach(var item in Model.Products)
+{
+    <div>@item.ProductName</div>
+    <div>@item.AddedOn</div>
+    <div>@item.Barcode</div>
+    <div>@item.Quantity</div>
+    <div>@item.ProductPrice</div>
+    <div>@item.Total</div>
+    <div>@item.ProductCategoryName</div>
+}

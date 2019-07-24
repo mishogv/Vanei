@@ -84,6 +84,7 @@
 
         public async Task<IActionResult> Delete(int id)
         {
+            //TODO : security
             await this.reportService.DeleteReportAsync(id);
 
             return this.RedirectToAction(nameof(this.Index));
