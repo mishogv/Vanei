@@ -34,6 +34,36 @@
             return reports;
         }
 
+        public async Task<ReportServiceModel> GetReportAsync(int id)
+        {
+            var report = await this.dbContext.Reports
+                                   .Include(x => x.User)
+                                   .Include(x => x.ReceiptReports)
+                                   .ThenInclude(x => x.Receipt)
+                                   .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (report == null)
+            {
+                return null;
+            }
+
+            return report.MapTo<ReportServiceModel>();
+        }
+
+        public async Task<ReportServiceModel> DeleteReportAsync(int id)
+        {
+            var report = await this.dbContext.Reports
+                                   .Include(x => x.ReceiptReports)
+                                   .FirstOrDefaultAsync(x => x.Id == id);
+
+            this.dbContext.RemoveRange(report.ReceiptReports);
+
+            this.dbContext.Reports.Remove(report);
+            await this.dbContext.SaveChangesAsync();
+
+            return report.MapTo<ReportServiceModel>();
+        }
+
         public async Task<ReportServiceModel> CreateAsync(int companyId, string name, DateTime from, DateTime to, MISUser user)
         {
             var company = await this.dbContext

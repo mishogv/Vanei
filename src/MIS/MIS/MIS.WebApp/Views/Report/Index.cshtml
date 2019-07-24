@@ -13,6 +13,7 @@
 <table id="dtBasicExample" class="table table-striped table-bordered table-sm " cellspacing="0" width="100%">
     <thead>
         <tr>
+            <th class="th-sm">Report name</th>
             <th class="th-sm">Company name</th>
             <th class="th-sm">User name</th>
             <th class="th-sm">From</th>
@@ -23,6 +24,7 @@
         @foreach (var report in Model.Reports)
         {
             <tr>
+                <td><a asp-controller="Report" asp-action="Details" asp-route-id="@report.Id">@report.Name</a></td>
                 <td>@report.CompanyName</td>
                 <td>@report.UserUsername</td>
                 <td>@report.From.ToString("G")</td>

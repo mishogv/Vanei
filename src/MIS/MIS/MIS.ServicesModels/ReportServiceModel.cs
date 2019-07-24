@@ -11,8 +11,12 @@
     {
         public ReportServiceModel()
         {
-            this.Receipts = new HashSet<Receipt>();
+            this.ReceiptReports = new HashSet<ReceiptReport>();
         }
+
+        public int Id { get; set; }
+
+        public string Name { get; set; }
 
         public DateTime From { get; set; }
 
@@ -24,6 +28,6 @@
         public string UserId { get; set; }
         public virtual MISUser User { get; set; }
 
-        public virtual ICollection<Receipt> Receipts { get; set; }
+        public virtual ICollection<ReceiptReport> ReceiptReports { get; set; }
     }
 }

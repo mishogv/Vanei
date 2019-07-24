@@ -1,0 +1,78 @@
+﻿@using MIS.ViewModels.View.Report
+@model DetailsReportViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<link href="~/css/addons/datatables.min.css" rel="stylesheet">
+
+<h1>Report details</h1>
+
+<div class="h5">
+    <div>
+        <label>
+            Name:
+        </label>
+        <span>
+            @Model.Name
+        </span>
+    </div>
+    <div>
+        <label>
+            From:
+        </label>
+        <span>
+            @Model.From
+        </span>
+    </div>
+    <div>
+        <label>
+            To:
+        </label>
+        <span>
+            @Model.To
+        </span>
+    </div>
+    <div>
+        <label>
+            Username:
+        </label>
+        <span>
+            @Model.Username
+        </span>
+    </div>
+    
+    <div class="container-fluid float-left">
+        <a class="btn btn-primary" asp-controller="Report" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+    </div>
+</div>
+
+<table id="dtBasicExample" class="table table-striped table-bordered table-sm container-fluid" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th class="th-sm">Issued on</th>
+            <th class="th-sm">Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var receipt in Model.Receipts)
+        {
+            <tr>
+                <td><a asp-controller="Receipt" asp-action="Details" asp-route-id="@receipt.Id">@receipt.IssuedOn.ToString("G")</a></td>
+                <td>@receipt.Total</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <!-- MDBootstrap Datatables  -->
+    <script type="text/javascript" src="~/js/addons/datatables.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $('#dtBasicExample').DataTable();
+            $('.dataTables_length').addClass('bs-select');
+        });
+    </script>
+}

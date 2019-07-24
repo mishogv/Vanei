@@ -52,7 +52,7 @@
         [HttpPost]
         public async Task<IActionResult> Create(CreateReportInputModel input)
         {
-            //TODO : SECURITY 
+            //TODO : SECURITY
             var user = await this.userManager.GetUserAsync(this.User);
 
             if (user.CompanyId == null)
@@ -63,6 +63,30 @@
             var report = await this.reportService.CreateAsync((int)user.CompanyId, input.Name, input.From, input.To, user);
 
             return this.RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var report = await this.reportService.GetReportAsync(id);
+
+            var result = new DetailsReportViewModel()
+            {
+                Id = report.Id,
+                Name = report.Name,
+                From = report.From,
+                To = report.To,
+                Username = report.User.UserName,
+                Receipts = report.ReceiptReports.Select(x => x.Receipt).Select(x => x.MapTo<ShowReceiptReportViewModel>()),
+            };
+
+            return this.View(result);
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            await this.reportService.DeleteReportAsync(id);
+
+            return this.RedirectToAction(nameof(this.Index));
         }
     }
 }
