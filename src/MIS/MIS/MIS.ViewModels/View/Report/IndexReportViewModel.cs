@@ -1,21 +1,19 @@
 ﻿namespace MIS.ViewModels.View.Report
 {
     using System;
+    using System.Collections.Generic;
 
     using Services.Mapping;
 
     using ServicesModels;
 
-    public class IndexReportViewModel : IMapFrom<ReportServiceModel>
+    public class IndexReportViewModel
     {
-        public int Id { get; set; }
+        public IndexReportViewModel()
+        {
+            this.Reports = new HashSet<IndexReportShowViewModel>();
+        }
 
-        public DateTime From { get; set; }
-
-        public DateTime To { get; set; }
-
-        public string CompanyName { get; set; }
-
-        public string UserUsername { get; set; }
+        public IEnumerable<IndexReportShowViewModel> Reports { get; set; }
     }
 }

@@ -12,6 +12,9 @@
         }
 
         [Required]
+        public string Name { get; set; }
+
+        [Required]
         public DateTime From { get; set; }
 
         [Required]

@@ -1,13 +1,17 @@
 ﻿namespace MIS.ViewModels.Input.Report
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
 
     public class CreateReportInputModel
     {
-        public string CompanyName { get; set; }
+        [Required]
+        public string Name { get; set; }
 
-        public DateTime From { get; set; }
+        [Required]
+        public DateTime From { get; set; } = DateTime.UtcNow;
 
-        public DateTime To { get; set; }
+        [Required]
+        public DateTime To { get; set; } = DateTime.UtcNow;
     }
 }

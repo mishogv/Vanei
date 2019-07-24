@@ -1,0 +1,77 @@
+﻿@using MIS.ViewModels.Input.Report
+@model CreateReportInputModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+
+<h1 class="d-flex justify-content-center">Create report</h1>
+
+<hr class="w-50" />
+<div class="d-flex justify-content-center">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="From" class="control-label"></label>
+                <div class="form-group">
+                    <div class="input-group date" id="datetimepicker7" data-target-input="nearest">
+                        <input asp-for="From" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker7"/>
+                        <div class="input-group-append" data-target="#datetimepicker7" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <span asp-validation-for="From" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="To" class="control-label"></label> 
+                <div class="input-group date" id="datetimepicker8" data-target-input="nearest">
+                    <input asp-for="To" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker8"/>
+                    <div class="input-group-append" data-target="#datetimepicker8" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+                <span asp-validation-for="To" class="text-danger"></span>
+            </div>
+            <div class="row justify-content-between">
+                <div class="form-group mt-3 ml-2">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+                <div class="form-group mt-3">
+                    <a asp-controller="Report" asp-action="Index" class="text-white btn btn-primary">Back to List</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+    
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker7').datetimepicker();
+            $('#datetimepicker8').datetimepicker({
+                useCurrent: false
+            });
+            $("#datetimepicker7").on("change.datetimepicker", function (e) {
+                $('#datetimepicker8').datetimepicker('minDate', e.date);
+            });
+            $("#datetimepicker8").on("change.datetimepicker", function (e) {
+                $('#datetimepicker7').datetimepicker('maxDate', e.date);
+            });
+        });
+    </script>
+}
