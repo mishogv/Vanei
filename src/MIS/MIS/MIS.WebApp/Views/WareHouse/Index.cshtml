@@ -56,7 +56,21 @@
                 <td>@product.Price</td>
                 <td>@product.Quantity</td>
                 <td>@product.BarCode</td>
-                <td>@product.CategoryName</td>
+                <td>
+                    <div class="d-flex container-fluid justify-content-between">
+                        <div>
+                            @product.CategoryName
+                        </div>
+                        <div>
+                            <a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id">
+                                <img src="~/ico/open-iconic-master/png/pencil-2x.png" class="mx-auto" />
+                            </a>
+                            <a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id">
+                                <img src="~/ico/open-iconic-master/png/x-2x.png" class="mx-auto"/>
+                            </a>
+                        </div>
+                    </div>
+                </td>
             </tr>
         }
     </tbody>

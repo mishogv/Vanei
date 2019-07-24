@@ -49,6 +49,44 @@
             return product.MapTo<ProductServiceModel>();
         }
 
+        public async Task<ProductServiceModel> GetProductAsync(int id)
+        {
+            var product = await this.db.Products
+                              .FirstOrDefaultAsync(x => x.Id == id);
+
+            return product.MapTo<ProductServiceModel>();
+        }
+
+        public async Task<ProductServiceModel> DeleteAsync(int id)
+        {
+            var product = await this.db.Products.FirstOrDefaultAsync(x => x.Id == id);
+
+            this.db.Remove(product);
+            await this.db.SaveChangesAsync();
+
+            return product.MapTo<ProductServiceModel>();
+        }
+
+        public async Task<ProductServiceModel> UpdateAsync(int id, string name, decimal price, double quantity, string barcode, int categoryId)
+        {
+
+            var product = await this.db.Products
+                                    .FirstOrDefaultAsync(x => x.Id == id);
+
+            var category = await this.db.Categories
+                                    .FirstOrDefaultAsync(x => x.Id == categoryId);
+
+            product.Name = name;
+            product.Price = price;
+            product.Quantity = quantity;
+            product.Category = category;
+
+            this.db.Update(product);
+            await this.db.SaveChangesAsync();
+
+            return product.MapTo<ProductServiceModel>();
+        }
+
         public async Task<IEnumerable<ShowReceiptProductViewModel>> GetAllProductsByUsernameAsync(string username)
         {
             //TODO : Refactor
