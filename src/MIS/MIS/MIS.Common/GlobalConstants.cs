@@ -4,6 +4,8 @@
     {
         public const string AdministratorAreaRole = "Administrator";
 
+        public const string CompanyOwnerRole = "Owner";
+
         public const string TempDataConfirmEmail = "ConfrimEmail";
 
         public const string RootAdminName = "admin";

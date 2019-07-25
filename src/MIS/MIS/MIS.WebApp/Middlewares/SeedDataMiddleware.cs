@@ -39,6 +39,11 @@
             {
                 await roleManager.CreateAsync(new IdentityRole(GlobalConstants.AdministratorAreaRole));
             }
+
+            if (!await roleManager.RoleExistsAsync(GlobalConstants.CompanyOwnerRole))
+            {
+                await roleManager.CreateAsync(new IdentityRole(GlobalConstants.CompanyOwnerRole));
+            }
         }
 
         private static async Task SeedUserInRoles(UserManager<MISUser> userManager, ICompanyService companyService)
@@ -65,6 +70,7 @@
                 if (result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(user, GlobalConstants.AdministratorAreaRole);
+                    await userManager.AddToRoleAsync(user, GlobalConstants.CompanyOwnerRole);
                 }
             }
         }

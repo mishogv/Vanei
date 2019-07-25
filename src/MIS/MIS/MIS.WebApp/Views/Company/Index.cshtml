@@ -1,0 +1,94 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using MIS.Common
+@using MIS.ViewModels.View.Company
+@model DetailsCompanyViewModel
+
+@inject UserManager<MISUser> UserManger
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Company details</h1>
+<hr />
+
+
+<link href="~/css/addons/datatables.min.css" rel="stylesheet">
+
+<div class="h5">
+    <div>
+        <label>
+            Name:
+        </label>
+        <span>
+            @Model.Name
+        </span>
+    </div>
+    <div>
+        <label>
+            Address:
+        </label>
+        <span>
+            @Model.Address
+        </span>
+    </div>
+
+    @if (this.UserManger.IsInRoleAsync(this.UserManger.GetUserAsync(this.User).GetAwaiter().GetResult(), GlobalConstants.CompanyOwnerRole).GetAwaiter().GetResult())
+    {
+        <div class="container-fluid float-left">
+            <a class="btn btn-primary" asp-area="Owner" asp-controller="Company" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+        </div>
+        <div class="container-fluid float-left">
+            <a class="btn btn-primary" asp-area="Owner" asp-controller="Company" asp-action="Delete" asp-route-id="@Model.Id" >Delete</a>
+        </div>
+    }
+</div>
+
+<table id="dtBasicExample" class="table table-striped table-bordered table-sm container-fluid" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th class="th-sm">User name</th>
+            <th class="th-sm">First name</th>
+            <th class="th-sm">Last name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in Model.Employees)
+        {
+            <tr>
+                <td>@employee.Username</td>
+                <td>@employee.FirstName</td>
+                <td>
+                    <div class="d-flex container-fluid justify-content-between">
+                        <div>
+                            @employee.LastName
+                            @this.User.IsInRole(GlobalConstants.CompanyOwnerRole)
+                        </div>
+                        @*TODO : ASK NIKI*@
+                        @if (this.UserManger.IsInRoleAsync(this.UserManger.GetUserAsync(this.User).GetAwaiter().GetResult(), GlobalConstants.CompanyOwnerRole).GetAwaiter().GetResult()
+                           && employee.Username != this.User.Identity.Name)
+                        {
+                            <div>
+                                <a asp-area="Owner" asp-controller="Company" asp-action="Remove" asp-route-id="@employee.Id">
+                                    <img src="~/ico/open-iconic-master/png/x-2x.png" class="mx-auto" />
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <!-- MDBootstrap Datatables  -->
+    <script type="text/javascript" src="~/js/addons/datatables.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $('#dtBasicExample').DataTable();
+            $('.dataTables_length').addClass('bs-select');
+        });
+    </script>
+}

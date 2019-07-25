@@ -42,15 +42,47 @@
             return result;
         }
 
+        public async Task<CompanyServiceModel> EditAsync(int id, string name, string address)
+        {
+            var company = await this.dbContext.Companies.FirstOrDefaultAsync(x => x.Id == id);
+
+            company.Name = name;
+            company.Address = address;
+
+            this.dbContext.Update(company);
+            await this.dbContext.SaveChangesAsync();
+
+            return company.MapTo<CompanyServiceModel>();
+        }
+
+        public async Task<CompanyServiceModel> DeleteAsync(int id)
+        {
+            var company = await this.dbContext.Companies.FirstOrDefaultAsync(x => x.Id == id);
+
+            this.dbContext.Remove(company);
+            await this.dbContext.SaveChangesAsync();
+
+            return company.MapTo<CompanyServiceModel>();
+        }
+
+        public async Task<CompanyServiceModel> GetCompanyAsync(int id)
+        {
+            var company = await this.dbContext.Companies
+                                    .Include(x => x.Employees)
+                                    .FirstOrDefaultAsync(x => x.Id == id);
+            //TODO : if null
+            return company.MapTo<CompanyServiceModel>();
+        }
+
         public async Task<CompanyServiceModel> AddToCompanyAsync(string name, string username)
         {
             var company = await this.dbContext.Companies.Include(x => x.Employees).FirstOrDefaultAsync(x => x.Name == name);
             var user = await this.dbContext.Users.FirstOrDefaultAsync(x => x.UserName == username);
-            
+
             company.Employees.Add(user);
             await this.dbContext.SaveChangesAsync();
 
-            return  new CompanyServiceModel()
+            return new CompanyServiceModel()
             {
                 Address = company.Address,
                 Employees = company.Employees,
