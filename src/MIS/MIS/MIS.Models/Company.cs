@@ -11,6 +11,7 @@
             this.Receipts = new HashSet<Receipt>();
             this.Reports = new HashSet<Report>();
             this.WareHouses = new HashSet<WareHouse>();
+            this.Invitations = new HashSet<Invitation>();
         }
 
         [Required]
@@ -29,5 +30,7 @@
         public ICollection<Report> Reports { get; set; }
 
         public ICollection<Receipt> Receipts { get; set; }
+
+        public ICollection<Invitation> Invitations { get; set; }
     }
 }

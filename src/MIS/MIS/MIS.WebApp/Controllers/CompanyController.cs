@@ -2,13 +2,10 @@
 
 namespace MIS.WebApp.Controllers
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
     using Common;
-
-    using Data;
 
     using Microsoft.AspNetCore.Identity;
 
@@ -24,15 +21,12 @@ namespace MIS.WebApp.Controllers
     {
         private readonly ICompanyService companyService;
         private readonly UserManager<MISUser> userManager;
-        private readonly RoleManager<IdentityRole> roleManager;
 
         public CompanyController(ICompanyService companyService,
-            UserManager<MISUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+            UserManager<MISUser> userManager)
         {
             this.companyService = companyService;
             this.userManager = userManager;
-            this.roleManager = roleManager;
         }
 
         public async Task<IActionResult> Index()
@@ -49,6 +43,10 @@ namespace MIS.WebApp.Controllers
             var employees = company.Employees.Select(x => x.MapTo<DetailsCompanyUserViewModel>());
 
             var result = company.MapTo<DetailsCompanyViewModel>();
+            if (await this.userManager.IsInRoleAsync(user, GlobalConstants.CompanyOwnerRole))
+            {
+                result.IsOwner = true;
+            }
 
             return this.View(result);
         }
@@ -67,9 +65,9 @@ namespace MIS.WebApp.Controllers
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
-            
+
             await this.userManager.AddToRoleAsync(user, GlobalConstants.CompanyOwnerRole);
-            
+
             var result = await this.userManager.GetRolesAsync(user);
 
             await this.companyService.CreateAsync(input.Name, input.Address, user.Id);

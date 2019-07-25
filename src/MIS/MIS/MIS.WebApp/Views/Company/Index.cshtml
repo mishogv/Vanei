@@ -33,7 +33,7 @@
         </span>
     </div>
 
-    @if (this.UserManger.IsInRoleAsync(this.UserManger.GetUserAsync(this.User).GetAwaiter().GetResult(), GlobalConstants.CompanyOwnerRole).GetAwaiter().GetResult())
+    @if (Model.IsOwner)
     {
         <div class="container-fluid float-left">
             <a class="btn btn-primary" asp-area="Owner" asp-controller="Company" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
@@ -63,9 +63,7 @@
                         <div>
                             @employee.LastName
                         </div>
-                        @*TODO : ASK NIKI*@
-                        @if (this.UserManger.IsInRoleAsync(this.UserManger.GetUserAsync(this.User).GetAwaiter().GetResult(), GlobalConstants.CompanyOwnerRole).GetAwaiter().GetResult()
-                           && employee.Username != this.User.Identity.Name)
+                        @if (Model.IsOwner && employee.Username != this.User.Identity.Name)
                         {
                             <div>
                                 <a asp-area="Owner" asp-controller="Company" asp-action="RemoveEmployee" asp-route-id="@employee.Id">

@@ -91,6 +91,7 @@
             services.AddScoped<IReceiptService, ReceiptService>();
             services.AddScoped<IWareHouseService, WareHouseService>();
             services.AddScoped<IAdministratorService, AdministratorService>();
+            services.AddScoped<IInvitationService, InvitationService>();
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.Configure<RecaptchaSettings>(this.Configuration.GetSection("Google"));

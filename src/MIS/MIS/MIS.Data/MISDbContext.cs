@@ -32,6 +32,8 @@
 
         public DbSet<WareHouse> WareHouses { get; set; }
 
+        public DbSet<Invitation> Invitations { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<MISUser>()

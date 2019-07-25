@@ -70,7 +70,7 @@
                     @if (item.Username == GlobalConstants.RootAdminName)
                     {
                     }
-                    else if (item.Role == GlobalConstants.UserRoleName && item.Username != this.User.Identity.Name)
+                    else if (item.Role != GlobalConstants.UserRoleName && item.Username != this.User.Identity.Name)
                     {
                         <a asp-area="Administrator" asp-controller="AdministratorManage" asp-action="Create" asp-route-id="@item.Id" onclick="return confirm('Are you sure? You want to create |@item.Username| admin?')">
                             <img src="/ico/open-iconic-master/png/plus-2x.png" class="mx-auto"/>
