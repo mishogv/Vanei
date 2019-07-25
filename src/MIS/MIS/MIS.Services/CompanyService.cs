@@ -74,6 +74,22 @@
             return company.MapTo<CompanyServiceModel>();
         }
 
+        public async Task<CompanyServiceModel> RemoveEmployeeAsync(string id)
+        {
+            var employee = await this.dbContext.Users
+                                     .Include(x => x.Company)
+                                     .ThenInclude(x => x.Employees)
+                                     .FirstOrDefaultAsync(x => x.Id == id);
+
+            var company = employee.Company;
+
+            company.Employees.Remove(employee);
+            this.dbContext.Update(company);
+            await this.dbContext.SaveChangesAsync();
+
+            return company.MapTo<CompanyServiceModel>();
+        }
+
         public async Task<CompanyServiceModel> AddToCompanyAsync(string name, string username)
         {
             var company = await this.dbContext.Companies.Include(x => x.Employees).FirstOrDefaultAsync(x => x.Name == name);

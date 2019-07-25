@@ -52,5 +52,12 @@
 
             return this.RedirectToAction("Index", "Home");
         }
+
+        public async Task<IActionResult> RemoveEmployee(string id)
+        {
+            await this.companyService.RemoveEmployeeAsync(id);
+
+            return this.RedirectToAction("Index");
+        }
     }
 }
