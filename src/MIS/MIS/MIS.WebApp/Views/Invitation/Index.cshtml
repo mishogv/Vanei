@@ -1,0 +1,19 @@
+﻿@using MIS.ViewModels.View.Invitation
+@model InvitationIndexViewModel
+
+@{
+    ViewData["Title"] = "Invitations";
+}
+
+<h1>Invitations</h1>
+
+@foreach (var invitation in Model.Invitations)
+{
+    <div>
+        <label>Company name:</label>
+        <span>
+            @invitation.CompanyName
+        </span>
+        @*TODO ACCEPT AND REJECT AND REMOVE UNUSED PROPERTIES *@
+    </div>
+}
