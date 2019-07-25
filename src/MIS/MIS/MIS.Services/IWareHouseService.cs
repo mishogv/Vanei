@@ -12,6 +12,12 @@
     {
         Task<WareHouseServiceModel> CreateAsync(string name, int? companyId);
 
+        Task<WareHouseServiceModel> GetWareHouseAsync(int id);
+
+        Task<WareHouseServiceModel> DeleteAsync(int id);
+
+        Task<WareHouseServiceModel> EditAsync(int id, string name);
+
         Task<WareHouseServiceModel> MakeFavoriteAsync(int id, int? companyId);
 
         Task<WareHouseServiceModel> GetWareHouseByUserNameAsync(string username);

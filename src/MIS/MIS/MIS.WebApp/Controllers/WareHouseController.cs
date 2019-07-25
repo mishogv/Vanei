@@ -108,5 +108,30 @@ namespace MIS.WebApp.Controllers
 
             return this.RedirectToAction(nameof(this.Index));
         }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            //TODO : Security
+            var warehouse = await this.wareHouseService.GetWareHouseAsync(id);
+
+            return this.View(warehouse.MapTo<EditWarehouseInputModel>());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditWarehouseInputModel input)
+        {
+            //TODO : Security
+            await this.wareHouseService.EditAsync(input.Id, input.Name);
+
+            return this.RedirectToAction(nameof(this.Index));
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            //TODO : Security
+            var warehouse = await this.wareHouseService.DeleteAsync(id);
+
+            return this.RedirectToAction(nameof(this.Index));
+        }
     }
 }

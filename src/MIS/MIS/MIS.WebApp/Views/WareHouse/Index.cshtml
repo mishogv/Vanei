@@ -15,6 +15,13 @@
             <input class="btn btn-primary ml-5" value="Make it Favorite" type="submit" />
         </form>
     }
+
+    <a class="btn btn-primary" asp-controller="WareHouse" asp-action="Edit" asp-route-id="@Model.Id">
+        Edit
+    </a>
+    <a class="btn btn-primary" asp-controller="WareHouse" asp-action="Delete" asp-route-id="@Model.Id">
+        Delete
+    </a>
 </div>
 <div>
     <span>Categories</span>
@@ -66,7 +73,7 @@
                                 <img src="~/ico/open-iconic-master/png/pencil-2x.png" class="mx-auto" />
                             </a>
                             <a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id">
-                                <img src="~/ico/open-iconic-master/png/x-2x.png" class="mx-auto"/>
+                                <img src="~/ico/open-iconic-master/png/x-2x.png" class="mx-auto" />
                             </a>
                         </div>
                     </div>

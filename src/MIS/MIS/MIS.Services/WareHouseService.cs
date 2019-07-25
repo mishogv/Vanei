@@ -54,6 +54,48 @@
             return result;
         }
 
+        public async Task<WareHouseServiceModel> GetWareHouseAsync(int id)
+        {
+            var warehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync(x => x.Id == id);
+
+            return warehouse.MapTo<WareHouseServiceModel>();
+        }
+
+        public async Task<WareHouseServiceModel> DeleteAsync(int id)
+        {
+            var warehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync(x => x.Id == id);
+            var newWarehouse = new WareHouse();
+            this.dbContext.Remove(warehouse);
+
+            if (warehouse.IsFavorite)
+            {
+                newWarehouse = await this.dbContext.WareHouses.Where(x => x.CompanyId == warehouse.CompanyId)
+                     .FirstOrDefaultAsync(x => x.Id != id);
+
+                if (newWarehouse != null)
+                {
+                    newWarehouse.IsFavorite = true;
+                    this.dbContext.Update(newWarehouse);
+                }
+            }
+
+            await this.dbContext.SaveChangesAsync();
+
+            return warehouse.MapTo<WareHouseServiceModel>();
+        }
+
+        public async Task<WareHouseServiceModel> EditAsync(int id, string name)
+        {
+            var warehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync(x => x.Id == id);
+
+            warehouse.Name = name;
+
+            this.dbContext.Update(warehouse);
+            await this.dbContext.SaveChangesAsync();
+
+            return warehouse.MapTo<WareHouseServiceModel>();
+        }
+
         public async Task<WareHouseServiceModel> MakeFavoriteAsync(int id, int? companyId)
         {
             var warehouseFromDb = await this.dbContext.Companies
@@ -103,10 +145,10 @@
 
         public async Task<WareHouseServiceModel> GetWareHouseByNameAsync(string name)
         {
-           var wareHouse =  await this.dbContext.WareHouses.FirstOrDefaultAsync(x => x.Name == name);
-           var result = wareHouse?.MapTo<WareHouseServiceModel>();
+            var wareHouse = await this.dbContext.WareHouses.FirstOrDefaultAsync(x => x.Name == name);
+            var result = wareHouse?.MapTo<WareHouseServiceModel>();
 
-           return result;
+            return result;
         }
 
         public IEnumerable<CreateCategoryWareHouseModel> GetAllUserWareHousesByUserName(string username)

@@ -1,0 +1,17 @@
+﻿namespace MIS.ViewModels.Input.Category
+{
+    using System.ComponentModel.DataAnnotations;
+
+    using Services.Mapping;
+
+    using ServicesModels;
+
+    public class EditCategoryInputModel : IMapFrom<CategoryServiceModel>
+    {
+        public int Id { get; set; }
+
+        [Required]
+        [StringLength(24, MinimumLength = 2)]
+        public string Name { get; set; }
+    }
+}
