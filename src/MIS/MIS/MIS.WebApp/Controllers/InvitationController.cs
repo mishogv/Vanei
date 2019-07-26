@@ -27,9 +27,9 @@
 
         public async Task<IActionResult> Index()
         {
-            var user = await this.userManager.GetUserAsync(this.User);
+            var userId = this.userManager.GetUserId(this.User);
 
-            var invitations = await this.invitationService.GetAllAsync(user.Id);
+            var invitations = await this.invitationService.GetAllAsync(userId);
 
             var result = new InvitationIndexViewModel
             {
@@ -37,6 +37,20 @@
             };
 
             return this.View(result);
+        }
+
+        public async Task<IActionResult> Accept(int id)
+        {
+            await this.invitationService.AcceptInvitationAsync(id);
+
+            return this.RedirectToAction("Index", "Company");
+        }
+
+        public async Task<IActionResult> Decline(int id)
+        {
+            await this.invitationService.DeclineInvitationAsync(id);
+
+            return this.RedirectToAction(nameof(this.Index));
         }
     }
 }

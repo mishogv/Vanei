@@ -23,14 +23,14 @@
         public string Address { get; set; }
 
 
-        public ICollection<WareHouse> WareHouses { get; set; }
+        public virtual ICollection<WareHouse> WareHouses { get; set; }
 
-        public ICollection<MISUser> Employees { get; set; }
+        public virtual ICollection<MISUser> Employees { get; set; }
 
-        public ICollection<Report> Reports { get; set; }
+        public virtual ICollection<Report> Reports { get; set; }
 
-        public ICollection<Receipt> Receipts { get; set; }
+        public virtual ICollection<Receipt> Receipts { get; set; }
 
-        public ICollection<Invitation> Invitations { get; set; }
+        public virtual ICollection<Invitation> Invitations { get; set; }
     }
 }

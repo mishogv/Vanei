@@ -5,15 +5,31 @@
     ViewData["Title"] = "Invitations";
 }
 
-<h1>Invitations</h1>
-
-@foreach (var invitation in Model.Invitations)
-{
-    <div>
-        <label>Company name:</label>
-        <span>
-            @invitation.CompanyName
-        </span>
-        @*TODO ACCEPT AND REJECT AND REMOVE UNUSED PROPERTIES *@
+<h1 class="d-flex justify-content-center">Invitations</h1>
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        @foreach (var invitation in Model.Invitations)
+        {
+            <div class="card bg-mis">
+                <div class="card-body">
+                    <div class="w-50 d-flex justify-content-center container-fluid">
+                        <label>Company name:</label>
+                    </div>
+                    <div class="w-50 d-flex justify-content-center container-fluid">
+                        @invitation.CompanyName
+                    </div>
+                    <div class="w-25 d-flex justify-content-center container-fluid">
+                        <a class="btn btn-primary btn-sm" asp-controller="Invitation" asp-action="Accept" asp-route-id="@invitation.Id">
+                            Accept
+                        </a>
+                        <a class="btn btn-primary btn-sm" asp-controller="Invitation" asp-action="Decline" asp-route-id="@invitation.Id">
+                            Decline
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
-}
+    <div class="col-md-4"></div>
+</div>

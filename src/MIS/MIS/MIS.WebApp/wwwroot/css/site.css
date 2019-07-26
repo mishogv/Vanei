@@ -50,6 +50,10 @@ body {
     margin-bottom: 5%
 }
 
+.bg-mis {
+    background-color: #e6f5ff;
+}
+
 .footer {
   position: absolute;
   bottom: 0;
