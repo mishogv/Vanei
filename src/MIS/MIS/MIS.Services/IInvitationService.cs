@@ -15,7 +15,7 @@
 
         Task<IEnumerable<InvitationUserViewModel>> GetAllUsersAsync();
 
-        Task<InvitationServiceModel> AcceptInvitationAsync(int invitationId);
+        Task<InvitationServiceModel> AcceptInvitationAsync(int invitationId, bool isOwner);
 
         Task<InvitationServiceModel> DeclineInvitationAsync(int invitationId);
     }

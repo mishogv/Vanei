@@ -3,6 +3,8 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Common;
+
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
@@ -16,13 +18,16 @@
     public class InvitationController : AuthenticationController
     {
         private readonly UserManager<MISUser> userManager;
+        private readonly SignInManager<MISUser> signInManager;
         private readonly IInvitationService invitationService;
 
         public InvitationController(UserManager<MISUser> userManager,
-            IInvitationService invitationService)
+            IInvitationService invitationService,
+            SignInManager<MISUser> signInManager)
         {
             this.userManager = userManager;
             this.invitationService = invitationService;
+            this.signInManager = signInManager;
         }
 
         public async Task<IActionResult> Index()
@@ -41,7 +46,14 @@
 
         public async Task<IActionResult> Accept(int id)
         {
-            await this.invitationService.AcceptInvitationAsync(id);
+            var isOwner = this.User.IsInRole(GlobalConstants.CompanyOwnerRole);
+
+            await this.invitationService.AcceptInvitationAsync(id, isOwner);
+
+            if (isOwner)
+            {
+                await this.signInManager.SignOutAsync();
+            }
 
             return this.RedirectToAction("Index", "Company");
         }

@@ -33,7 +33,7 @@
         </span>
     </div>
 
-    @if (Model.IsOwner)
+    @if (this.User.IsInRole(GlobalConstants.CompanyOwnerRole))
     {
         <div class="container-fluid float-left">
             <a class="btn btn-primary" asp-area="Owner" asp-controller="Company" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
@@ -63,7 +63,7 @@
                         <div>
                             @employee.LastName
                         </div>
-                        @if (Model.IsOwner && employee.Username != this.User.Identity.Name)
+                        @if (this.User.IsInRole(GlobalConstants.CompanyOwnerRole) && employee.Username != this.User.Identity.Name)
                         {
                             <div>
                                 <a asp-area="Owner" asp-controller="Company" asp-action="RemoveEmployee" asp-route-id="@employee.Id">

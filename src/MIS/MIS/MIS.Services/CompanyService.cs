@@ -1,5 +1,6 @@
 ﻿namespace MIS.Services
 {
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Data;
@@ -57,8 +58,20 @@
 
         public async Task<CompanyServiceModel> DeleteAsync(int id)
         {
-            var company = await this.dbContext.Companies.FirstOrDefaultAsync(x => x.Id == id);
+            var company = await this.dbContext.Companies
+                                    .Include(x => x.Receipts)
+                                    .ThenInclude(x => x.ReceiptReports)
+                                    .Include(x => x.Receipts)
+                                    .ThenInclude(x => x.ReceiptProducts)
+                                    .Include(x => x.Reports)
+                                    .FirstOrDefaultAsync(x => x.Id == id);
 
+            var receipts = company.Receipts;
+
+            this.dbContext.RemoveRange(receipts.SelectMany(x => x.ReceiptReports));
+            this.dbContext.RemoveRange(receipts.SelectMany(x => x.ReceiptProducts));
+            this.dbContext.RemoveRange(company.Receipts);
+            this.dbContext.RemoveRange(company.Reports);
             this.dbContext.Remove(company);
             await this.dbContext.SaveChangesAsync();
 

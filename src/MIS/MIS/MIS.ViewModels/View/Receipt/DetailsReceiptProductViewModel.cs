@@ -10,13 +10,9 @@
     {
         public string ProductName { get; set; }
 
-        public string Barcode { get; set; }
-
         public decimal ProductPrice { get; set; }
 
         public string ProductCategoryName { get; set; }
-
-        public DateTime AddedOn { get; set; }
 
         public double Quantity { get; set; }
 

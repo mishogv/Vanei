@@ -29,26 +29,31 @@
             this.userManager = userManager;
         }
 
-        public async Task<IActionResult> Search()
+        public async Task<IActionResult> Show()
         {
             var currentUser = await this.userManager.GetUserAsync(this.User);
             var users = await this.invitationService.GetAllUsersAsync();
 
             foreach (var user in users)
             {
+                user.IsAvailableForInvite = true;
                 if (user.CompanyName == null)
                 {
                     user.CompanyName = GlobalConstants.NotApplicable;
                     user.IsAvailableForInvite = true;
 
-                    if (user.Invitations.Select(x => x.CompanyId).Contains((int) currentUser.CompanyId))
+                    if (user.Invitations.Select(x => x.CompanyId).Contains((int)currentUser.CompanyId))
                     {
                         user.IsAvailableForInvite = false;
                     }
                 }
                 else if (user.CompanyId == currentUser.CompanyId)
                 {
-                    user.IsAvailableForInvite = false; 
+                    user.IsAvailableForInvite = false;
+                }
+                else if (user.Invitations.Select(x => x.CompanyId).Contains((int)currentUser.CompanyId))
+                {
+                    user.IsAvailableForInvite = false;
                 }
             }
 
@@ -61,7 +66,7 @@
 
             await this.invitationService.InviteAsync(user.CompanyId, id);
 
-            return this.RedirectToAction(nameof(this.Search));
+            return this.RedirectToAction(nameof(this.Show));
         }
     }
 }

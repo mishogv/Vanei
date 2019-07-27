@@ -5,7 +5,10 @@
     using Common;
 
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+
+    using Models;
 
     using Services;
     using Services.Mapping;
@@ -19,10 +22,16 @@
     public class CompanyController : AuthenticationController
     {
         private readonly ICompanyService companyService;
+        private readonly UserManager<MISUser> userManager;
+        private readonly SignInManager<MISUser> signInManager;
 
-        public CompanyController(ICompanyService companyService)
+        public CompanyController(ICompanyService companyService,
+            UserManager<MISUser> userManager,
+            SignInManager<MISUser> signInManager)
         {
             this.companyService = companyService;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
         public async Task<IActionResult> Edit(int id)
@@ -49,8 +58,12 @@
         public async Task<IActionResult> Delete(int id)
         {
             await this.companyService.DeleteAsync(id);
+            var user = await this.userManager.GetUserAsync(this.User);
+            await this.userManager.RemoveFromRoleAsync(user, GlobalConstants.CompanyOwnerRole);
 
-            return this.RedirectToAction("Index", "Home");
+            await this.signInManager.SignOutAsync();
+
+            return this.LocalRedirect("/Identity/Account/Login");
         }
 
         public async Task<IActionResult> RemoveEmployee(string id)

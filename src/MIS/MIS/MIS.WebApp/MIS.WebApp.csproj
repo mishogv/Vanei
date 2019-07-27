@@ -8,10 +8,12 @@
 
 
   <ItemGroup>
+    <PackageReference Include="HtmlSanitizer" Version="4.0.217" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.0.76" />
     <PackageReference Include="reCAPTCHA.AspNetCore" Version="2.2.3" />
   </ItemGroup>
 
@@ -28,8 +30,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Administrator\Views\Administrator\" />
-    <Folder Include="Areas\Owner\Data\" />
-    <Folder Include="Areas\Owner\Models\" />
   </ItemGroup>
 
 </Project>

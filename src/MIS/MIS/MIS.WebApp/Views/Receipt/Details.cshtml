@@ -4,17 +4,83 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1 class="d-flex justify-content-center">Details</h1>
 
-<a class="btn btn-primary" asp-controller="Receipt" asp-action="DeleteReceipt" asp-route-id="@Model.Id">Delete</a>
+<h1 class="text-center">Receipt Details</h1>
+<hr class="hr-2 bg-primary w-50">
+<div class="products-holder w-50 mx-auto">
+    @foreach (var item in Model.Products)
+    {
+        <div class="d-flex justify-content-between">
+            <div class="w-75">
+                <h4>@item.ProductName</h4>
+                <h5>@item.ProductCategoryName</h5>
+            </div>
+            <div class="w-25">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6 h6">
+                        x@(item.Quantity)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6 h6">
+                        $@(item.ProductPrice.ToString("F2"))
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6 h6">
+                        $@(item.Total.ToString("F2"))
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
 
-@foreach(var item in Model.Products)
-{
-    <div>@item.ProductName</div>
-    <div>@item.AddedOn</div>
-    <div>@item.Barcode</div>
-    <div>@item.Quantity</div>
-    <div>@item.ProductPrice</div>
-    <div>@item.Total</div>
-    <div>@item.ProductCategoryName</div>
-}
+<hr class="hr-2 bg-primary w-50">
+<div class="finish-order-holder w-50 mx-auto d-flex justify-content-between">
+    <div class="form-holder w-25">
+        <h3 class="text-left">Total</h3>
+    </div>
+    <div class="price-holder w-25">
+        <h3 class="text-right">$@Model.Products.Sum(x => x.ProductPrice * (decimal)x.Quantity).ToString("f2")</h3>
+    </div>
+</div>
+<hr class="hr-2 bg-primary w-50">
+<div class="finish-order-holder w-50 mx-auto d-flex justify-content-between">
+    <div class="form-holder w-25">
+        <h3 class="text-left">Issued On</h3>
+    </div>
+    <div class="price-holder w-25">
+        <h5 class="text-right">@Model.IssuedOn.ToString("G")</h5>
+    </div>
+</div>
+<div class="finish-order-holder w-50 mx-auto d-flex justify-content-between">
+    <div class="form-holder w-25">
+        <h3 class="text-left">Recipient</h3>
+    </div>
+    <div class="price-holder w-25">
+        <h3 class="text-right">@Model.Username</h3>
+    </div>
+</div>
+<hr class="hr-2 bg-primary w-50">
+<div class="finish-order-holder w-50 mx-auto d-flex justify-content-between">
+    <div class="form-holder w-25">
+        <h3 class="text-left">Receipt</h3>
+    </div>
+    <div class="price-holder w-75">
+        <h3 class="text-right">№@Model.Id</h3>
+    </div>
+</div>
+<hr class="bg-primary w-50">
+
+
+<div class="d-flex justify-content-center container-fluid w-50">
+    <a class="btn btn-primary w-50" asp-controller="Receipt" asp-action="DeleteReceipt" asp-route-id="@Model.Id">Delete</a>
+</div>

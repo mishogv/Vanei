@@ -7,6 +7,7 @@ namespace MIS.WebApp.Controllers
 
     using Common;
 
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
 
     using Models;
@@ -21,12 +22,15 @@ namespace MIS.WebApp.Controllers
     {
         private readonly ICompanyService companyService;
         private readonly UserManager<MISUser> userManager;
+        private readonly SignInManager<MISUser> signInManager;
 
         public CompanyController(ICompanyService companyService,
-            UserManager<MISUser> userManager)
+            UserManager<MISUser> userManager,
+            SignInManager<MISUser> signInManager)
         {
             this.companyService = companyService;
             this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
         public async Task<IActionResult> Index()
@@ -43,12 +47,13 @@ namespace MIS.WebApp.Controllers
             var employees = company.Employees.Select(x => x.MapTo<DetailsCompanyUserViewModel>());
 
             var result = company.MapTo<DetailsCompanyViewModel>();
-            if (await this.userManager.IsInRoleAsync(user, GlobalConstants.CompanyOwnerRole))
-            {
-                result.IsOwner = true;
-            }
 
             return this.View(result);
+        }
+
+        public IActionResult Chat()
+        {
+            return this.View();
         }
 
         public IActionResult Create()
@@ -67,11 +72,12 @@ namespace MIS.WebApp.Controllers
             var user = await this.userManager.GetUserAsync(this.User);
 
             await this.userManager.AddToRoleAsync(user, GlobalConstants.CompanyOwnerRole);
-
-            var result = await this.userManager.GetRolesAsync(user);
-
             await this.companyService.CreateAsync(input.Name, input.Address, user.Id);
-            return this.RedirectToAction("Index", "Home");
+            await this.signInManager.SignOutAsync();
+
+            this.TempData[GlobalConstants.CompanyOwnerRole] = "You have to log in asdqwd";
+
+            return this.RedirectToAction(nameof(this.Index));
         }
     }
 }

@@ -14,6 +14,10 @@
 
     using Data;
 
+    using Ganss.XSS;
+
+    using Hubs;
+
     using Microsoft.AspNetCore.Identity.UI.Services;
 
     using Middlewares;
@@ -92,6 +96,7 @@
             services.AddScoped<IWareHouseService, WareHouseService>();
             services.AddScoped<IAdministratorService, AdministratorService>();
             services.AddScoped<IInvitationService, InvitationService>();
+            services.AddScoped<IHtmlSanitizer, HtmlSanitizer>();
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.Configure<RecaptchaSettings>(this.Configuration.GetSection("Google"));
@@ -99,6 +104,7 @@
             #endregion
 
             services.AddRouting();
+            services.AddSignalR();
 
             services.AddMvc(options =>
             {
@@ -134,6 +140,12 @@
             app.UseSeedDataMiddleware();
 
             app.UseAuthentication();
+
+            app.UseSignalR(
+                routes =>
+                {
+                    routes.MapHub<ChatHub>("/chat");
+                });
 
             app.UseMvc(routes =>
             {

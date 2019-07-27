@@ -19,8 +19,6 @@
 
         public string Address { get; set; }
 
-        public bool IsOwner { get; set; }
-
         public IEnumerable<DetailsCompanyUserViewModel> Employees { get; set; }
     }
 }
