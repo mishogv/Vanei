@@ -17,13 +17,41 @@
             this.sanitizer = sanitizer;
         }
 
-        public async Task Send(string message)
+        public async Task AddToGroup(string groupName)
+        {
+            await this.Groups.AddToGroupAsync(this.Context.ConnectionId, groupName);
+
+            await this.Clients.Group(groupName)
+                         .SendAsync("NewMessage", 
+                             new ChatHubMessageViewModel
+                             {
+                                 Username = this.Context.User.Identity.Name,
+                                 Text = $"{this.Context.User.Identity.Name} has joined the group."
+                             });
+        }
+
+        public async Task RemoveFromGroup(string groupName)
+        {
+            await this.Groups.RemoveFromGroupAsync(this.Context.ConnectionId, groupName);
+
+            await this.Clients.Group(groupName).SendAsync("NewMessage",
+            new ChatHubMessageViewModel
+            {
+                Username = this.Context.User.Identity.Name,
+                Text = $"{this.Context.User.Identity.Name} has left the group."
+            });
+        }
+
+        public async Task Send(string group, string message)
         {
             var sanitizedMessage = this.sanitizer.Sanitize(message);
 
-            await this.Clients.All.SendAsync(
-                "NewMessage",
-                new ChatHubMessageViewModel { Username = this.Context.User.Identity.Name, Text = sanitizedMessage, });
+            await this.Clients.Group(group).SendAsync("NewMessage",
+                new ChatHubMessageViewModel
+                {
+                    Username = this.Context.User.Identity.Name,
+                    Text = sanitizedMessage,
+                });
         }
     }
 }

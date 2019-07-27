@@ -7,8 +7,10 @@ namespace MIS.WebApp.Controllers
 
     using Common;
 
-    using Microsoft.AspNetCore.Authorization;
+    using Hubs;
+
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.SignalR;
 
     using Models;
 
@@ -23,14 +25,17 @@ namespace MIS.WebApp.Controllers
         private readonly ICompanyService companyService;
         private readonly UserManager<MISUser> userManager;
         private readonly SignInManager<MISUser> signInManager;
+        private readonly IHubContext<ChatHub> context;
 
         public CompanyController(ICompanyService companyService,
             UserManager<MISUser> userManager,
-            SignInManager<MISUser> signInManager)
+            SignInManager<MISUser> signInManager,
+            IHubContext<ChatHub> context)
         {
             this.companyService = companyService;
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.context = context;
         }
 
         public async Task<IActionResult> Index()
@@ -51,9 +56,9 @@ namespace MIS.WebApp.Controllers
             return this.View(result);
         }
 
-        public IActionResult Chat()
+        public IActionResult Chat(string id)
         {
-            return this.View();
+            return this.View(model: id);
         }
 
         public IActionResult Create()
