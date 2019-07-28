@@ -1,5 +1,6 @@
 ﻿namespace MIS.Services
 {
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -83,6 +84,11 @@
             var company = await this.dbContext.Companies
                                     .Include(x => x.Employees)
                                     .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (company == null)
+            {
+                throw new ArgumentNullException(nameof(company));
+            }
             //TODO : if null
             return company.MapTo<CompanyServiceModel>();
         }
