@@ -1,5 +1,6 @@
 ﻿namespace MIS.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -64,6 +65,11 @@
         {
             // TODO : if null
             var category = await this.dbContext.Categories.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (category == null)
+            {
+                throw new ArgumentNullException(nameof(category));
+            }
 
             return category.MapTo<CategoryServiceModel>();
         }
