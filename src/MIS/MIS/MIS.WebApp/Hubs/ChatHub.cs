@@ -2,6 +2,8 @@
 {
     using System.Threading.Tasks;
 
+    using Common;
+
     using Ganss.XSS;
 
     using Microsoft.AspNetCore.Identity;
@@ -38,6 +40,7 @@
             var message = await this.messageService.CreateAsync(companyId, username, MessageJoinGroupTemplate, true);
 
             await this.Groups.AddToGroupAsync(this.Context.ConnectionId, message.Company.Name);
+            message.Username = GlobalConstants.System;
 
             await this.Clients.Group(message.Company.Name)
                          .SendAsync("NewMessage", message.MapTo<ChatHubMessageViewModel>());
@@ -51,6 +54,7 @@
             await this.Groups.AddToGroupAsync(this.Context.ConnectionId, message.Company.Name);
 
             await this.Groups.RemoveFromGroupAsync(this.Context.ConnectionId, message.Company.Name);
+            message.Username = GlobalConstants.System;
 
             await this.Clients.Group(message.Company.Name)
                       .SendAsync("NewMessage", message.MapTo<ChatHubMessageViewModel>());
@@ -62,7 +66,6 @@
             var sanitizedMessage = this.sanitizer.Sanitize(message);
 
             var generatedMessage = await this.messageService.CreateAsync(companyId, username, sanitizedMessage, false);
-
 
             await this.Clients.Group(generatedMessage.Company.Name)
                       .SendAsync("NewMessage", generatedMessage.MapTo<ChatHubMessageViewModel>());

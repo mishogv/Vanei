@@ -5,6 +5,8 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Common;
+
     using Data;
 
     using Mapping;
@@ -36,7 +38,7 @@
 
             await this.companyService.SetCompanyAsync(message, companyId);
 
-            message.Text = isNotification ? string.Format(text, username, message.Company.Name) : text;
+            message.Text = isNotification ? string.Format(text, message.Username, message.Company.Name) : text;
 
             await this.dbContext.Messages.AddAsync(message);
             await this.dbContext.SaveChangesAsync();
