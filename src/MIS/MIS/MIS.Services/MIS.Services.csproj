@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="2.2.5" />
     <PackageReference Include="Sendgrid" Version="9.11.0" />
   </ItemGroup>
 
@@ -15,12 +16,6 @@
     <ProjectReference Include="..\MIS.Services.Mapping\MIS.Services.Mapping.csproj" />
     <ProjectReference Include="..\MIS.ServicesModels\MIS.Services.Models.csproj" />
     <ProjectReference Include="..\MIS.ViewModels\MIS.ViewModels.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Microsoft.AspNetCore.Identity.UI">
-      <HintPath>C:\Users\Mihail\.nuget\packages\microsoft.aspnetcore.identity.ui\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Identity.UI.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>
