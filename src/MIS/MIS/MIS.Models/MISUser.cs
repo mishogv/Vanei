@@ -5,7 +5,6 @@
 
     using Microsoft.AspNetCore.Identity;
 
-    // Add profile data for application users by adding properties to the MISUser class
     public class MISUser : IdentityUser
     {
         public MISUser()
