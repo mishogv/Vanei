@@ -1,7 +1,9 @@
-﻿namespace MIS.ServicesModels
+﻿namespace MIS.Services.Models
 {
     using System;
     using System.Collections.Generic;
+
+    using MIS.Models;
 
     using Models;
 

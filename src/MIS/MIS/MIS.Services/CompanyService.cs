@@ -9,9 +9,9 @@
 
     using Microsoft.EntityFrameworkCore;
 
-    using Models;
+    using MIS.Models;
 
-    using ServicesModels;
+    using Models;
 
     public class CompanyService : ICompanyService
     {
@@ -99,6 +99,15 @@
             company.Employees.Remove(employee);
             this.dbContext.Update(company);
             await this.dbContext.SaveChangesAsync();
+
+            return company.MapTo<CompanyServiceModel>();
+        }
+
+        public async Task<CompanyServiceModel> SetCompanyAsync(Message message, int id)
+        {
+            var company = await this.dbContext.Companies.FirstOrDefaultAsync(x => x.Id == id);
+
+            message.Company = company;
 
             return company.MapTo<CompanyServiceModel>();
         }

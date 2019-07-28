@@ -19,6 +19,7 @@ connection.on("NewMessage",
     function (message) {
         var chatInfo = `<div  class="w-75 bg-mis disabled border-0" rows="6" cols="100" style="resize: none;">[${message.username}]: ${message.text}</div >`;
         $("#messagesList").append(chatInfo);
+        $("#messagesList").animate({ scrollTop: $('#messagesList').prop("scrollHeight") }, 1000);
     });
 
 $("#sendButton").click(function () {
@@ -46,3 +47,4 @@ let onConnectionClose = () => {
 };
 
 window.onbeforeunload = onConnectionClose;
+

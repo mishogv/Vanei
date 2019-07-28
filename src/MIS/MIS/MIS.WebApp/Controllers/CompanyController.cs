@@ -18,6 +18,7 @@ namespace MIS.WebApp.Controllers
     using Services.Mapping;
 
     using ViewModels.Input.Company;
+    using ViewModels.View.Chat;
     using ViewModels.View.Company;
 
     public class CompanyController : AuthenticationController
@@ -26,16 +27,19 @@ namespace MIS.WebApp.Controllers
         private readonly UserManager<MISUser> userManager;
         private readonly SignInManager<MISUser> signInManager;
         private readonly IHubContext<ChatHub> context;
+        private readonly IMessageService messageService;
 
         public CompanyController(ICompanyService companyService,
             UserManager<MISUser> userManager,
             SignInManager<MISUser> signInManager,
-            IHubContext<ChatHub> context)
+            IHubContext<ChatHub> context,
+            IMessageService messageService)
         {
             this.companyService = companyService;
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.context = context;
+            this.messageService = messageService;
         }
 
         public async Task<IActionResult> Index()
@@ -56,9 +60,16 @@ namespace MIS.WebApp.Controllers
             return this.View(result);
         }
 
-        public IActionResult Chat(string id)
+        public async Task<IActionResult> Chat(int id)
         {
-            return this.View(model: id);
+            var messages = await this.messageService.GetAll(id);
+            var result = new CompanyChatViewModel
+            {
+                Id = id,
+                Messages = messages.MapTo<ChatHubMessageViewModel[]>()
+            };
+
+            return this.View(result);
         }
 
         public IActionResult Create()
@@ -71,7 +82,7 @@ namespace MIS.WebApp.Controllers
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View();
+                return this.View(input);
             }
 
             var user = await this.userManager.GetUserAsync(this.User);

@@ -12,6 +12,7 @@
             this.Reports = new HashSet<Report>();
             this.WareHouses = new HashSet<WareHouse>();
             this.Invitations = new HashSet<Invitation>();
+            this.Messages = new HashSet<Message>();
         }
 
         [Required]
@@ -32,5 +33,7 @@
         public virtual ICollection<Receipt> Receipts { get; set; }
 
         public virtual ICollection<Invitation> Invitations { get; set; }
+
+        public virtual ICollection<Message> Messages { get; set; }
     }
 }

@@ -12,9 +12,9 @@
 
     using Microsoft.EntityFrameworkCore;
 
-    using Models;
+    using MIS.Models;
 
-    using ServicesModels;
+    using Models;
 
     using ViewModels.Input.Category;
 

@@ -1,4 +1,5 @@
-﻿@model string
+﻿@using MIS.ViewModels.View.Chat
+@model CompanyChatViewModel
 
 @{
     this.ViewData["Title"] = "Chat";
@@ -8,13 +9,19 @@
 
 <div class="row md-form">
     <div id="message-holder" class="col-md-12 mt-3 d-flex justify-content-start">
-        <input type="hidden" id="group-id" value="@Model" />
-        <input class="col-md-5 w-50 ml-4 pl-3" type="text" id="messageInput" placeholder="Message..."/>
-        <input id="sendButton" class="col-md-2 ml-4 btn btn-primary" value="Send" type="submit"/>
+        <input type="hidden" id="group-id" value="@Model.Id" />
+        <input class="col-md-5 w-50 ml-4 pl-3" type="text" id="messageInput" placeholder="Message..." />
+        <input id="sendButton" class="col-md-2 ml-4 btn btn-primary" value="Send" type="submit" />
     </div>
 </div>
 
-<div id="messagesList" class="h5">
+<div id="messagesList" class="h5 chathub">
+    @foreach (var message in Model.Messages.Reverse())
+    {
+    <div class="w-75 bg-mis disabled border-0" rows="6" cols="100" style="resize: none;">
+        @message.Username: @message.Text
+    </div>
+    }
 </div>
 
 @section Scripts {

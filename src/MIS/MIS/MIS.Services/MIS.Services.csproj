@@ -13,7 +13,7 @@
     <ProjectReference Include="..\MIS.Data\MIS.Data.csproj" />
     <ProjectReference Include="..\MIS.Models\MIS.Models.csproj" />
     <ProjectReference Include="..\MIS.Services.Mapping\MIS.Services.Mapping.csproj" />
-    <ProjectReference Include="..\MIS.ServicesModels\MIS.ServicesModels.csproj" />
+    <ProjectReference Include="..\MIS.ServicesModels\MIS.Services.Models.csproj" />
     <ProjectReference Include="..\MIS.ViewModels\MIS.ViewModels.csproj" />
   </ItemGroup>
 

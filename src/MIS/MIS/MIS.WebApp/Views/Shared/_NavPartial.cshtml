@@ -1,9 +1,17 @@
-﻿@using MIS.Common
+﻿@using Microsoft.AspNetCore.Identity
+@using MIS.Common
+@inject UserManager<MISUser> UserManager
+
+@{
+    var user = await this.UserManager.GetUserAsync(this.User);
+}
 
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-primary border-bottom box-shadow mb-3 py-0">
         <div class="container">
-            <a class="col-md-4 col-sm-5 col-xl-3 col-5 col-lg-3  navbar-brand mr-5 bg-primary" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/img/logo2.png" class="img-thumbnail custom-img" /></a>
+            <a class="mr-5 bg-primary " asp-controller="Home" asp-action="Index">
+                <img src="~/img/logo2.png" class="img-thumbnail custom-img" />
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -42,22 +50,32 @@
                                 <a class="nav-link text-white" asp-controller="Report" asp-action="Index">Reports</a>
                             </div>
                         </li>
+
                         <li class="dropdown nav-item">
-                            <li class="dropdown nav-item">
-                                <button class="btn btn-link nav-item dropdown-toggle nav-link text-white" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Invitations
-                                </button>
-                                <div class="dropdown-menu nav-item bg-primary" aria-labelledby="dropdownMenuButton">
-                                    <a class="nav-link text-white" asp-controller="Invitation" asp-action="Index">My invitations</a>
-                                    @if (this.User.IsInRole(GlobalConstants.CompanyOwnerRole))
-                                    {
-                                        <div class="dropdown-divider"></div>
-                                        <a class="nav-link text-white" asp-area="Owner" asp-controller="Invitation" asp-action="Show">Invite employees</a>
-                                    }
-                                </div>
-                            </li>
-                          
+                        <li class="dropdown nav-item">
+                            <button class="btn btn-link nav-item dropdown-toggle nav-link text-white" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Invitations
+                            </button>
+                            <div class="dropdown-menu nav-item bg-primary" aria-labelledby="dropdownMenuButton">
+                                <a class="nav-link text-white" asp-controller="Invitation" asp-action="Index">My invitations</a>
+                                @if (this.User.IsInRole(GlobalConstants.CompanyOwnerRole))
+                                {
+                                    <div class="dropdown-divider"></div>
+                                    <a class="nav-link text-white" asp-area="Owner" asp-controller="Invitation" asp-action="Show">Invite employees</a>
+                                }
+                            </div>
                         </li>
+                        </li>
+
+                        @if (user.CompanyId != null)
+                        {
+                            <li class="nav-item">
+                                <a class="btn btn-link nav-item nav-link text-white" asp-controller="Company" asp-action="Chat" asp-route-id="@user.CompanyId">
+                                    Chat
+                                </a>
+                            </li>
+                        }
+
                     }
                     @if (this.User.IsInRole(GlobalConstants.AdministratorAreaRole))
                     {

@@ -12,7 +12,7 @@
     using Services;
     using Services.Mapping;
 
-    using ServicesModels;
+    using Services.Models;
 
     using ViewModels.Input.Category;
     using ViewModels.View.Category;

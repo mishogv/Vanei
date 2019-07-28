@@ -3,9 +3,9 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Models;
+    using MIS.Models;
 
-    using ServicesModels;
+    using Models;
 
     public interface ICompanyService
     {
@@ -20,6 +20,8 @@
         Task<CompanyServiceModel> GetCompanyAsync(int id);
 
         Task<CompanyServiceModel> RemoveEmployeeAsync(string id);
+
+        Task<CompanyServiceModel> SetCompanyAsync(Message message, int id);
 
         Task<CompanyServiceModel> AddToCompanyAsync(string name, string username);
     }

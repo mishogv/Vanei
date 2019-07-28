@@ -1,6 +1,9 @@
 ﻿namespace MIS.ViewModels.View.Chat
 {
-    public class ChatHubMessageViewModel
+    using Services.Mapping;
+    using Services.Models;
+
+    public class ChatHubMessageViewModel : IMapFrom<MessageServiceModel>
     {
         public string Username { get; set; }
 

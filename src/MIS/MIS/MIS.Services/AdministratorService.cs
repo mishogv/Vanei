@@ -8,6 +8,8 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
 
+    using MIS.Models;
+
     using Models;
 
     public class AdministratorService : IAdministratorService

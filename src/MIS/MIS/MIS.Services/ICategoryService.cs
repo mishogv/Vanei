@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using ServicesModels;
+    using Models;
 
     public interface ICategoryService
     {

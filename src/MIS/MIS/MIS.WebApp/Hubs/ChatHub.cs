@@ -4,54 +4,68 @@
 
     using Ganss.XSS;
 
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.SignalR;
+
+    using Models;
+
+    using Services;
+    using Services.Mapping;
 
     using ViewModels.View.Chat;
 
     public class ChatHub : Hub
     {
-        private readonly IHtmlSanitizer sanitizer;
+        private const string MessageJoinGroupTemplate = "{0} has joined the group {1}";
+        private const string MessageLeftGroupTemplate = "{0} has left the group {1}";
 
-        public ChatHub(IHtmlSanitizer sanitizer)
+        private readonly IHtmlSanitizer sanitizer;
+        private readonly IMessageService messageService;
+        private readonly UserManager<MISUser> userManager;
+
+        public ChatHub(IHtmlSanitizer sanitizer, 
+            IMessageService messageService,
+            UserManager<MISUser> userManager)
         {
             this.sanitizer = sanitizer;
+            this.messageService = messageService;
+            this.userManager = userManager;
         }
 
-        public async Task AddToGroup(string groupName)
+        public async Task AddToGroup(int companyId)
         {
-            await this.Groups.AddToGroupAsync(this.Context.ConnectionId, groupName);
+            var username = this.Context.User.Identity.Name;
+            var message = await this.messageService.CreateAsync(companyId, username, MessageJoinGroupTemplate, true);
 
-            await this.Clients.Group(groupName)
-                         .SendAsync("NewMessage", 
-                             new ChatHubMessageViewModel
-                             {
-                                 Username = this.Context.User.Identity.Name,
-                                 Text = $"{this.Context.User.Identity.Name} has joined the group."
-                             });
+            await this.Groups.AddToGroupAsync(this.Context.ConnectionId, message.Company.Name);
+
+            await this.Clients.Group(message.Company.Name)
+                         .SendAsync("NewMessage", message.MapTo<ChatHubMessageViewModel>());
         }
 
-        public async Task RemoveFromGroup(string groupName)
+        public async Task RemoveFromGroup(int companyId)
         {
-            await this.Groups.RemoveFromGroupAsync(this.Context.ConnectionId, groupName);
+            var username = this.Context.User.Identity.Name;
+            var message = await this.messageService.CreateAsync(companyId, username, MessageLeftGroupTemplate, true);
 
-            await this.Clients.Group(groupName).SendAsync("NewMessage",
-            new ChatHubMessageViewModel
-            {
-                Username = this.Context.User.Identity.Name,
-                Text = $"{this.Context.User.Identity.Name} has left the group."
-            });
+            await this.Groups.AddToGroupAsync(this.Context.ConnectionId, message.Company.Name);
+
+            await this.Groups.RemoveFromGroupAsync(this.Context.ConnectionId, message.Company.Name);
+
+            await this.Clients.Group(message.Company.Name)
+                      .SendAsync("NewMessage", message.MapTo<ChatHubMessageViewModel>());
         }
 
-        public async Task Send(string group, string message)
+        public async Task Send(int companyId, string message)
         {
+            var username = this.Context.User.Identity.Name;
             var sanitizedMessage = this.sanitizer.Sanitize(message);
 
-            await this.Clients.Group(group).SendAsync("NewMessage",
-                new ChatHubMessageViewModel
-                {
-                    Username = this.Context.User.Identity.Name,
-                    Text = sanitizedMessage,
-                });
+            var generatedMessage = await this.messageService.CreateAsync(companyId, username, sanitizedMessage, false);
+
+
+            await this.Clients.Group(generatedMessage.Company.Name)
+                      .SendAsync("NewMessage", generatedMessage.MapTo<ChatHubMessageViewModel>());
         }
     }
 }

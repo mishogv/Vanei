@@ -3,7 +3,8 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Models;
+    using MIS.Models;
+
 
     public interface IAdministratorService
     {

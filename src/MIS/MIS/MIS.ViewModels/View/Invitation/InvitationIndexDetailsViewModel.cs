@@ -2,7 +2,7 @@
 {
     using Services.Mapping;
 
-    using ServicesModels;
+    using Services.Models;
 
     public class InvitationIndexDetailsViewModel : IMapFrom<InvitationServiceModel>
     {

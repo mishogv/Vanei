@@ -4,7 +4,7 @@
 
     using Services.Mapping;
 
-    using ServicesModels;
+    using Services.Models;
 
     public class DetailsCompanyViewModel : IMapFrom<CompanyServiceModel>
     {

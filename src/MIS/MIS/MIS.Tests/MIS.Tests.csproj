@@ -18,7 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MIS.Data\MIS.Data.csproj" />
     <ProjectReference Include="..\MIS.Models\MIS.Models.csproj" />
-    <ProjectReference Include="..\MIS.ServicesModels\MIS.ServicesModels.csproj" />
+    <ProjectReference Include="..\MIS.ServicesModels\MIS.Services.Models.csproj" />
     <ProjectReference Include="..\MIS.Services\MIS.Services.csproj" />
     <ProjectReference Include="..\MIS.WebApp\MIS.WebApp.csproj" />
   </ItemGroup>

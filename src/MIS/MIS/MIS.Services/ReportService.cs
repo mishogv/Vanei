@@ -11,9 +11,9 @@
 
     using Microsoft.EntityFrameworkCore;
 
-    using Models;
+    using MIS.Models;
 
-    using ServicesModels;
+    using Models;
 
     public class ReportService : IReportService
     {

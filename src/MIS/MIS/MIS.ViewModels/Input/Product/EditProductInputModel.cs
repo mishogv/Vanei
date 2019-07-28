@@ -7,7 +7,7 @@
 
     using Services.Mapping;
 
-    using ServicesModels;
+    using Services.Models;
 
     public class EditProductInputModel : IMapFrom<ProductServiceModel>
     {

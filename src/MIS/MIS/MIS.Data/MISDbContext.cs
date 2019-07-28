@@ -1,6 +1,5 @@
 ﻿namespace MIS.Data
 {
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +16,8 @@
         }
 
         public DbSet<Product> Products { get; set; } 
+
+        public DbSet<Message> Messages { get; set; } 
 
         public DbSet<Receipt> Receipts { get; set; } 
 

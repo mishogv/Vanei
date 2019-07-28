@@ -29,7 +29,7 @@
     using Services;
     using Services.Mapping;
 
-    using ServicesModels;
+    using Services.Models;
 
     using ViewModels.View.AdministratorManage;
 
@@ -96,6 +96,7 @@
             services.AddScoped<IWareHouseService, WareHouseService>();
             services.AddScoped<IAdministratorService, AdministratorService>();
             services.AddScoped<IInvitationService, InvitationService>();
+            services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<IHtmlSanitizer, HtmlSanitizer>();
             services.AddTransient<IEmailSender, EmailSender>();
 

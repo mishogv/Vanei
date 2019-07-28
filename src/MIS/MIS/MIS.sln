@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MIS.Common", "MIS.Common\MI
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MIS.Tests", "MIS.Tests\MIS.Tests.csproj", "{788A525C-4D9F-4F92-9D52-A6A88C7943A4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MIS.ServicesModels", "MIS.ServicesModels\MIS.ServicesModels.csproj", "{5C9D8EEA-8458-4EBD-A0E6-7C66E1A3A166}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MIS.Services.Models", "MIS.ServicesModels\MIS.Services.Models.csproj", "{5C9D8EEA-8458-4EBD-A0E6-7C66E1A3A166}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MIS.Services.Mapping", "MIS.Services.Mapping\MIS.Services.Mapping.csproj", "{5910CD32-6FDB-446D-AA26-4ECAECA8F1BA}"
 EndProject

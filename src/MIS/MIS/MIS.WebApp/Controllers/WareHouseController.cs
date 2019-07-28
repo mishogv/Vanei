@@ -13,7 +13,7 @@ namespace MIS.WebApp.Controllers
     using Services;
     using Services.Mapping;
 
-    using ServicesModels;
+    using Services.Models;
 
     using ViewModels.Input.WareHouse;
     using ViewModels.View.Product;

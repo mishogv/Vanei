@@ -1,5 +1,7 @@
-﻿namespace MIS.ServicesModels
+﻿namespace MIS.Services.Models
 {
+    using MIS.Models;
+
     using Models;
 
     using Services.Mapping;

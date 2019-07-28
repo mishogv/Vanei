@@ -5,7 +5,7 @@
 
     using Services.Mapping;
 
-    using ServicesModels;
+    using Services.Models;
 
     public class DetailsReportViewModel : IMapFrom<ReportServiceModel>
     {

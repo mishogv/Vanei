@@ -4,8 +4,6 @@
 
     using Models;
 
-    using ServicesModels;
-
     public interface IReceiptService
     {
         Task<ReceiptServiceModel> GetCurrentOpenedReceiptByUsernameAsync(string username);

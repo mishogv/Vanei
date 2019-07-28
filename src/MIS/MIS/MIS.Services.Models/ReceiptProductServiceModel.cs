@@ -1,6 +1,8 @@
-﻿namespace MIS.ServicesModels
+﻿namespace MIS.Services.Models
 {
     using System;
+
+    using MIS.Models;
 
     using Models;
 

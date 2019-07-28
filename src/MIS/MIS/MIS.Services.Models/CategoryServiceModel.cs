@@ -1,10 +1,10 @@
-﻿namespace MIS.ServicesModels
+﻿namespace MIS.Services.Models
 {
     using System.Collections.Generic;
 
-    using Models;
+    using MIS.Models;
 
-    using Services.Mapping;
+    using Mapping;
 
     public class CategoryServiceModel : IMapFrom<Category>
     {
