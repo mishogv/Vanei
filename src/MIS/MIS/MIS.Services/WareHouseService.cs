@@ -1,10 +1,13 @@
 ﻿namespace MIS.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
     using AutoMapper.QueryableExtensions;
+
+    using Common.Extensions;
 
     using Data;
 
@@ -115,6 +118,16 @@
             await this.dbContext.SaveChangesAsync();
 
             return currentWarehouse.MapTo<WareHouseServiceModel>();
+        }
+
+        public async Task<bool> AddCategoryAsync(Category category, int warehouseId)
+        {
+            var warehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync(x => x.Id == warehouseId);
+            warehouse.ThrowIfNull(nameof(warehouse));
+            warehouse.Categories.Add(category);
+            var result = await this.dbContext.SaveChangesAsync();
+
+            return result > 0;
         }
 
         public async Task<WareHouseServiceModel> GetWareHouseByUserNameAsync(string username)

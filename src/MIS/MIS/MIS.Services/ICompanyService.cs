@@ -22,7 +22,5 @@
         Task<CompanyServiceModel> RemoveEmployeeAsync(string id);
 
         Task<CompanyServiceModel> SetCompanyAsync(Message message, int id);
-
-        Task<CompanyServiceModel> AddToCompanyAsync(string name, string username);
     }
 }

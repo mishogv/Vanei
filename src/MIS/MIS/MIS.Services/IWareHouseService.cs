@@ -4,6 +4,8 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using MIS.Models;
+
     using Models;
 
     using ViewModels.Input.Category;
@@ -19,6 +21,8 @@
         Task<WareHouseServiceModel> EditAsync(int id, string name);
 
         Task<WareHouseServiceModel> MakeFavoriteAsync(int id, int? companyId);
+
+        Task<bool> AddCategoryAsync(Category category, int warehouseId);
 
         Task<WareHouseServiceModel> GetWareHouseByUserNameAsync(string username);
 

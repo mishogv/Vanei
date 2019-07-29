@@ -83,7 +83,7 @@
                     .AddFacebook(options =>
                     {
                         options.AppId = this.Configuration["Facebook:Key"];
-                        options.AppSecret = this.Configuration["Facebook:Secret"];
+                        options.AppSecret = this.Configuration["Facebook:Secret"];  
                     });
 
             #region Custom services
@@ -97,6 +97,7 @@
             services.AddScoped<IAdministratorService, AdministratorService>();
             services.AddScoped<IInvitationService, InvitationService>();
             services.AddScoped<IMessageService, MessageService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IHtmlSanitizer, HtmlSanitizer>();
             services.AddTransient<IEmailSender, EmailSender>();
 

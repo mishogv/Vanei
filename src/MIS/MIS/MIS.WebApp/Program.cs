@@ -17,6 +17,7 @@
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseApplicationInsights()
                    .ConfigureAppConfiguration((hosting, config) =>
                        {
                            config.SetBasePath(Directory.GetCurrentDirectory());

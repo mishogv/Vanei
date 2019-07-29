@@ -30,7 +30,12 @@
         public async Task<IActionResult> Index()
         {
             var user = await this.userManager.GetUserAsync(this.User);
-            //TODO IF NULL
+
+            if (user.CompanyId == null)
+            {
+                return this.RedirectToAction("Create", "Company");
+            }
+
             var categories = await this.categoryService.GetAllByCompanyIdAsync((int) user.CompanyId);
 
             var categoryServiceModels = categories as CategoryServiceModel[] ?? categories.ToArray();
