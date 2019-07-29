@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
 
     using Common;
+    using Common.Extensions;
 
     using Data;
 
@@ -17,21 +18,22 @@
 
     using Models;
 
-    using ViewModels.View.Invitation;
-
     public class InvitationService : IInvitationService
     {
         private readonly MISDbContext dbContext;
         private readonly UserManager<MISUser> userManager;
         private readonly ICompanyService companyService;
+        private readonly IUserService userService;
 
         public InvitationService(MISDbContext dbContext,
             UserManager<MISUser> userManager,
-            ICompanyService companyService)
+            ICompanyService companyService,
+            IUserService userService)
         {
             this.dbContext = dbContext;
             this.userManager = userManager;
             this.companyService = companyService;
+            this.userService = userService;
         }
 
         public async Task<IEnumerable<InvitationServiceModel>> GetAllAsync(string id)
@@ -46,32 +48,15 @@
 
         public async Task<InvitationServiceModel> InviteAsync(int? companyId, string userId)
         {
-            var company = await this.dbContext.Companies.FirstOrDefaultAsync(x => x.Id == companyId);
-            var user = await this.dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId);
+            var invitation = new Invitation();
 
-            //TODO : IF NULL
-
-            var invitation = new Invitation
-            {
-                Company = company,
-                User = user
-            };
+            await this.companyService.SetCompanyAsync(invitation, (int)companyId);
+            await this.userService.SetInvitationAsync(invitation, userId);
 
             await this.dbContext.AddAsync(invitation);
             await this.dbContext.SaveChangesAsync();
 
             return invitation.MapTo<InvitationServiceModel>();
-        }
-
-        public async Task<IEnumerable<InvitationUserViewModel>> GetAllUsersAsync()
-        {
-            var users = await this.dbContext.Users
-                       .Include(x => x.Company)
-                       .Include(x => x.Invitations)
-                       .To<InvitationUserViewModel>()
-                       .ToListAsync();
-
-            return users;
         }
 
         public async Task<InvitationServiceModel> AcceptInvitationAsync(int invitationId, bool isOwner)
@@ -84,6 +69,8 @@
                                        .Include(x => x.User)
                                        .ThenInclude(x => x.Company)
                                        .FirstOrDefaultAsync(x => x.Id == invitationId);
+
+            invitation.ThrowIfNull(nameof(invitation));
 
             var user = invitation.User;
 

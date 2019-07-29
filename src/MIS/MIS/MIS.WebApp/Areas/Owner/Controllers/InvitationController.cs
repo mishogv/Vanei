@@ -21,18 +21,27 @@
     {
         private readonly IInvitationService invitationService;
         private readonly UserManager<MISUser> userManager;
+        private readonly IUserService userService;
 
         public InvitationController(IInvitationService invitationService,
-            UserManager<MISUser> userManager)
+            UserManager<MISUser> userManager,
+            IUserService userService)
         {
             this.invitationService = invitationService;
             this.userManager = userManager;
+            this.userService = userService;
         }
 
         public async Task<IActionResult> Show()
         {
             var currentUser = await this.userManager.GetUserAsync(this.User);
-            var users = await this.invitationService.GetAllUsersAsync();
+
+            if (currentUser.CompanyId == null)
+            {
+                return this.RedirectToAction("Create", "Company");
+            }
+
+            var users = await this.userService.GetAllUsersAsync();
 
             foreach (var user in users)
             {

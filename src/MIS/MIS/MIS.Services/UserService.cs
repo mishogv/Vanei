@@ -1,14 +1,19 @@
 ﻿namespace MIS.Services
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Common.Extensions;
 
     using Data;
 
+    using Mapping;
+
     using Microsoft.EntityFrameworkCore;
 
     using MIS.Models;
+
+    using ViewModels.View.Invitation;
 
     public class UserService : IUserService
     {
@@ -27,5 +32,27 @@
 
             company.Employees.Add(user);
         }
+
+        public async Task SetInvitationAsync(Invitation invitation, string id)
+        {
+            var user = await this.dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
+
+            user.ThrowIfNull(nameof(user));
+
+            invitation.User = user;
+        }
+
+
+        public async Task<IEnumerable<InvitationUserViewModel>> GetAllUsersAsync()
+        {
+            var users = await this.dbContext.Users
+                                  .Include(x => x.Company)
+                                  .Include(x => x.Invitations)
+                                  .To<InvitationUserViewModel>()
+                                  .ToListAsync();
+
+            return users;
+        }
+
     }
 }
