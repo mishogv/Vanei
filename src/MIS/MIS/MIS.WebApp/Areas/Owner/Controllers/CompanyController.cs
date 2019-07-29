@@ -38,6 +38,11 @@
         {
             var company = await this.companyService.GetCompanyAsync(id);
 
+            if (company == null)
+            {
+                return this.NotFound();
+            }
+
             return this.View(company.MapTo<EditCompanyInputModel>());
         }
 

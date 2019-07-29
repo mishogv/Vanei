@@ -1,13 +1,8 @@
 ﻿namespace MIS.Services
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
-    using AutoMapper.QueryableExtensions;
-
-    using Common.Extensions;
 
     using Data;
 
@@ -18,8 +13,6 @@
     using MIS.Models;
 
     using Models;
-
-    using ViewModels.Input.Category;
 
     public class WareHouseService : IWareHouseService
     {
@@ -53,15 +46,17 @@
         {
             var warehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync(x => x.Id == id);
 
-            warehouse.ThrowIfNull(nameof(warehouse));
-            return warehouse.MapTo<WareHouseServiceModel>();
+            return warehouse?.MapTo<WareHouseServiceModel>();
         }
 
         public async Task<WareHouseServiceModel> DeleteAsync(int id)
         {
             var warehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync(x => x.Id == id);
 
-            warehouse.ThrowIfNull(nameof(warehouse));
+            if (warehouse == null)
+            {
+                return null;
+            }
 
             var newWarehouse = new WareHouse();
             this.dbContext.Remove(warehouse);
@@ -87,7 +82,11 @@
         {
             var warehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync(x => x.Id == id);
 
-            warehouse.ThrowIfNull(nameof(warehouse));
+            if (warehouse == null)
+            {
+                return null;
+            }
+
             warehouse.Name = name;
 
             this.dbContext.Update(warehouse);
@@ -120,7 +119,12 @@
         public async Task<bool> AddCategoryAsync(Category category, int warehouseId)
         {
             var warehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync(x => x.Id == warehouseId);
-            warehouse.ThrowIfNull(nameof(warehouse));
+
+            if (warehouse == null)
+            {
+                return false;
+            }
+
             warehouse.Categories.Add(category);
             var result = await this.dbContext.SaveChangesAsync();
 

@@ -3,8 +3,6 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using Common.Extensions;
-
     using Data;
 
     using Mapping;
@@ -27,17 +25,13 @@
         public async Task AddToCompanyAsync(Company company, string id)
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
-
-            user.ThrowIfNull(nameof(user));
-
+            
             company.Employees.Add(user);
         }
 
         public async Task SetInvitationAsync(Invitation invitation, string id)
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
-
-            user.ThrowIfNull(nameof(user));
 
             invitation.User = user;
         }

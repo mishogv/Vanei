@@ -12,8 +12,6 @@
 
         Task<bool> RemoveAdministratorByIdAsync(string id);
 
-        Task<string> GetUserRoleAsync(MISUser user);
-
         IQueryable<MISUser> GetAllUsers();
     }
 }

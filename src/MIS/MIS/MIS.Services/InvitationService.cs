@@ -5,7 +5,6 @@
     using System.Threading.Tasks;
 
     using Common;
-    using Common.Extensions;
 
     using Data;
 
@@ -69,8 +68,10 @@
                                        .Include(x => x.User)
                                        .ThenInclude(x => x.Company)
                                        .FirstOrDefaultAsync(x => x.Id == invitationId);
-
-            invitation.ThrowIfNull(nameof(invitation));
+            if (invitation == null)
+            {
+                return null;
+            }
 
             var user = invitation.User;
 

@@ -1,10 +1,7 @@
 ﻿namespace MIS.Services
 {
-    using System;
     using System.Linq;
     using System.Threading.Tasks;
-
-    using Common.Extensions;
 
     using Data;
 
@@ -44,8 +41,10 @@
         public async Task<CompanyServiceModel> EditAsync(int id, string name, string address)
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync(x => x.Id == id);
-
-            company.ThrowIfNull(nameof(company));
+            if (company == null)
+            {
+                return null;
+            }
 
             company.Name = name;
             company.Address = address;
@@ -83,9 +82,8 @@
             var company = await this.dbContext.Companies
                                     .Include(x => x.Employees)
                                     .FirstOrDefaultAsync(x => x.Id == id);
-            company.ThrowIfNull(nameof(company));
 
-            return company.MapTo<CompanyServiceModel>();
+            return company?.MapTo<CompanyServiceModel>();
         }
 
         public async Task<CompanyServiceModel> RemoveEmployeeAsync(string id)
@@ -95,9 +93,12 @@
                                      .SelectMany(x => x.Employees)
                                      .FirstOrDefaultAsync(x => x.Id == id);
 
-            employee.ThrowIfNull(nameof(employee));
+            var company = employee?.Company;
 
-            var company = employee.Company;
+            if (company == null)
+            {
+                return null;
+            }
 
             company.Employees.Remove(employee);
             this.dbContext.Update(company);
@@ -109,8 +110,10 @@
         public async Task<CompanyServiceModel> SetCompanyAsync(Message message, int id)
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync(x => x.Id == id);
-
-            company.ThrowIfNull(nameof(company));
+            if (company == null)
+            {
+                return null;
+            }
 
             message.Company = company;
 
@@ -120,8 +123,10 @@
         public async Task<CompanyServiceModel> SetCompanyAsync(Report report, int id)
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync(x => x.Id == id);
-
-            company.ThrowIfNull(nameof(company));
+            if (company == null)
+            {
+                return null;
+            }
 
             report.Company = company;
 
@@ -131,8 +136,10 @@
         public async Task<CompanyServiceModel> SetCompanyAsync(Invitation invitation, int id)
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync(x => x.Id == id);
-
-            company.ThrowIfNull(nameof(company));
+            if (company == null)
+            {
+                return null;
+            }
 
             invitation.Company = company;
 
@@ -145,8 +152,10 @@
                                     .Companies
                                     .Include(x => x.WareHouses)
                                     .FirstOrDefaultAsync(x => x.Id == id);
-
-            company.ThrowIfNull(nameof(company));
+            if (company == null)
+            {
+                return null;
+            }
 
             if (company.WareHouses.Count(x => x.IsFavorite) == 0)
             {

@@ -4,10 +4,6 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using AutoMapper.QueryableExtensions;
-
-    using Common.Extensions;
-
     using Data;
 
     using Mapping;
@@ -57,15 +53,16 @@
             var product = await this.db.Products
                               .FirstOrDefaultAsync(x => x.Id == id);
 
-            product.ThrowIfNull(nameof(product));
-
-            return product.MapTo<ProductServiceModel>();
+            return product?.MapTo<ProductServiceModel>();
         }
 
         public async Task<ProductServiceModel> DeleteAsync(int id)
         {
             var product = await this.db.Products.FirstOrDefaultAsync(x => x.Id == id);
-            product.ThrowIfNull(nameof(product));
+            if (product == null)
+            {
+                return null;
+            }
 
             this.db.Remove(product);
             await this.db.SaveChangesAsync();
@@ -77,7 +74,10 @@
         {
             var product = await this.db.Products
                                     .FirstOrDefaultAsync(x => x.Id == id);
-            product.ThrowIfNull(nameof(product));
+            if (product == null)
+            {
+                return null;
+            }
 
             product.Name = name;
             product.Price = price;

@@ -5,8 +5,6 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Common.Extensions;
-
     using Data;
 
     using Mapping;
@@ -48,9 +46,7 @@
                                    .ThenInclude(x => x.Receipt)
                                    .FirstOrDefaultAsync(x => x.Id == id);
 
-            report.ThrowIfNull(nameof(report));
-
-            return report.MapTo<ReportServiceModel>();
+            return report?.MapTo<ReportServiceModel>();
         }
 
         public async Task<ReportServiceModel> DeleteReportAsync(int id)
@@ -58,8 +54,10 @@
             var report = await this.dbContext.Reports
                                    .Include(x => x.ReceiptReports)
                                    .FirstOrDefaultAsync(x => x.Id == id);
-
-            report.ThrowIfNull(nameof(report));
+            if (report == null)
+            {
+                return null;
+            }
 
             this.dbContext.RemoveRange(report.ReceiptReports);
 

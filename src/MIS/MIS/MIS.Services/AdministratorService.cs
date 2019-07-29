@@ -10,8 +10,6 @@
 
     using MIS.Models;
 
-    using Models;
-
     public class AdministratorService : IAdministratorService
     {
         private readonly UserManager<MISUser> userManager;
@@ -68,15 +66,6 @@
             }
 
             return true;
-        }
-
-        public async Task<string> GetUserRoleAsync(MISUser user)
-        {
-            var roles = await this.userManager.GetRolesAsync(user);
-
-            var firstRole = roles.FirstOrDefault();
-
-            return firstRole;
         }
 
         public IQueryable<MISUser> GetAllUsers()

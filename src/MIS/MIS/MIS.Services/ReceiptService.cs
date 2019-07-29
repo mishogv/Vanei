@@ -33,6 +33,7 @@
                            .Include(x => x.Company)
                            .FirstOrDefaultAsync(x => x.UserName == username);
 
+
             var receipt = user.Receipts.FirstOrDefault(x => x.IssuedOn == null);
 
             if (receipt == null)

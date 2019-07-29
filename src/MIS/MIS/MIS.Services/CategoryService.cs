@@ -1,13 +1,10 @@
 ﻿namespace MIS.Services
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
     using AutoMapper.QueryableExtensions;
-
-    using Common.Extensions;
 
     using Data;
 
@@ -48,7 +45,10 @@
         {
             var category = await this.dbContext.Categories.FirstOrDefaultAsync(x => x.Id == id);
 
-            category.ThrowIfNull(nameof(category));
+            if (category == null)
+            {
+                return null;
+            }
 
             category.Name = name;
             this.dbContext.Update(category);
@@ -61,7 +61,10 @@
         {
             var category = await this.dbContext.Categories.FirstOrDefaultAsync(x => x.Id == id);
 
-            category.ThrowIfNull(nameof(category));
+            if (category == null)
+            {
+                return null;
+            }
 
             this.dbContext.Remove(category);
             await this.dbContext.SaveChangesAsync();
@@ -71,19 +74,20 @@
 
         public async Task<CategoryServiceModel> GetCategoryAsync(int id)
         {
-            // TODO : if null
             var category = await this.dbContext.Categories.FirstOrDefaultAsync(x => x.Id == id);
 
-            category.ThrowIfNull(nameof(category));
-
-            return category.MapTo<CategoryServiceModel>();
+            return category?.MapTo<CategoryServiceModel>();
         }
 
         public async Task<CategoryServiceModel> SetCategoryAsync(Product product, int id)
         {
             var category = await this.dbContext.Categories.Include(x => x.WareHouse).FirstOrDefaultAsync(x => x.Id == id);
 
-            category.ThrowIfNull(nameof(category));
+            if (category == null)
+            {
+                return null;
+            }
+
             product.Category = category;
             return category.MapTo<CategoryServiceModel>();
         }

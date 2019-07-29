@@ -19,17 +19,19 @@
     {
         private readonly IAdministratorService administratorService;
         private readonly UserManager<MISUser> userManager;
+        private readonly SignInManager<MISUser> signInManager;
 
-        public AdministratorManageController(IAdministratorService administratorService, UserManager<MISUser> userManager)
+        public AdministratorManageController(IAdministratorService administratorService,
+            UserManager<MISUser> userManager,
+            SignInManager<MISUser> signInManager)
         {
             this.administratorService = administratorService;
             this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
         public async Task<IActionResult> Index()
         {
-            //TODO : Walk around for exception, refactor it!
-
             var dict = new Dictionary<MISUser, string>();
             var users = this.administratorService
                             .GetAllUsers()
@@ -37,9 +39,9 @@
 
             foreach (var user in users)
             {
-                var role = await this.administratorService.GetUserRoleAsync(user);
-                var roleToAdd = role ?? GlobalConstants.UserRoleName;
-                dict.Add(user, roleToAdd);
+                var roles = await this.userManager.GetRolesAsync(user);
+                var rolesToAdd = roles.Count == 0 ? GlobalConstants.UserRoleName : string.Join(", ", roles);
+                dict.Add(user, rolesToAdd);
             }
 
             var result = new List<AdministratorShowUserViewModel>();

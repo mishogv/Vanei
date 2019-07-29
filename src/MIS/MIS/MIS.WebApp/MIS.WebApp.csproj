@@ -8,6 +8,13 @@
     <ApplicationInsightsAnnotationResourceId>/subscriptions/1035dc05-b882-4101-9249-099ea481752d/resourcegroups/missoftware/providers/microsoft.insights/components/missoftware</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Areas\Administrator\Views\Administrator\**" />
+    <Content Remove="Areas\Administrator\Views\Administrator\**" />
+    <EmbeddedResource Remove="Areas\Administrator\Views\Administrator\**" />
+    <None Remove="Areas\Administrator\Views\Administrator\**" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="HtmlSanitizer" Version="4.0.217" />
@@ -28,11 +35,6 @@
     <ProjectReference Include="..\MIS.Services.Mapping\MIS.Services.Mapping.csproj" />
     <ProjectReference Include="..\MIS.Services\MIS.Services.csproj" />
     <ProjectReference Include="..\MIS.ViewModels\MIS.ViewModels.csproj" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <Folder Include="Areas\Administrator\Views\Administrator\" />
   </ItemGroup>
 
 
