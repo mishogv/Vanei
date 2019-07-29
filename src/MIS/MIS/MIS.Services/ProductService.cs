@@ -70,6 +70,20 @@
             return product.MapTo<ProductServiceModel>();
         }
 
+        public async Task<ProductServiceModel> SetProductAsync(ReceiptProduct receiptProduct, int id)
+        {
+            var product = await this.db.Products.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (product == null)
+            {
+                return null;
+            }
+
+            receiptProduct.Product = product;
+
+            return product.MapTo<ProductServiceModel>();
+        }
+
         public async Task<ProductServiceModel> UpdateAsync(int id, string name, decimal price, double quantity, string barcode, int categoryId)
         {
             var product = await this.db.Products

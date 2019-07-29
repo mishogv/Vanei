@@ -1,5 +1,6 @@
 ﻿namespace MIS.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -34,6 +35,20 @@
             var user = await this.dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
 
             invitation.User = user;
+        }
+
+        public async Task<int> SetReceiptAsync(Receipt receipt, string username)
+        {
+            var user = await this.dbContext.Users.FirstOrDefaultAsync(x => x.UserName == username);
+
+            if (user?.CompanyId == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            receipt.User = user;
+
+            return (int)user.CompanyId;
         }
 
 

@@ -28,5 +28,7 @@
         Task<CompanyServiceModel> SetCompanyAsync(Invitation invitation, int id);
 
         Task<CompanyServiceModel> SetCompanyAsync(WareHouse wareHouse, int id);
+
+        Task<CompanyServiceModel> SetCompanyAsync(Receipt receipt, int id);
     }
 }

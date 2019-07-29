@@ -3,6 +3,8 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using MIS.Models;
+
     using Models;
 
     using ViewModels.View.Product;
@@ -14,6 +16,8 @@
         Task<ProductServiceModel> GetProductAsync(int id);
 
         Task<ProductServiceModel> DeleteAsync(int id);
+
+        Task<ProductServiceModel> SetProductAsync(ReceiptProduct product, int id);
 
         Task<ProductServiceModel> UpdateAsync(int id, string name, decimal price, double quantity, string barcode, int categoryId);
 

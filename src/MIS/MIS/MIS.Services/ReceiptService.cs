@@ -18,34 +18,38 @@
     public class ReceiptService : IReceiptService
     {
         private readonly MISDbContext dbContext;
+        private readonly IUserService userService;
+        private readonly ICompanyService companyService;
+        private readonly IProductService productService;
 
-        public ReceiptService(MISDbContext dbContext)
+        public ReceiptService(MISDbContext dbContext,
+            IUserService userService, 
+            ICompanyService companyService,
+            IProductService productService)
         {
             this.dbContext = dbContext;
+            this.userService = userService;
+            this.companyService = companyService;
+            this.productService = productService;
         }
 
         public async Task<ReceiptServiceModel> GetCurrentOpenedReceiptByUsernameAsync(string username)
         {
-            var user = await this.dbContext.Users
-                           .Include(x => x.Receipts)
-                           .ThenInclude(x => x.ReceiptProducts)
-                           .ThenInclude(x => x.Product)
-                           .Include(x => x.Company)
-                           .FirstOrDefaultAsync(x => x.UserName == username);
-
-
-            var receipt = user.Receipts.FirstOrDefault(x => x.IssuedOn == null);
+            var receipt = await this.dbContext.Receipts
+                              .Include(x => x.User)
+                              .Include(x => x.ReceiptProducts)
+                              .ThenInclude(x => x.Product)
+                              .Where(x => x.User.UserName == username && x.IssuedOn == null)
+                              .FirstOrDefaultAsync();
 
             if (receipt == null)
             {
-                receipt = new Receipt()
-                {
-                    Company = user.Company,
-                    User = user
-                };
+                receipt = new Receipt();
+
+                var companyId = await this.userService.SetReceiptAsync(receipt, username);
+                await this.companyService.SetCompanyAsync(receipt, companyId);
 
                 await this.dbContext.AddAsync(receipt);
-
                 await this.dbContext.SaveChangesAsync();
             }
 
@@ -56,28 +60,28 @@
 
         public async Task<ReceiptProductServiceModel> AddProductToOpenedReceiptByUsernameAsync(string username, int id, double quantity)
         {
-            var user = await this.dbContext.Users
-                                 .Include(x => x.Receipts)
-                                 .Include(x => x.Company)
-                                 .FirstOrDefaultAsync(x => x.UserName == username);
-
-            var receipt = user.Receipts.FirstOrDefault(x => x.IssuedOn == null);
+            var receipt = await this.dbContext.Receipts
+                                    .Include(x => x.User)
+                                    .Include(x => x.ReceiptProducts)
+                                    .ThenInclude(x => x.Product)
+                                    .Where(x => x.User.UserName == username && x.IssuedOn == null)
+                                    .FirstOrDefaultAsync();
 
             if (receipt == null)
             {
                 return null;
             }
 
-            var product = await this.dbContext.Products.FirstOrDefaultAsync(x => x.Id == id);
-
             var receiptProduct = new ReceiptProduct
             {
                 AddedOn = DateTime.UtcNow,
                 Receipt = receipt,
-                Product = product,
                 Quantity = quantity,
-                Total = (decimal) quantity * product.Price
             };
+
+            await this.productService.SetProductAsync(receiptProduct, id);
+
+            receiptProduct.Total = (decimal) quantity * receiptProduct.Product.Price;
 
             await this.dbContext.AddAsync(receiptProduct);
             await this.dbContext.SaveChangesAsync();
@@ -87,14 +91,12 @@
 
         public async Task<ReceiptServiceModel> FinishCurrentOpenReceiptByUsernameAsync(string username)
         {
-            var user = await this.dbContext.Users
-                                 .Include(x => x.Receipts)
-                                 .ThenInclude(x => x.ReceiptProducts)
-                                 .ThenInclude(x => x.Product)
-                                 .Include(x => x.Company)
-                                 .FirstOrDefaultAsync(x => x.UserName == username);
-
-            var receipt = user.Receipts.FirstOrDefault(x => x.IssuedOn == null);
+            var receipt = await this.dbContext.Receipts
+                                    .Include(x => x.User)
+                                    .Include(x => x.ReceiptProducts)
+                                    .ThenInclude(x => x.Product)
+                                    .Where(x => x.User.UserName == username && x.IssuedOn == null)
+                                    .FirstOrDefaultAsync();
 
             if (receipt == null || receipt.ReceiptProducts.Count == 0)
             {
@@ -120,14 +122,12 @@
 
         public async Task<ReceiptServiceModel> DeleteReceiptAsync(string username)
         {
-            var user = await this.dbContext.Users
-                                 .Include(x => x.Receipts)
-                                 .ThenInclude(x => x.ReceiptProducts)
-                                 .ThenInclude(x => x.Product)
-                                 .Include(x => x.Company)
-                                 .FirstOrDefaultAsync(x => x.UserName == username);
-
-            var receipt = user.Receipts.FirstOrDefault(x => x.IssuedOn == null);
+            var receipt = await this.dbContext.Receipts
+                                    .Include(x => x.User)
+                                    .Include(x => x.ReceiptProducts)
+                                    .ThenInclude(x => x.Product)
+                                    .Where(x => x.User.UserName == username && x.IssuedOn == null)
+                                    .FirstOrDefaultAsync();
 
             if (receipt == null)
             {
@@ -162,10 +162,13 @@
                                     .Include(x => x.ReceiptProducts)
                                     .FirstOrDefaultAsync(x => x.Id == id);
 
+            if (receipt == null)
+            {
+                return null;
+            }
+
             this.dbContext.RemoveRange(receipt.ReceiptReports);
             this.dbContext.RemoveRange(receipt.ReceiptProducts);
-            //TODO : if null
-
             this.dbContext.Remove(receipt);
             await this.dbContext.SaveChangesAsync();
 

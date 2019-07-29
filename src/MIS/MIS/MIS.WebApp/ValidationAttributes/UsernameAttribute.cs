@@ -9,7 +9,6 @@
 
     public class UsernameAttribute : ValidationAttribute
     {
-
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var db = validationContext.GetService<MISDbContext>();

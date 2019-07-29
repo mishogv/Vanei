@@ -32,7 +32,6 @@
 
         public async Task<ActionResult<CreateReceiptViewModel>> LoadReceipt()
         {
-            //TODO : refactor use automapper
             var openedReceipt = await this.receiptService.GetCurrentOpenedReceiptByUsernameAsync(this.User.Identity.Name);
             var result = new CreateReceiptViewModel()
             {

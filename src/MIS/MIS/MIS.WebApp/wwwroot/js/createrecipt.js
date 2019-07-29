@@ -1,8 +1,5 @@
-﻿//Find product and load current product information
-//And create new row
-//TODO : Make ajax and load data from server. disable product when is already added
-var products = [];
-var productsNames = [];
+﻿var products = [];
+var productsForAutocomplete = [];
 var index = { index: -1 };
 var numberInSequence = { number: -1 };
 var total = { total: 0 };
@@ -11,27 +8,24 @@ function loadData(num) {
     numberInSequence.number = num;
     var selector = '#product-name-number-' + numberInSequence.number;
 
-    ajaxLoadData(products, productsNames);
+    autoCompleteShowData(productsForAutocomplete, selector);
 
-    autoCompleteShowData(productsNames, selector);
-
-    setData(productsNames, selector, products, index, numberInSequence);
+    setData(productsForAutocomplete, selector, products, index, numberInSequence);
 }
 
-function ajaxLoadData(products, productsNames) {
-    if (products.length === 0) {
-        $(function () {
-            getAllProducts(products, productsNames);
-        });
-    }
-}
-
-function getAllProducts(products, productsNames) {
+function getAllProducts(products, productsForAutocomplete) {
     $.ajax({
         url: "/Receipt/AllPorducts",
         success: function load(data) {
+            debugger;
+            
             for (let product of data) {
-                productsNames.push(product.name);
+                let formatProduct = {
+                    value : product.name,
+                    desc : product.id
+                }
+
+                productsForAutocomplete.push(formatProduct);
             }
 
             for (let product of data) {
@@ -39,33 +33,34 @@ function getAllProducts(products, productsNames) {
             }
         },
         error: function error() {
-            //TODO Log in console
             alert('error');
         }
     });
 }
 
-function autoCompleteShowData(productsNames, selector) {
-    if (productsNames.length > 0) {
+function autoCompleteShowData(productsForAutocomplete, selector) {
+    if (productsForAutocomplete.length > 0) {
+        debugger;
         $(selector).autocomplete({
             minLength: 2,
-            source: productsNames,
+            source: productsForAutocomplete,
             focus: function (event, ui) {
-                //TODO : add category under product
-                $(selector).val(ui.item.label);
+                console.log(ui.item);
+                $(selector).val(ui.item.value);
+                index.index = ui.item.desc;
                 return false;
             },
             select: function (event, ui) {
-                $(selector).val(ui.item.label);
+                $(selector).val(ui.item.value);
                 return false;
             }
         });
     }
 }
 
-function setData(productsNames, selector, products, index, numberInSequence) {
-    if (productsNames.includes($(selector).val())) {
-        index.index = products.findIndex(x => x.name === $(selector).val());
+function setData(productsForAutocomplete, selector, products, index, numberInSequence) {
+    if (index.index !== 0 && index.index !== -1) {
+        index.index = products.findIndex(x => x.id === index.index);
         $('#product-id-number-' + numberInSequence.number).val(products[index.index].id).prop('disabled', true);
         $('#product-barcode-number-' + numberInSequence.number).val(products[index.index].barcode).prop('disabled', true);
         $('#product-price-number-' + numberInSequence.number).val(products[index.index].price);
@@ -108,8 +103,8 @@ function disableLastProduct() {
     $('#product-quantity-number-' + numberInSequence.number).prop('disabled', true);
     let price = parseFloat($('#product-price-number-' + numberInSequence.number).val());
     let quantity = parseFloat($('#product-quantity-number-' + numberInSequence.number).val());
-    total.total = (parseFloat(total.total) + (price * quantity)).toPrecision(6);
-    $('#product-total-number-' + numberInSequence.number).val(((price * quantity)).toPrecision(6));
+    total.total = (parseFloat(total.total) + (price * quantity)).toFixed(2);
+    $('#product-total-number-' + numberInSequence.number).val(((price * quantity)).toFixed(2));
 }
 
 function addProduct() {
@@ -138,8 +133,8 @@ function finishReceipt() {
         success: function success() {
             getReceipt();
             products = [];
-            productsNames = [];
-            getAllProducts(products, productsNames);
+            productsForAutocomplete = [];
+            getAllProducts(products, productsForAutocomplete);
         },
         error: function error(errorMessage) {
             console.log(errorMessage);
@@ -220,7 +215,7 @@ function renderEmptyProduct(last) {
         '" value="0" step="0.5" />' +
         '</td>' +
         '<td>' +
-        '<input type="text" class="form-control" id="product-barcode-number-' +
+        '<input type="text" class="form-control" disabled="disabled" id="product-barcode-number-' +
         last +
         '" placeholder="Barcode"/>' +
         '</td>' +
@@ -269,7 +264,7 @@ function renderMenu(total) {
         +
         '<span class="d-flex justify-content-center mt-2 h5">'
         +
-        'Total sum: ' + total.total + '$'
+        'Total sum: ' + '$' + total.total 
         +
         '</span>'
         +
@@ -295,4 +290,5 @@ function deleteReceipt() {
 
 $(document).ready(() => {
     getReceipt();
+    getAllProducts(products, productsForAutocomplete);
 });

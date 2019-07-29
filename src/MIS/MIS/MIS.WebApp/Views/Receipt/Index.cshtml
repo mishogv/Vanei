@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Create";
 }
 
@@ -8,23 +7,21 @@
 
 <table class="table table-active table-hover" id="table-products">
     <thead>
-    <tr>
-        <th scope="col">Id</th>
-        <th scope="col">Name</th>
-        <th scope="col">Quantity</th>
-        <th scope="col">Barcode</th>
-        <th scope="col">Price</th>
-        <th scope="col">Total</th>
-    </tr>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Barcode</th>
+            <th scope="col">Price</th>
+            <th scope="col">Total</th>
+        </tr>
     </thead>
-    <tbody id="table-tbody">
-    @*TODO : AJAX LOADING TABLE RENDERING IN HTML*@
-    </tbody>
+    <tbody id="table-tbody"></tbody>
 </table>
 
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="~/js/createrecipt.js" asp-append-version="true"></script>
+    <script src="~/js/createrecipt.js" asp-append-version="true"></script>
 }

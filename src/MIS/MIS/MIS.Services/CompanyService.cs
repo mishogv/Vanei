@@ -167,6 +167,21 @@
             return company.MapTo<CompanyServiceModel>();
         }
 
+        public async Task<CompanyServiceModel> SetCompanyAsync(Receipt receipt, int id)
+        {
+            var company = await this.dbContext
+                                    .Companies
+                                    .FirstOrDefaultAsync(x => x.Id == id);
+            if (company == null)
+            {
+                return null;
+            }
+
+            receipt.Company = company;
+
+            return company.MapTo<CompanyServiceModel>();
+        }
+
         public async Task<CompanyServiceModel> CreateAsync(string name, string address, string userId)
         {
             var company = new Company()
