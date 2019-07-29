@@ -24,18 +24,6 @@
 
         Task<bool> AddCategoryAsync(Category category, int warehouseId);
 
-        Task<WareHouseServiceModel> GetWareHouseByUserNameAsync(string username);
-
-        IEnumerable<WareHouseServiceModel> GetWarehousesByCompanyId(int? companyId);
-
-        Task<WareHouseServiceModel> GetWareHouseByNameAsync(string name);
-
-        IEnumerable<CreateCategoryWareHouseModel> GetAllUserWareHousesByUserName(string username);
-
-        IEnumerable<CreateCategoryWareHouseModel> GetAllCategories(int warehouseId);
-
-        Task<IEnumerable<string>> GetAllCategoriesNamesAsync(string wareHouseName, string username);
-
-        IQueryable<ProductServiceModel> GetAllProductsByWarehouseId(int id);
+        Task<IEnumerable<WareHouseServiceModel>> GetWarehousesByCompanyIdAsync(int? companyId);
     }
 }

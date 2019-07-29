@@ -5,6 +5,8 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Common.Extensions;
+
     using Data;
 
     using Mapping;
@@ -18,10 +20,14 @@
     public class ReportService : IReportService
     {
         private readonly MISDbContext dbContext;
+        private readonly ICompanyService companyService;
+        private readonly IReceiptService receiptService;
 
-        public ReportService(MISDbContext dbContext)
+        public ReportService(MISDbContext dbContext, ICompanyService companyService, IReceiptService receiptService)
         {
             this.dbContext = dbContext;
+            this.companyService = companyService;
+            this.receiptService = receiptService;
         }
 
 
@@ -42,10 +48,7 @@
                                    .ThenInclude(x => x.Receipt)
                                    .FirstOrDefaultAsync(x => x.Id == id);
 
-            if (report == null)
-            {
-                return null;
-            }
+            report.ThrowIfNull(nameof(report));
 
             return report.MapTo<ReportServiceModel>();
         }
@@ -55,6 +58,8 @@
             var report = await this.dbContext.Reports
                                    .Include(x => x.ReceiptReports)
                                    .FirstOrDefaultAsync(x => x.Id == id);
+
+            report.ThrowIfNull(nameof(report));
 
             this.dbContext.RemoveRange(report.ReceiptReports);
 
@@ -66,31 +71,16 @@
 
         public async Task<ReportServiceModel> CreateAsync(int companyId, string name, DateTime from, DateTime to, MISUser user)
         {
-            var company = await this.dbContext
-                               .Companies
-                               .FirstOrDefaultAsync(x => x.Id == companyId);
-
             var report = new Report
             {
                 Name = name,
                 From = from,
                 To = to,
-                Company = company,
                 User = user,
             };
 
-            var receipts = await this.dbContext.Receipts
-                .Where(x => x.CompanyId == companyId)
-                .Where(x => x.IssuedOn >= from && x.IssuedOn <= to)
-                .ToListAsync();
-
-            foreach (var receipt in receipts)
-            {
-                report.ReceiptReports.Add(new ReceiptReport()
-                {
-                    Receipt = receipt
-                });
-            }
+            await this.companyService.SetCompanyAsync(report, companyId);
+            await this.receiptService.SetReceiptsAsync(report, from, to, companyId);           
 
             await this.dbContext.AddAsync(report);
             await this.dbContext.SaveChangesAsync();

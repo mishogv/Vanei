@@ -170,5 +170,23 @@
 
             return receipt.MapTo<ReceiptServiceModel>();
         }
+
+        public async Task<IEnumerable<ReceiptServiceModel>> SetReceiptsAsync(Report report, DateTime from, DateTime to, int companyId)
+        {
+            var receipts = await this.dbContext.Receipts
+                                     .Where(x => x.CompanyId == companyId)
+                                     .Where(x => x.IssuedOn >= from && x.IssuedOn <= to)
+                                     .ToListAsync();
+
+            foreach (var receipt in receipts)
+            {
+                report.ReceiptReports.Add(new ReceiptReport()
+                {
+                    Receipt = receipt
+                });
+            }
+
+            return receipts.MapTo<ReceiptServiceModel[]>();
+        }
     }
 }

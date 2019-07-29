@@ -13,18 +13,22 @@
     {
         private readonly IWareHouseService wareHouseService;
         private readonly IProductService productService;
+        private readonly ICategoryService categoryService;
 
-        public ProductController(IWareHouseService wareHouseService, IProductService productService)
+        public ProductController(IWareHouseService wareHouseService, 
+            IProductService productService, 
+            ICategoryService categoryService)
         {
             this.wareHouseService = wareHouseService;
             this.productService = productService;
+            this.categoryService = categoryService;
         }
 
         public async Task<IActionResult> Create(int id)
         {
             //TODO : Security parameter tampering
 
-            var categories = this.wareHouseService.GetAllCategories(id);
+            var categories = this.categoryService.GetAllCategories(id);
 
             var result = new CreateProductInputModel()
             {
@@ -62,7 +66,7 @@
             var product = await this.productService.GetProductAsync(id);
 
             var result = product.MapTo<EditProductInputModel>();
-            result.Categories = this.wareHouseService.GetAllCategories(product.WareHouseId);
+            result.Categories = this.categoryService.GetAllCategories(product.WareHouseId);
 
             return this.View(result);
         }

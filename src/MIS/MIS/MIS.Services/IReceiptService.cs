@@ -1,6 +1,10 @@
 ﻿namespace MIS.Services
 {
+    using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
+
+    using MIS.Models;
 
     using Models;
 
@@ -17,5 +21,7 @@
         Task<ReceiptServiceModel> GetReceiptAsync(int id);
 
         Task<ReceiptServiceModel> DeleteReceiptByIdAsync(int id);
+
+        Task<IEnumerable<ReceiptServiceModel>> SetReceiptsAsync(Report report, DateTime from, DateTime to, int companyId);
     }
 }

@@ -3,7 +3,11 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using MIS.Models;
+
     using Models;
+
+    using ViewModels.Input.Category;
 
     public interface ICategoryService
     {
@@ -15,6 +19,11 @@
 
         Task<CategoryServiceModel> GetCategoryAsync(int id);
 
+        Task<CategoryServiceModel> SetCategoryAsync(Product product, int id);
+
         Task<IEnumerable<CategoryServiceModel>> GetAllByCompanyIdAsync(int companyId);
+
+
+        IEnumerable<CreateCategoryWareHouseModel> GetAllCategories(int warehouseId);
     }
 }

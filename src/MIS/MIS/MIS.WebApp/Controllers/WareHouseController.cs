@@ -42,7 +42,7 @@ namespace MIS.WebApp.Controllers
                 return this.RedirectToAction("Create", "Company");
             }
 
-            var warehouses = this.wareHouseService.GetWarehousesByCompanyId(user.CompanyId);
+            var warehouses = await this.wareHouseService.GetWarehousesByCompanyIdAsync(user.CompanyId);
 
             WareHouseServiceModel currentWarehouse = null;
             var wareHouseServiceModels = warehouses as WareHouseServiceModel[] ?? warehouses.ToArray();

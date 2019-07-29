@@ -5,6 +5,8 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using AutoMapper.QueryableExtensions;
+
     using Common.Extensions;
 
     using Data;
@@ -16,6 +18,8 @@
     using MIS.Models;
 
     using Models;
+
+    using ViewModels.Input.Category;
 
     public class CategoryService : ICategoryService
     {
@@ -75,6 +79,15 @@
             return category.MapTo<CategoryServiceModel>();
         }
 
+        public async Task<CategoryServiceModel> SetCategoryAsync(Product product, int id)
+        {
+            var category = await this.dbContext.Categories.Include(x => x.WareHouse).FirstOrDefaultAsync(x => x.Id == id);
+
+            category.ThrowIfNull(nameof(category));
+            product.Category = category;
+            return category.MapTo<CategoryServiceModel>();
+        }
+
         public async Task<IEnumerable<CategoryServiceModel>> GetAllByCompanyIdAsync(int companyId)
         {
             var categories = await this.dbContext.Categories
@@ -86,6 +99,16 @@
 
 
             return categories;
+        }
+
+
+        public IEnumerable<CreateCategoryWareHouseModel> GetAllCategories(int warehouseId)
+        {
+            return this.dbContext
+                       .Categories
+                       .Where(x => x.WareHouseId == warehouseId)
+                       .ProjectTo<CreateCategoryWareHouseModel>()
+                       .ToList();
         }
     }
 }

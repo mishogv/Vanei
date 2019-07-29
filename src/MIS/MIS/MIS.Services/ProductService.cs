@@ -6,6 +6,8 @@
 
     using AutoMapper.QueryableExtensions;
 
+    using Common.Extensions;
+
     using Data;
 
     using Mapping;
@@ -21,10 +23,12 @@
     public class ProductService : IProductService
     {
         private readonly MISDbContext db;
+        private readonly ICategoryService categoryService;
 
-        public ProductService(MISDbContext db)
+        public ProductService(MISDbContext db, ICategoryService categoryService)
         {
             this.db = db;
+            this.categoryService = categoryService;
         }
 
         public async Task<ProductServiceModel> CreateAsync(string name, decimal price, double quantity, string barcode, int categoryId, int warehouseId)
@@ -37,13 +41,12 @@
                 Quantity = quantity,
             };
 
-            var category = await this.db.Categories
-                                     .Include(x => x.WareHouse)
-                                     .FirstOrDefaultAsync(x => x.Id == categoryId);
+            await this.categoryService.SetCategoryAsync(product, categoryId);
 
-            product.WareHouse = category.WareHouse;
-            category.Products.Add(product);
+            product.WareHouse = product.Category.WareHouse;
+            product.Category.Products.Add(product);
             await this.db.AddAsync(product);
+            this.db.Update(product.Category);
             await this.db.SaveChangesAsync();
 
             return product.MapTo<ProductServiceModel>();
@@ -54,12 +57,15 @@
             var product = await this.db.Products
                               .FirstOrDefaultAsync(x => x.Id == id);
 
+            product.ThrowIfNull(nameof(product));
+
             return product.MapTo<ProductServiceModel>();
         }
 
         public async Task<ProductServiceModel> DeleteAsync(int id)
         {
             var product = await this.db.Products.FirstOrDefaultAsync(x => x.Id == id);
+            product.ThrowIfNull(nameof(product));
 
             this.db.Remove(product);
             await this.db.SaveChangesAsync();
@@ -69,18 +75,17 @@
 
         public async Task<ProductServiceModel> UpdateAsync(int id, string name, decimal price, double quantity, string barcode, int categoryId)
         {
-
             var product = await this.db.Products
                                     .FirstOrDefaultAsync(x => x.Id == id);
-
-            var category = await this.db.Categories
-                                    .FirstOrDefaultAsync(x => x.Id == categoryId);
+            product.ThrowIfNull(nameof(product));
 
             product.Name = name;
             product.Price = price;
             product.Quantity = quantity;
-            product.Category = category;
 
+            await this.categoryService.SetCategoryAsync(product, categoryId);
+            
+            product.Category.Products.Add(product);
             this.db.Update(product);
             await this.db.SaveChangesAsync();
 
@@ -98,7 +103,7 @@
                                     .Take(1)
                                     .SelectMany(x => x.Company.WareHouses)
                                     .SelectMany(x => x.Products)
-                                    .ProjectTo<ShowReceiptProductViewModel>()
+                                    .To<ShowReceiptProductViewModel>()
                                     .ToList();
 
             await Task.CompletedTask;

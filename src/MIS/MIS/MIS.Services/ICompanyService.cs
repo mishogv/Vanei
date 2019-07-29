@@ -22,5 +22,11 @@
         Task<CompanyServiceModel> RemoveEmployeeAsync(string id);
 
         Task<CompanyServiceModel> SetCompanyAsync(Message message, int id);
+
+        Task<CompanyServiceModel> SetCompanyAsync(Report report, int id);
+
+        Task<CompanyServiceModel> SetCompanyAsync(Invitation invitation, int id);
+
+        Task<CompanyServiceModel> SetCompanyAsync(WareHouse wareHouse, int id);
     }
 }

@@ -117,6 +117,17 @@
             return company.MapTo<CompanyServiceModel>();
         }
 
+        public async Task<CompanyServiceModel> SetCompanyAsync(Report report, int id)
+        {
+            var company = await this.dbContext.Companies.FirstOrDefaultAsync(x => x.Id == id);
+
+            company.ThrowIfNull(nameof(company));
+
+            report.Company = company;
+
+            return company.MapTo<CompanyServiceModel>();
+        }
+
         public async Task<CompanyServiceModel> SetCompanyAsync(Invitation invitation, int id)
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync(x => x.Id == id);
@@ -124,6 +135,25 @@
             company.ThrowIfNull(nameof(company));
 
             invitation.Company = company;
+
+            return company.MapTo<CompanyServiceModel>();
+        }
+
+        public async Task<CompanyServiceModel> SetCompanyAsync(WareHouse wareHouse, int id)
+        {
+            var company = await this.dbContext
+                                    .Companies
+                                    .Include(x => x.WareHouses)
+                                    .FirstOrDefaultAsync(x => x.Id == id);
+
+            company.ThrowIfNull(nameof(company));
+
+            if (company.WareHouses.Count(x => x.IsFavorite) == 0)
+            {
+                wareHouse.IsFavorite = true;
+            }
+
+            company.WareHouses.Add(wareHouse);
 
             return company.MapTo<CompanyServiceModel>();
         }

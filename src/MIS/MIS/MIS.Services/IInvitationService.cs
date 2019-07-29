@@ -5,8 +5,6 @@
 
     using Models;
 
-    using ViewModels.View.Invitation;
-
     public interface IInvitationService
     {
         Task<IEnumerable<InvitationServiceModel>> GetAllAsync(string id);
