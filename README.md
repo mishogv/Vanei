@@ -1,2 +1,2 @@
-# Vanei
-Asp.Net Core MVC project for SoftUni Project Defense
+ASP.NET Core MVC project for SoftUni Project Defense
+Hosted in https://missoftware.azurewebsites.net/
