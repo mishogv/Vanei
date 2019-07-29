@@ -14,7 +14,7 @@
             this.Receipts = new List<ShowReceiptReportViewModel>();
         }
 
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public string Username { get; set; }
 

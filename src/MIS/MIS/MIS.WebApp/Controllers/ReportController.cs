@@ -35,7 +35,7 @@
                 return this.RedirectToAction("Create", "Company");
             }
 
-            var reports = await this.reportService.GetAllReportsAsync((int)user.CompanyId);
+            var reports = await this.reportService.GetAllReportsAsync(user.CompanyId);
             var result = new IndexReportViewModel()
             {
                 Reports = reports.Select(x => x.MapTo<IndexReportShowViewModel>())
@@ -60,12 +60,12 @@
                 return this.RedirectToAction("Create", "Company");
             }
 
-            var report = await this.reportService.CreateAsync((int)user.CompanyId, input.Name, input.From, input.To, user);
+            var report = await this.reportService.CreateAsync(user.CompanyId, input.Name, input.From, input.To, user);
 
             return this.RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(string id)
         {
             var report = await this.reportService.GetReportAsync(id);
 
@@ -82,7 +82,7 @@
             return this.View(result);
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             //TODO : security
             await this.reportService.DeleteReportAsync(id);

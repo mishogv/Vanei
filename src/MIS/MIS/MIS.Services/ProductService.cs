@@ -27,7 +27,7 @@
             this.categoryService = categoryService;
         }
 
-        public async Task<ProductServiceModel> CreateAsync(string name, decimal price, double quantity, string barcode, int categoryId, int warehouseId)
+        public async Task<ProductServiceModel> CreateAsync(string name, decimal price, double quantity, string barcode, string categoryId, string warehouseId)
         {
             var product = new Product()
             {
@@ -48,7 +48,7 @@
             return product.MapTo<ProductServiceModel>();
         }
 
-        public async Task<ProductServiceModel> GetProductAsync(int id)
+        public async Task<ProductServiceModel> GetProductAsync(string id)
         {
             var product = await this.db.Products
                               .FirstOrDefaultAsync(x => x.Id == id);
@@ -56,7 +56,7 @@
             return product?.MapTo<ProductServiceModel>();
         }
 
-        public async Task<ProductServiceModel> DeleteAsync(int id)
+        public async Task<ProductServiceModel> DeleteAsync(string id)
         {
             var product = await this.db.Products.FirstOrDefaultAsync(x => x.Id == id);
             if (product == null)
@@ -70,7 +70,7 @@
             return product.MapTo<ProductServiceModel>();
         }
 
-        public async Task<ProductServiceModel> SetProductAsync(ReceiptProduct receiptProduct, int id)
+        public async Task<ProductServiceModel> SetProductAsync(ReceiptProduct receiptProduct, string id)
         {
             var product = await this.db.Products.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -84,7 +84,7 @@
             return product.MapTo<ProductServiceModel>();
         }
 
-        public async Task<ProductServiceModel> UpdateAsync(int id, string name, decimal price, double quantity, string barcode, int categoryId)
+        public async Task<ProductServiceModel> UpdateAsync(string id, string name, decimal price, double quantity, string barcode, string categoryId)
         {
             var product = await this.db.Products
                                     .FirstOrDefaultAsync(x => x.Id == id);

@@ -1,11 +1,14 @@
 ﻿namespace MIS.Models
 {
-    public class Invitation : BaseModel<int>
+    using System.ComponentModel.DataAnnotations;
+
+    public class Invitation : BaseModel<string>
     {
+        [Required]
         public string UserId { get; set; }
         public MISUser User { get; set; }
 
-        public int CompanyId { get; set; }
+        public string CompanyId { get; set; }
         public Company Company { get; set; }
     }
 }

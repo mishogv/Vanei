@@ -4,11 +4,9 @@
 
     using Services.Mapping;
 
-    using Services.Models;
-
     public class ShowReceiptProductViewModel : IMapFrom<Product>
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public string Name { get; set; }
 

@@ -22,7 +22,8 @@
         [StringLength(30, MinimumLength = 3)]
         public string LastName { get; set; }
 
-        public int? CompanyId { get; set; }
+        [Required]
+        public string CompanyId { get; set; }
         public virtual Company Company { get; set; }
 
         public virtual ICollection<Report> Reports { get; set; }

@@ -6,7 +6,7 @@
 
     public class WareHouseIndexProductViewModel : IMapFrom<Product>
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public string Name { get; set; }
 

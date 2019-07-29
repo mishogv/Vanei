@@ -13,7 +13,7 @@
 
         Task SetInvitationAsync(Invitation invitation, string id);
 
-        Task<int> SetReceiptAsync(Receipt receipt, string username);
+        Task<string> SetReceiptAsync(Receipt receipt, string username);
 
         Task<IEnumerable<InvitationUserViewModel>> GetAllUsersAsync();
     }

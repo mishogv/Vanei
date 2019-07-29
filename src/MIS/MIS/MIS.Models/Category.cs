@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class Category : BaseModel<int>
+    public class Category : BaseModel<string>
     {
         public Category()
         {
@@ -16,7 +16,8 @@
 
         public virtual ICollection<Product> Products { get; set; }
 
-        public int WareHouseId { get; set; }
+        [Required]
+        public string WareHouseId { get; set; }
         public virtual WareHouse WareHouse { get; set; }
     }
 }

@@ -9,10 +9,10 @@
     {
         Task<IEnumerable<InvitationServiceModel>> GetAllAsync(string id);
 
-        Task<InvitationServiceModel> InviteAsync(int? companyId, string userId);
+        Task<InvitationServiceModel> InviteAsync(string companyId, string userId);
 
-        Task<InvitationServiceModel> AcceptInvitationAsync(int invitationId, bool isOwner);
+        Task<InvitationServiceModel> AcceptInvitationAsync(string invitationId, bool isOwner);
 
-        Task<InvitationServiceModel> DeclineInvitationAsync(int invitationId);
+        Task<InvitationServiceModel> DeclineInvitationAsync(string invitationId);
     }
 }

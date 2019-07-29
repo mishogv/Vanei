@@ -36,7 +36,7 @@
                 return this.RedirectToAction("Create", "Company");
             }
 
-            var categories = await this.categoryService.GetAllByCompanyIdAsync((int) user.CompanyId);
+            var categories = await this.categoryService.GetAllByCompanyIdAsync(user.CompanyId);
 
             var categoryServiceModels = categories as CategoryServiceModel[] ?? categories.ToArray();
             var categoriesViewModels = new List<CategoryIndexDetailsViewModel>();
@@ -58,7 +58,7 @@
         }
 
 
-        public IActionResult Create(int id)
+        public IActionResult Create(string id)
         {
             return this.View(new CreateCategoryInputModel { Id = id});
         }
@@ -78,7 +78,7 @@
             return this.RedirectToAction("Index", "WareHouse");
         }
 
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(string id)
         {
             var category = await this.categoryService.GetCategoryAsync(id);
 
@@ -98,7 +98,7 @@
             return this.RedirectToAction(nameof(this.Index));
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             //TODO PARAMTER TAMPERING
             var category = await this.categoryService.DeleteAsync(id);

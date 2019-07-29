@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class WareHouse : BaseModel<int>
+    public class WareHouse : BaseModel<string>
     {
         public WareHouse()
         {
@@ -17,7 +17,8 @@
 
         public bool IsFavorite { get; set; }
 
-        public int CompanyId { get; set; }
+        [Required]
+        public string CompanyId { get; set; }
         public virtual Company Company { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }

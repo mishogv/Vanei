@@ -29,7 +29,7 @@
             this.dbContext = dbContext;
         }
 
-        public async Task<CategoryServiceModel> CreateAsync(string name, int warehouseId)
+        public async Task<CategoryServiceModel> CreateAsync(string name, string warehouseId)
         {
             var category = new Category()
             {
@@ -37,11 +37,14 @@
             };
 
             await this.wareHouseService.AddCategoryAsync(category, warehouseId);
+            await this.dbContext.AddAsync(category);
+            this.dbContext.Update(category.WareHouse);
+            await this.dbContext.SaveChangesAsync();
 
             return category.MapTo<CategoryServiceModel>();
         }
 
-        public async Task<CategoryServiceModel> EditAsync(int id, string name)
+        public async Task<CategoryServiceModel> EditAsync(string id, string name)
         {
             var category = await this.dbContext.Categories.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -57,7 +60,7 @@
             return category.MapTo<CategoryServiceModel>();
         }
 
-        public async Task<CategoryServiceModel> DeleteAsync(int id)
+        public async Task<CategoryServiceModel> DeleteAsync(string id)
         {
             var category = await this.dbContext.Categories.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -72,16 +75,18 @@
             return category.MapTo<CategoryServiceModel>();
         }
 
-        public async Task<CategoryServiceModel> GetCategoryAsync(int id)
+        public async Task<CategoryServiceModel> GetCategoryAsync(string id)
         {
             var category = await this.dbContext.Categories.FirstOrDefaultAsync(x => x.Id == id);
 
             return category?.MapTo<CategoryServiceModel>();
         }
 
-        public async Task<CategoryServiceModel> SetCategoryAsync(Product product, int id)
+        public async Task<CategoryServiceModel> SetCategoryAsync(Product product, string id)
         {
-            var category = await this.dbContext.Categories.Include(x => x.WareHouse).FirstOrDefaultAsync(x => x.Id == id);
+            var category = await this.dbContext.Categories
+                                     .Include(x => x.WareHouse)
+                                     .FirstOrDefaultAsync(x => x.Id == id);
 
             if (category == null)
             {
@@ -92,7 +97,7 @@
             return category.MapTo<CategoryServiceModel>();
         }
 
-        public async Task<IEnumerable<CategoryServiceModel>> GetAllByCompanyIdAsync(int companyId)
+        public async Task<IEnumerable<CategoryServiceModel>> GetAllByCompanyIdAsync(string companyId)
         {
             var categories = await this.dbContext.Categories
                       .Include(x => x.WareHouse)
@@ -106,7 +111,7 @@
         }
 
 
-        public IEnumerable<CreateCategoryWareHouseModel> GetAllCategories(int warehouseId)
+        public IEnumerable<CreateCategoryWareHouseModel> GetAllCategories(string warehouseId)
         {
             return this.dbContext
                        .Categories

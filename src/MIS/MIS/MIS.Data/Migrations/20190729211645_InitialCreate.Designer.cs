@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MIS.Data.Migrations
 {
     [DbContext(typeof(MISDbContext))]
-    [Migration("20190728051800_CreateMessageForChatHub")]
-    partial class CreateMessageForChatHub
+    [Migration("20190729211645_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,15 +23,15 @@ namespace MIS.Data.Migrations
 
             modelBuilder.Entity("MIS.Models.Category", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(24);
 
-                    b.Property<int>("WareHouseId");
+                    b.Property<string>("WareHouseId")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -42,9 +42,8 @@ namespace MIS.Data.Migrations
 
             modelBuilder.Entity("MIS.Models.Company", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -61,13 +60,13 @@ namespace MIS.Data.Migrations
 
             modelBuilder.Entity("MIS.Models.Invitation", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CompanyId");
+                    b.Property<string>("CompanyId");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -85,7 +84,7 @@ namespace MIS.Data.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<int?>("CompanyId");
+                    b.Property<string>("CompanyId");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -143,11 +142,13 @@ namespace MIS.Data.Migrations
 
             modelBuilder.Entity("MIS.Models.Message", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CompanyId");
+                    b.Property<DateTime>("AddedOn");
+
+                    b.Property<string>("CompanyId")
+                        .IsRequired();
 
                     b.Property<string>("Text")
                         .IsRequired();
@@ -164,14 +165,14 @@ namespace MIS.Data.Migrations
 
             modelBuilder.Entity("MIS.Models.Product", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("BarCode")
                         .IsRequired();
 
-                    b.Property<int>("CategoryId");
+                    b.Property<string>("CategoryId")
+                        .IsRequired();
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -181,7 +182,8 @@ namespace MIS.Data.Migrations
 
                     b.Property<double>("Quantity");
 
-                    b.Property<int>("WareHouseId");
+                    b.Property<string>("WareHouseId")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -198,7 +200,8 @@ namespace MIS.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CompanyId");
+                    b.Property<string>("CompanyId")
+                        .IsRequired();
 
                     b.Property<DateTime?>("IssuedOn");
 
@@ -217,13 +220,13 @@ namespace MIS.Data.Migrations
 
             modelBuilder.Entity("MIS.Models.ReceiptProduct", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("AddedOn");
 
-                    b.Property<int>("ProductId");
+                    b.Property<string>("ProductId")
+                        .IsRequired();
 
                     b.Property<double>("Quantity");
 
@@ -242,13 +245,13 @@ namespace MIS.Data.Migrations
 
             modelBuilder.Entity("MIS.Models.ReceiptReport", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("ReceiptId");
 
-                    b.Property<int>("ReportId");
+                    b.Property<string>("ReportId")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -261,11 +264,11 @@ namespace MIS.Data.Migrations
 
             modelBuilder.Entity("MIS.Models.Report", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CompanyId");
+                    b.Property<string>("CompanyId")
+                        .IsRequired();
 
                     b.Property<DateTime>("From");
 
@@ -287,11 +290,11 @@ namespace MIS.Data.Migrations
 
             modelBuilder.Entity("MIS.Models.WareHouse", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CompanyId");
+                    b.Property<string>("CompanyId")
+                        .IsRequired();
 
                     b.Property<bool>("IsFavorite");
 
@@ -428,12 +431,12 @@ namespace MIS.Data.Migrations
                 {
                     b.HasOne("MIS.Models.Company", "Company")
                         .WithMany("Invitations")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CompanyId");
 
                     b.HasOne("MIS.Models.MISUser", "User")
                         .WithMany("Invitations")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MIS.Models.MISUser", b =>

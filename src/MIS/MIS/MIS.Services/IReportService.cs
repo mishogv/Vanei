@@ -10,12 +10,12 @@
 
     public interface IReportService
     {
-        Task<IEnumerable<ReportServiceModel>> GetAllReportsAsync(int companyId);
+        Task<IEnumerable<ReportServiceModel>> GetAllReportsAsync(string companyId);
 
-        Task<ReportServiceModel> GetReportAsync(int id);
+        Task<ReportServiceModel> GetReportAsync(string id);
 
-        Task<ReportServiceModel> DeleteReportAsync(int id);
+        Task<ReportServiceModel> DeleteReportAsync(string id);
 
-        Task<ReportServiceModel> CreateAsync(int companyId, string name, DateTime from, DateTime to, MISUser user);
+        Task<ReportServiceModel> CreateAsync(string companyId, string name, DateTime from, DateTime to, MISUser user);
     }
 }

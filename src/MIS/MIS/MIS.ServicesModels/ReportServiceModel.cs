@@ -16,7 +16,7 @@
             this.ReceiptReports = new HashSet<ReceiptReport>();
         }
 
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public string Name { get; set; }
 
@@ -24,8 +24,8 @@
 
         public DateTime To { get; set; }
 
+        public string CompanyId { get; set; }
         public virtual Company Company { get; set; }
-        public int CompanyId { get; set; }
 
         public string UserId { get; set; }
         public virtual MISUser User { get; set; }

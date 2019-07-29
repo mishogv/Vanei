@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     public class Receipt : BaseModel<int>
     {
@@ -18,7 +19,8 @@
         public string UserId { get; set; }
         public virtual MISUser User { get; set; }
 
-        public int CompanyId { get; set; }
+        [Required]
+        public string CompanyId { get; set; }
         public virtual Company Company { get; set; }
 
         public virtual ICollection<ReceiptReport> ReceiptReports { get; set; }

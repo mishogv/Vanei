@@ -58,7 +58,7 @@
             return result;
         }
 
-        public async Task<ReceiptProductServiceModel> AddProductToOpenedReceiptByUsernameAsync(string username, int id, double quantity)
+        public async Task<ReceiptProductServiceModel> AddProductToOpenedReceiptByUsernameAsync(string username, string productId, double quantity)
         {
             var receipt = await this.dbContext.Receipts
                                     .Include(x => x.User)
@@ -79,7 +79,7 @@
                 Quantity = quantity,
             };
 
-            await this.productService.SetProductAsync(receiptProduct, id);
+            await this.productService.SetProductAsync(receiptProduct, productId);
 
             receiptProduct.Total = (decimal) quantity * receiptProduct.Product.Price;
 
@@ -175,7 +175,7 @@
             return receipt.MapTo<ReceiptServiceModel>();
         }
 
-        public async Task<IEnumerable<ReceiptServiceModel>> SetReceiptsAsync(Report report, DateTime from, DateTime to, int companyId)
+        public async Task<IEnumerable<ReceiptServiceModel>> SetReceiptsAsync(Report report, DateTime from, DateTime to, string companyId)
         {
             var receipts = await this.dbContext.Receipts
                                      .Where(x => x.CompanyId == companyId)

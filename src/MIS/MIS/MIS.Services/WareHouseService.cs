@@ -25,14 +25,14 @@
             this.companyService = companyService;
         }
 
-        public async Task<WareHouseServiceModel> CreateAsync(string name, int? companyId)
+        public async Task<WareHouseServiceModel> CreateAsync(string name, string companyId)
         {
             var warehouse = new WareHouse()
             {
                 Name = name,
             };
 
-            await this.companyService.SetCompanyAsync(warehouse, (int)companyId);
+            await this.companyService.SetCompanyAsync(warehouse, companyId);
 
             this.dbContext.Update(warehouse.Company);
             await this.dbContext.SaveChangesAsync();
@@ -42,14 +42,14 @@
             return result;
         }
 
-        public async Task<WareHouseServiceModel> GetWareHouseAsync(int id)
+        public async Task<WareHouseServiceModel> GetWareHouseAsync(string id)
         {
             var warehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync(x => x.Id == id);
 
             return warehouse?.MapTo<WareHouseServiceModel>();
         }
 
-        public async Task<WareHouseServiceModel> DeleteAsync(int id)
+        public async Task<WareHouseServiceModel> DeleteAsync(string id)
         {
             var warehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -78,7 +78,7 @@
             return warehouse.MapTo<WareHouseServiceModel>();
         }
 
-        public async Task<WareHouseServiceModel> EditAsync(int id, string name)
+        public async Task<WareHouseServiceModel> EditAsync(string id, string name)
         {
             var warehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -95,7 +95,7 @@
             return warehouse.MapTo<WareHouseServiceModel>();
         }
 
-        public async Task<WareHouseServiceModel> MakeFavoriteAsync(int id, int? companyId)
+        public async Task<WareHouseServiceModel> MakeFavoriteAsync(string id, string companyId)
         {
             var warehouseFromDb = await this.dbContext.Companies
                                  .Include(x => x.WareHouses)
@@ -116,7 +116,7 @@
             return currentWarehouse.MapTo<WareHouseServiceModel>();
         }
 
-        public async Task<bool> AddCategoryAsync(Category category, int warehouseId)
+        public async Task<bool> AddCategoryAsync(Category category, string warehouseId)
         {
             var warehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync(x => x.Id == warehouseId);
 
@@ -126,12 +126,11 @@
             }
 
             warehouse.Categories.Add(category);
-            var result = await this.dbContext.SaveChangesAsync();
-
-            return result > 0;
+            category.WareHouse = warehouse;
+            return true;
         }
 
-        public async Task<IEnumerable<WareHouseServiceModel>> GetWarehousesByCompanyIdAsync(int? companyId)
+        public async Task<IEnumerable<WareHouseServiceModel>> GetWarehousesByCompanyIdAsync(string companyId)
         {
             var warehouses = await this.dbContext
                                  .WareHouses

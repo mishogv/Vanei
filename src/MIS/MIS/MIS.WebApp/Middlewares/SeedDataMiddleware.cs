@@ -61,7 +61,7 @@
                 };
 
                 var company = await companyService.CreateAsync("MIS EOOD", "Studentski grad Mandja street No 332");
-                
+                //TODO : REFACTOR THIS 
                 var password = "123456";
                 user.CompanyId = company.Id;
 

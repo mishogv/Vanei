@@ -38,7 +38,7 @@
             return company.MapTo<CompanyServiceModel>();
         }
 
-        public async Task<CompanyServiceModel> EditAsync(int id, string name, string address)
+        public async Task<CompanyServiceModel> EditAsync(string id, string name, string address)
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync(x => x.Id == id);
             if (company == null)
@@ -55,7 +55,7 @@
             return company.MapTo<CompanyServiceModel>();
         }
 
-        public async Task<CompanyServiceModel> DeleteAsync(int id)
+        public async Task<CompanyServiceModel> DeleteAsync(string id)
         {
             var company = await this.dbContext.Companies
                                     .Include(x => x.Receipts)
@@ -77,7 +77,7 @@
             return company.MapTo<CompanyServiceModel>();
         }
 
-        public async Task<CompanyServiceModel> GetCompanyAsync(int id)
+        public async Task<CompanyServiceModel> GetCompanyAsync(string id)
         {
             var company = await this.dbContext.Companies
                                     .Include(x => x.Employees)
@@ -107,7 +107,7 @@
             return company.MapTo<CompanyServiceModel>();
         }
 
-        public async Task<CompanyServiceModel> SetCompanyAsync(Message message, int id)
+        public async Task<CompanyServiceModel> SetCompanyAsync(Message message, string id)
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync(x => x.Id == id);
             if (company == null)
@@ -120,7 +120,7 @@
             return company.MapTo<CompanyServiceModel>();
         }
 
-        public async Task<CompanyServiceModel> SetCompanyAsync(Report report, int id)
+        public async Task<CompanyServiceModel> SetCompanyAsync(Report report, string id)
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync(x => x.Id == id);
             if (company == null)
@@ -133,7 +133,7 @@
             return company.MapTo<CompanyServiceModel>();
         }
 
-        public async Task<CompanyServiceModel> SetCompanyAsync(Invitation invitation, int id)
+        public async Task<CompanyServiceModel> SetCompanyAsync(Invitation invitation, string id)
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync(x => x.Id == id);
             if (company == null)
@@ -146,7 +146,7 @@
             return company.MapTo<CompanyServiceModel>();
         }
 
-        public async Task<CompanyServiceModel> SetCompanyAsync(WareHouse wareHouse, int id)
+        public async Task<CompanyServiceModel> SetCompanyAsync(WareHouse wareHouse, string id)
         {
             var company = await this.dbContext
                                     .Companies
@@ -162,12 +162,13 @@
                 wareHouse.IsFavorite = true;
             }
 
+            wareHouse.Company = company;
             company.WareHouses.Add(wareHouse);
 
             return company.MapTo<CompanyServiceModel>();
         }
 
-        public async Task<CompanyServiceModel> SetCompanyAsync(Receipt receipt, int id)
+        public async Task<CompanyServiceModel> SetCompanyAsync(Receipt receipt, string id)
         {
             var company = await this.dbContext
                                     .Companies

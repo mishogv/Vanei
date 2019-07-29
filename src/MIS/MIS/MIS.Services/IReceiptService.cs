@@ -12,7 +12,7 @@
     {
         Task<ReceiptServiceModel> GetCurrentOpenedReceiptByUsernameAsync(string username);
 
-        Task<ReceiptProductServiceModel> AddProductToOpenedReceiptByUsernameAsync(string username, int id, double quantity);
+        Task<ReceiptProductServiceModel> AddProductToOpenedReceiptByUsernameAsync(string username, string id, double quantity);
 
         Task<ReceiptServiceModel> FinishCurrentOpenReceiptByUsernameAsync(string username);
 
@@ -22,6 +22,6 @@
 
         Task<ReceiptServiceModel> DeleteReceiptByIdAsync(int id);
 
-        Task<IEnumerable<ReceiptServiceModel>> SetReceiptsAsync(Report report, DateTime from, DateTime to, int companyId);
+        Task<IEnumerable<ReceiptServiceModel>> SetReceiptsAsync(Report report, DateTime from, DateTime to, string companyId);
     }
 }

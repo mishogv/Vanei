@@ -11,19 +11,18 @@
 
     public interface ICategoryService
     {
-        Task<CategoryServiceModel> CreateAsync(string name, int warehouseId);
+        Task<CategoryServiceModel> CreateAsync(string name, string warehouseId);
 
-        Task<CategoryServiceModel> EditAsync(int id, string name);
+        Task<CategoryServiceModel> EditAsync(string id, string name);
 
-        Task<CategoryServiceModel> DeleteAsync(int id);
+        Task<CategoryServiceModel> DeleteAsync(string id);
 
-        Task<CategoryServiceModel> GetCategoryAsync(int id);
+        Task<CategoryServiceModel> GetCategoryAsync(string id);
 
-        Task<CategoryServiceModel> SetCategoryAsync(Product product, int id);
+        Task<CategoryServiceModel> SetCategoryAsync(Product product, string id);
 
-        Task<IEnumerable<CategoryServiceModel>> GetAllByCompanyIdAsync(int companyId);
+        Task<IEnumerable<CategoryServiceModel>> GetAllByCompanyIdAsync(string companyId);
 
-
-        IEnumerable<CreateCategoryWareHouseModel> GetAllCategories(int warehouseId);
+        IEnumerable<CreateCategoryWareHouseModel> GetAllCategories(string warehouseId);
     }
 }

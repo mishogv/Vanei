@@ -25,10 +25,10 @@
 
         public IEnumerable<CreateCategoryWareHouseModel> Categories { get; set; }
 
-        [Range(1, int.MaxValue)]
-        public int CategoryId { get; set; }
+        [Required]
+        public string CategoryId { get; set; }
 
-        [Range(1, int.MaxValue)]
-        public int WarehouseId { get; set; }
+        [Required]
+        public string WarehouseId { get; set; }
     }
 }

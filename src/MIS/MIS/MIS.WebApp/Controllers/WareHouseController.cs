@@ -32,7 +32,7 @@ namespace MIS.WebApp.Controllers
             this.userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(string id)
         {
             //TODO : Security
             var user = await this.userManager.GetUserAsync(this.User);
@@ -99,7 +99,7 @@ namespace MIS.WebApp.Controllers
             return this.RedirectToAction(nameof(this.Index));
         }
 
-        public async Task<IActionResult> Favorite(int id)
+        public async Task<IActionResult> Favorite(string id)
         {
             var user = await this.userManager.GetUserAsync(this.User);
 
@@ -109,7 +109,7 @@ namespace MIS.WebApp.Controllers
             return this.RedirectToAction(nameof(this.Index));
         }
 
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(string id)
         {
             //TODO : Security
             var warehouse = await this.wareHouseService.GetWareHouseAsync(id);
@@ -126,7 +126,7 @@ namespace MIS.WebApp.Controllers
             return this.RedirectToAction(nameof(this.Index));
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             //TODO : Security
             var warehouse = await this.wareHouseService.DeleteAsync(id);

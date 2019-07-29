@@ -9,7 +9,7 @@
             this.Messages = new List<ChatHubMessageViewModel>();
         }
 
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public IEnumerable<ChatHubMessageViewModel> Messages { get; set; }
     }

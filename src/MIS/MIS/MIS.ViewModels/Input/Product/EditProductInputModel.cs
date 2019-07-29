@@ -11,7 +11,7 @@
 
     public class EditProductInputModel : IMapFrom<ProductServiceModel>
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [StringLength(24, MinimumLength = 3)]
@@ -29,7 +29,7 @@
 
         public IEnumerable<CreateCategoryWareHouseModel> Categories { get; set; }
 
-        [Range(1, int.MaxValue)]
-        public int CategoryId { get; set; }
+        [Required]
+        public string CategoryId { get; set; }
     }
 }

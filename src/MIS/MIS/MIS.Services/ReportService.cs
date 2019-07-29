@@ -21,7 +21,9 @@
         private readonly ICompanyService companyService;
         private readonly IReceiptService receiptService;
 
-        public ReportService(MISDbContext dbContext, ICompanyService companyService, IReceiptService receiptService)
+        public ReportService(MISDbContext dbContext, 
+            ICompanyService companyService, 
+            IReceiptService receiptService)
         {
             this.dbContext = dbContext;
             this.companyService = companyService;
@@ -29,7 +31,7 @@
         }
 
 
-        public async Task<IEnumerable<ReportServiceModel>> GetAllReportsAsync(int companyId)
+        public async Task<IEnumerable<ReportServiceModel>> GetAllReportsAsync(string companyId)
         {
             var reports = await this.dbContext.Reports
                                     .Where(x => x.CompanyId == companyId)
@@ -38,7 +40,7 @@
             return reports;
         }
 
-        public async Task<ReportServiceModel> GetReportAsync(int id)
+        public async Task<ReportServiceModel> GetReportAsync(string id)
         {
             var report = await this.dbContext.Reports
                                    .Include(x => x.User)
@@ -49,7 +51,7 @@
             return report?.MapTo<ReportServiceModel>();
         }
 
-        public async Task<ReportServiceModel> DeleteReportAsync(int id)
+        public async Task<ReportServiceModel> DeleteReportAsync(string id)
         {
             var report = await this.dbContext.Reports
                                    .Include(x => x.ReceiptReports)
@@ -67,7 +69,7 @@
             return report.MapTo<ReportServiceModel>();
         }
 
-        public async Task<ReportServiceModel> CreateAsync(int companyId, string name, DateTime from, DateTime to, MISUser user)
+        public async Task<ReportServiceModel> CreateAsync(string companyId, string name, DateTime from, DateTime to, MISUser user)
         {
             var report = new Report
             {

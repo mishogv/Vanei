@@ -24,7 +24,7 @@
             this.categoryService = categoryService;
         }
 
-        public async Task<IActionResult> Create(int id)
+        public async Task<IActionResult> Create(string id)
         {
             //TODO : Security parameter tampering
 
@@ -59,7 +59,7 @@
             return this.RedirectToAction("Index", "WareHouse");
         }
 
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(string id)
         {
             //TODO : Security parameter tampering
 
@@ -82,7 +82,7 @@
             return this.RedirectToAction("Index", "WareHouse");
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             //TODO : Security parameter tampering
             await this.productService.DeleteAsync(id);

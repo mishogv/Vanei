@@ -19,7 +19,7 @@
 
         public string CompanyName { get; set; }
 
-        public int? CompanyId { get; set; }
+        public string CompanyId { get; set; }
 
         public bool IsAvailableForInvite { get; set; }
 

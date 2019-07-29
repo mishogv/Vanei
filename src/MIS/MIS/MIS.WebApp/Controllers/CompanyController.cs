@@ -26,19 +26,16 @@ namespace MIS.WebApp.Controllers
         private readonly ICompanyService companyService;
         private readonly UserManager<MISUser> userManager;
         private readonly SignInManager<MISUser> signInManager;
-        private readonly IHubContext<ChatHub> context;
         private readonly IMessageService messageService;
 
         public CompanyController(ICompanyService companyService,
             UserManager<MISUser> userManager,
             SignInManager<MISUser> signInManager,
-            IHubContext<ChatHub> context,
             IMessageService messageService)
         {
             this.companyService = companyService;
             this.userManager = userManager;
             this.signInManager = signInManager;
-            this.context = context;
             this.messageService = messageService;
         }
 
@@ -51,7 +48,7 @@ namespace MIS.WebApp.Controllers
                 return this.RedirectToAction(nameof(this.Create));
             }
 
-            var company = await this.companyService.GetCompanyAsync((int)user.CompanyId);
+            var company = await this.companyService.GetCompanyAsync(user.CompanyId);
 
             var employees = company.Employees.Select(x => x.MapTo<DetailsCompanyUserViewModel>());
 
@@ -60,7 +57,7 @@ namespace MIS.WebApp.Controllers
             return this.View(result);
         }
 
-        public async Task<IActionResult> Chat(int id)
+        public async Task<IActionResult> Chat(string id)
         {
             var messages = await this.messageService.GetAll(id);
             var result = new CompanyChatViewModel

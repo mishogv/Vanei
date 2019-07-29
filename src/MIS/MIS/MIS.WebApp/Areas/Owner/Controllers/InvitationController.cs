@@ -51,7 +51,7 @@
                     user.CompanyName = GlobalConstants.NotApplicable;
                     user.IsAvailableForInvite = true;
 
-                    if (user.Invitations.Select(x => x.CompanyId).Contains((int)currentUser.CompanyId))
+                    if (user.Invitations.Select(x => x.CompanyId).Contains(currentUser.CompanyId))
                     {
                         user.IsAvailableForInvite = false;
                     }
@@ -60,7 +60,7 @@
                 {
                     user.IsAvailableForInvite = false;
                 }
-                else if (user.Invitations.Select(x => x.CompanyId).Contains((int)currentUser.CompanyId))
+                else if (user.Invitations.Select(x => x.CompanyId).Contains(currentUser.CompanyId))
                 {
                     user.IsAvailableForInvite = false;
                 }

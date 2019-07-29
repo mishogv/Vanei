@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class Company : BaseModel<int>
+    public class Company : BaseModel<string>
     {
         public Company()
         {

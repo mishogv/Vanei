@@ -6,7 +6,7 @@
 
     public class IndexWarehouseDropdownViewModel : IMapFrom<WareHouseServiceModel>
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public string Name { get; set; }
     }

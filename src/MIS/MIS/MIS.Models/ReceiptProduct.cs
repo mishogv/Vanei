@@ -3,12 +3,13 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class ReceiptProduct : BaseModel<int>
+    public class ReceiptProduct : BaseModel<string>
     {
         public int ReceiptId { get; set; }
         public Receipt Receipt { get; set; }
 
-        public int ProductId { get; set; }
+        [Required]
+        public string ProductId { get; set; }
         public Product Product { get; set; }
 
         [Range(0, double.MaxValue)]

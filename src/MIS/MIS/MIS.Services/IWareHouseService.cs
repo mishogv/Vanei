@@ -12,18 +12,18 @@
 
     public interface IWareHouseService
     {
-        Task<WareHouseServiceModel> CreateAsync(string name, int? companyId);
+        Task<WareHouseServiceModel> CreateAsync(string name, string companyId);
 
-        Task<WareHouseServiceModel> GetWareHouseAsync(int id);
+        Task<WareHouseServiceModel> GetWareHouseAsync(string id);
 
-        Task<WareHouseServiceModel> DeleteAsync(int id);
+        Task<WareHouseServiceModel> DeleteAsync(string id);
 
-        Task<WareHouseServiceModel> EditAsync(int id, string name);
+        Task<WareHouseServiceModel> EditAsync(string id, string name);
 
-        Task<WareHouseServiceModel> MakeFavoriteAsync(int id, int? companyId);
+        Task<WareHouseServiceModel> MakeFavoriteAsync(string id, string companyId);
 
-        Task<bool> AddCategoryAsync(Category category, int warehouseId);
+        Task<bool> AddCategoryAsync(Category category, string warehouseId);
 
-        Task<IEnumerable<WareHouseServiceModel>> GetWarehousesByCompanyIdAsync(int? companyId);
+        Task<IEnumerable<WareHouseServiceModel>> GetWarehousesByCompanyIdAsync(string companyId);
     }
 }

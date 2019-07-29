@@ -3,7 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class Message : BaseModel<int>
+    public class Message : BaseModel<string>
     {
         [Required]
         public string Username { get; set; }
@@ -13,7 +13,9 @@
 
         public DateTime AddedOn { get; set; }
 
-        public int CompanyId { get; set; }
+
+        [Required]
+        public string CompanyId { get; set; }
         public virtual Company Company { get; set; }
     }
 }

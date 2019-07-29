@@ -45,11 +45,11 @@
             return invitations;
         }
 
-        public async Task<InvitationServiceModel> InviteAsync(int? companyId, string userId)
+        public async Task<InvitationServiceModel> InviteAsync(string companyId, string userId)
         {
             var invitation = new Invitation();
 
-            await this.companyService.SetCompanyAsync(invitation, (int)companyId);
+            await this.companyService.SetCompanyAsync(invitation, companyId);
             await this.userService.SetInvitationAsync(invitation, userId);
 
             await this.dbContext.AddAsync(invitation);
@@ -58,7 +58,7 @@
             return invitation.MapTo<InvitationServiceModel>();
         }
 
-        public async Task<InvitationServiceModel> AcceptInvitationAsync(int invitationId, bool isOwner)
+        public async Task<InvitationServiceModel> AcceptInvitationAsync(string invitationId, bool isOwner)
         {
             //TODO : IF CURRENT USER IS OWNER OF COMPANY WHAT HAPPENED
             //TODO : DROP HIS ROLE AND DELETE OLD COMPANY IF HAVE OR MAKE OTHER AS OWNER.
@@ -99,7 +99,7 @@
             return invitation.MapTo<InvitationServiceModel>();
         }
 
-        public async Task<InvitationServiceModel> DeclineInvitationAsync(int invitationId)
+        public async Task<InvitationServiceModel> DeclineInvitationAsync(string invitationId)
         {
             var invitation = await this.dbContext.Invitations.FirstOrDefaultAsync(x => x.Id == invitationId);
 

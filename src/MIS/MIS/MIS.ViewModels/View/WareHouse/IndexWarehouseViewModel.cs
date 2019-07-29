@@ -6,7 +6,7 @@
 
     public class IndexWarehouseViewModel
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public bool IsFavorite { get; set; }
         

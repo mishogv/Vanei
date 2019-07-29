@@ -106,6 +106,8 @@
         public async Task<IActionResult> Details(int id)
         {
             var receipt = await this.receiptService.GetReceiptAsync(id);
+            
+            //TODO : parameter tampering
 
             var result = new DetailsReceiptViewModel()
             {

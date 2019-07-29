@@ -28,7 +28,7 @@
             this.companyService = companyService;
         }
 
-        public async Task<MessageServiceModel> CreateAsync(int companyId, string username, string text, bool isNotification)
+        public async Task<MessageServiceModel> CreateAsync(string companyId, string username, string text, bool isNotification)
         {
             var message = new Message()
             {
@@ -46,7 +46,7 @@
             return message.MapTo<MessageServiceModel>();
         }
 
-        public async Task<IEnumerable<MessageServiceModel>> GetAll(int companyId)
+        public async Task<IEnumerable<MessageServiceModel>> GetAll(string companyId)
         {
             var messages = this.dbContext.Messages
                                .Where(x => x.CompanyId == companyId)

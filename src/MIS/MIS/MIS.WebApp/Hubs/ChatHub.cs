@@ -34,7 +34,7 @@
             this.userManager = userManager;
         }
 
-        public async Task AddToGroup(int companyId)
+        public async Task AddToGroup(string companyId)
         {
             var username = this.Context.User.Identity.Name;
             var message = await this.messageService.CreateAsync(companyId, username, MessageJoinGroupTemplate, true);
@@ -46,7 +46,7 @@
                          .SendAsync("NewMessage", message.MapTo<ChatHubMessageViewModel>());
         }
 
-        public async Task RemoveFromGroup(int companyId)
+        public async Task RemoveFromGroup(string companyId)
         {
             var username = this.Context.User.Identity.Name;
             var message = await this.messageService.CreateAsync(companyId, username, MessageLeftGroupTemplate, true);
@@ -60,7 +60,7 @@
                       .SendAsync("NewMessage", message.MapTo<ChatHubMessageViewModel>());
         }
 
-        public async Task Send(int companyId, string message)
+        public async Task Send(string companyId, string message)
         {
             var username = this.Context.User.Identity.Name;
             var sanitizedMessage = this.sanitizer.Sanitize(message);

@@ -8,7 +8,7 @@
 
     public class ProductServiceModel : IMapFrom<Product>
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public string Name { get; set; }
 
@@ -18,10 +18,10 @@
 
         public string BarCode { get; set; }
 
-        public int CategoryId { get; set; }
+        public string CategoryId { get; set; }
         public virtual Category Category { get; set; }
 
-        public int WareHouseId { get; set; }
+        public string WareHouseId { get; set; }
         public virtual WareHouse WareHouse { get; set; }
     }
 }

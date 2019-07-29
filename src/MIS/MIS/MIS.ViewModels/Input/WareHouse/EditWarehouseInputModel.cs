@@ -8,7 +8,7 @@
 
     public class EditWarehouseInputModel : IMapFrom<WareHouseServiceModel>
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [StringLength(24, MinimumLength = 3)]

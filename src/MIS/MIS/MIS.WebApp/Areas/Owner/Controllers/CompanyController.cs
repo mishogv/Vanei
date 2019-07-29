@@ -34,7 +34,7 @@
             this.signInManager = signInManager;
         }
 
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(string id)
         {
             var company = await this.companyService.GetCompanyAsync(id);
 
@@ -60,7 +60,7 @@
             return this.RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             await this.companyService.DeleteAsync(id);
             var user = await this.userManager.GetUserAsync(this.User);

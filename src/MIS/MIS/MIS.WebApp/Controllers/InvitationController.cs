@@ -44,7 +44,7 @@
             return this.View(result);
         }
 
-        public async Task<IActionResult> Accept(int id)
+        public async Task<IActionResult> Accept(string id)
         {
             var isOwner = this.User.IsInRole(GlobalConstants.CompanyOwnerRole);
 
@@ -58,7 +58,7 @@
             return this.RedirectToAction("Index", "Company");
         }
 
-        public async Task<IActionResult> Decline(int id)
+        public async Task<IActionResult> Decline(string id)
         {
             await this.invitationService.DeclineInvitationAsync(id);
 

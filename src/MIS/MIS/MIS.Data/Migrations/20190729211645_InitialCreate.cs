@@ -26,8 +26,7 @@ namespace MIS.Data.Migrations
                 name: "Companies",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(maxLength: 40, nullable: false),
                     Address = table.Column<string>(maxLength: 40, nullable: false)
                 },
@@ -78,7 +77,7 @@ namespace MIS.Data.Migrations
                     AccessFailedCount = table.Column<int>(nullable: false),
                     FirstName = table.Column<string>(maxLength: 30, nullable: false),
                     LastName = table.Column<string>(maxLength: 30, nullable: false),
-                    CompanyId = table.Column<int>(nullable: true)
+                    CompanyId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -92,14 +91,34 @@ namespace MIS.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Username = table.Column<string>(nullable: false),
+                    Text = table.Column<string>(nullable: false),
+                    AddedOn = table.Column<DateTime>(nullable: false),
+                    CompanyId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Messages_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "WareHouses",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(maxLength: 24, nullable: false),
                     IsFavorite = table.Column<bool>(nullable: false),
-                    CompanyId = table.Column<int>(nullable: false)
+                    CompanyId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -198,6 +217,31 @@ namespace MIS.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Invitations",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    UserId = table.Column<string>(nullable: false),
+                    CompanyId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Invitations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Invitations_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Invitations_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Receipts",
                 columns: table => new
                 {
@@ -206,7 +250,7 @@ namespace MIS.Data.Migrations
                     IssuedOn = table.Column<DateTime>(nullable: true),
                     Total = table.Column<decimal>(nullable: false),
                     UserId = table.Column<string>(nullable: true),
-                    CompanyId = table.Column<int>(nullable: false)
+                    CompanyId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -229,11 +273,11 @@ namespace MIS.Data.Migrations
                 name: "Reports",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
                     From = table.Column<DateTime>(nullable: false),
                     To = table.Column<DateTime>(nullable: false),
-                    CompanyId = table.Column<int>(nullable: false),
+                    CompanyId = table.Column<string>(nullable: false),
                     UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -257,10 +301,9 @@ namespace MIS.Data.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(maxLength: 24, nullable: false),
-                    WareHouseId = table.Column<int>(nullable: false)
+                    WareHouseId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -277,10 +320,9 @@ namespace MIS.Data.Migrations
                 name: "ReceiptReports",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<string>(nullable: false),
                     ReceiptId = table.Column<int>(nullable: false),
-                    ReportId = table.Column<int>(nullable: false)
+                    ReportId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -303,14 +345,13 @@ namespace MIS.Data.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(maxLength: 24, nullable: false),
                     Price = table.Column<decimal>(nullable: false),
                     Quantity = table.Column<double>(nullable: false),
                     BarCode = table.Column<string>(nullable: false),
-                    CategoryId = table.Column<int>(nullable: false),
-                    WareHouseId = table.Column<int>(nullable: false)
+                    CategoryId = table.Column<string>(nullable: false),
+                    WareHouseId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -333,10 +374,9 @@ namespace MIS.Data.Migrations
                 name: "ReceiptProducts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<string>(nullable: false),
                     ReceiptId = table.Column<int>(nullable: false),
-                    ProductId = table.Column<int>(nullable: false),
+                    ProductId = table.Column<string>(nullable: false),
                     Quantity = table.Column<double>(nullable: false),
                     AddedOn = table.Column<DateTime>(nullable: false),
                     Total = table.Column<decimal>(nullable: false)
@@ -406,6 +446,21 @@ namespace MIS.Data.Migrations
                 name: "IX_Categories_WareHouseId",
                 table: "Categories",
                 column: "WareHouseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Invitations_CompanyId",
+                table: "Invitations",
+                column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Invitations_UserId",
+                table: "Invitations",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_CompanyId",
+                table: "Messages",
+                column: "CompanyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
@@ -479,6 +534,12 @@ namespace MIS.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Invitations");
+
+            migrationBuilder.DropTable(
+                name: "Messages");
 
             migrationBuilder.DropTable(
                 name: "ReceiptProducts");

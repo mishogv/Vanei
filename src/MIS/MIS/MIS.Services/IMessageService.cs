@@ -7,8 +7,8 @@
 
     public interface IMessageService
     {
-        Task<MessageServiceModel> CreateAsync(int companyId, string username, string text, bool isNotification);
+        Task<MessageServiceModel> CreateAsync(string companyId, string username, string text, bool isNotification);
 
-        Task<IEnumerable<MessageServiceModel>> GetAll(int companyId);
+        Task<IEnumerable<MessageServiceModel>> GetAll(string companyId);
     }
 }

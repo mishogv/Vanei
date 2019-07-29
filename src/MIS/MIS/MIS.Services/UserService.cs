@@ -37,7 +37,7 @@
             invitation.User = user;
         }
 
-        public async Task<int> SetReceiptAsync(Receipt receipt, string username)
+        public async Task<string> SetReceiptAsync(Receipt receipt, string username)
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync(x => x.UserName == username);
 
@@ -48,7 +48,7 @@
 
             receipt.User = user;
 
-            return (int)user.CompanyId;
+            return user.CompanyId;
         }
 
 

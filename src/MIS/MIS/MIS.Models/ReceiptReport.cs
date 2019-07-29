@@ -1,11 +1,14 @@
 ﻿namespace MIS.Models
 {
-    public class ReceiptReport : BaseModel<int>
-    {
-        public Receipt Receipt { get; set; }
-        public int ReceiptId { get; set; }
+    using System.ComponentModel.DataAnnotations;
 
+    public class ReceiptReport : BaseModel<string>
+    {
+        public int ReceiptId { get; set; }
+        public Receipt Receipt { get; set; }
+
+        [Required]
+        public string ReportId { get; set; }
         public Report Report { get; set; }
-        public int ReportId { get; set; }
     }
 }

@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class Report : BaseModel<int>
+    public class Report : BaseModel<string>
     {
         public Report()
         {
@@ -20,8 +20,9 @@
         [Required]
         public DateTime To { get; set; }
 
+        [Required]
+        public string CompanyId { get; set; }
         public virtual Company Company { get; set; }
-        public int CompanyId { get; set; }
 
         public string UserId { get; set; }
         public virtual MISUser User { get; set; }

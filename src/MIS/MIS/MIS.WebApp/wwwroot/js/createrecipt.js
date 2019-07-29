@@ -156,7 +156,7 @@ function renderProducts(data) {
             +
             '<td>'
             +
-            '<input type="number" class="form-control" id="product-id-number-' + i + '" value="' + data.products[i].id + '" disabled="disabled"  />'
+            '<input type="text" placeholder="Id" class="form-control" id="product-id-number-' + i + '" value="' + data.products[i].id + '" disabled="disabled"  />'
             +
             '</td>'
             +
@@ -200,10 +200,9 @@ function renderEmptyProduct(last) {
     $('#table-products').append(
         '<tr>' +
         '<td>' +
-        '<input type="number" class="form-control" id="product-id-number-' +
+        '<input type="text" class="form-control" id="product-id-number-' +
         last +
-        '" value="0' +
-        '" disabled="disabled"  />' +
+        '" disabled="disabled" placeholder="Id" />' +
         '</td>' +
         '<td>' +
         '<input type="text" class="form-control" id="product-name-number-' +

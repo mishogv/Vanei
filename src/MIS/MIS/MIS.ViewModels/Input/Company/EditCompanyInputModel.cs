@@ -8,8 +8,7 @@
 
     public class EditCompanyInputModel : IMapFrom<CompanyServiceModel>
     {
-        public int Id { get; set; }
-
+        public string Id { get; set; }
 
         [Required]
         [StringLength(40, MinimumLength = 4)]

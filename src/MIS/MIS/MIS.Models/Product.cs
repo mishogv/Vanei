@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class Product : BaseModel<int>
+    public class Product : BaseModel<string>
     {
         public Product()
         {
@@ -27,10 +27,12 @@
         [RegularExpression(@"^8[0-9]{11}([0-9]{2})?$")]
         public string BarCode { get; set; }
 
-        public int CategoryId { get; set; } 
+        [Required]
+        public string CategoryId { get; set; } 
         public virtual Category Category { get; set; }
 
-        public int WareHouseId { get; set; }
+        [Required]
+        public string WareHouseId { get; set; }
         public virtual WareHouse WareHouse { get; set; }
 
         public virtual ICollection<ReceiptProduct> ReceiptProducts { get; set; }

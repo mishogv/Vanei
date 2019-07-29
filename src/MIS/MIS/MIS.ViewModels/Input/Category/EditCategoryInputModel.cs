@@ -8,7 +8,7 @@
 
     public class EditCategoryInputModel : IMapFrom<CategoryServiceModel>
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [StringLength(24, MinimumLength = 2)]
