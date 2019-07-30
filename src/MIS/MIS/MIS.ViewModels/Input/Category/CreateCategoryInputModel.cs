@@ -4,6 +4,7 @@
 
     public class CreateCategoryInputModel
     {
+        [Required]
         public string Id { get; set; }
 
         [Required]

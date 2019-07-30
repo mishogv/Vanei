@@ -31,12 +31,12 @@
     }
 
     <div class="col-md-2">
-        <a class="btn btn-primary container-fluid" asp-controller="Product" asp-action="Create">
+        <a class="btn btn-primary container-fluid" asp-controller="Product" asp-action="Create" asp-route-id="@Model.Id">
             Create product
         </a>
     </div>
     <div class="col-md-2">
-        <a class="btn btn-primary container-fluid" asp-controller="Category" asp-action="Create">
+        <a class="btn btn-primary container-fluid" asp-controller="Category" asp-action="Create" asp-route-id="@Model.Id">
             Create category
         </a>
     </div>

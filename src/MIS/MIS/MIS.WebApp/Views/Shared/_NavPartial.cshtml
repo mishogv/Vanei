@@ -69,10 +69,12 @@
 
                         @if (user?.CompanyId != null)
                         {
-                            <li class="nav-item">
-                                <a class="btn btn-link nav-item nav-link text-white" asp-controller="Company" asp-action="Chat" asp-route-id="@user.CompanyId">
-                                    Chat
-                                </a>
+                            <li class="nav-item justify-content-start">
+                                <div class="container-fluid d-flex justify-content-start">
+                                    <a class="btn btn-link nav-item nav-link text-white justify-content-start" asp-controller="Company" asp-action="Chat" asp-route-id="@user.CompanyId">
+                                        Chat
+                                    </a>
+                                </div>
                             </li>
                         }
 
