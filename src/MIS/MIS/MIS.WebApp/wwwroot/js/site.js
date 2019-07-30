@@ -13,3 +13,4 @@ $(document).ready(function () {
     $('.dataTables_length').addClass('container-fluid');
     $('.dataTables_length').addClass('custom-table');
 });
+

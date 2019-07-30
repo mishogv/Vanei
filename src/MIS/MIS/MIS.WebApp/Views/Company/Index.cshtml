@@ -35,11 +35,11 @@
 
     @if (this.User.IsInRole(GlobalConstants.CompanyOwnerRole))
     {
-        <div class="col-md-3" >
+        <div class="col-md-3">
             <a class="btn btn-primary container-fluid justify-content-center" asp-area="Owner" asp-controller="Company" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
         </div>
         <div class="col-md-3">
-            <a class="btn btn-primary container-fluid justify-content-center" asp-area="Owner" asp-controller="Company" asp-action="Delete" asp-route-id="@Model.Id" >Delete</a>
+            <a class="btn btn-primary container-fluid justify-content-center" asp-area="Owner" asp-controller="Company" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
         </div>
     }
 </div>
@@ -81,11 +81,5 @@
 @section Scripts {
     <!-- MDBootstrap Datatables  -->
     <script type="text/javascript" src="~/js/addons/datatables.min.js"></script>
-    <script>
-
-        $(document).ready(function () {
-            $('#dtBasicExample').DataTable();
-            $('.dataTables_length').addClass('bs-select');
-        });
-    </script>
+    <script src="~/js/site.js"></script>
 }

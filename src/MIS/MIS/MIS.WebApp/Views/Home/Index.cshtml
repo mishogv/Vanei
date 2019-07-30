@@ -2,7 +2,70 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-</div>
+<section id="intro" class="clearfix">
+    <div class="container">
 
+        <div class="intro-img">
+            <img src="~/img/intro-img.svg" alt="" class="img-fluid">
+        </div>
+
+        <div class="intro-info">
+            <h2>We provide<br><span>solutions</span><br>for your business!</h2>
+            <div>
+                <a asp-area="Identity" asp-page="/Account/Register" class="btn-get-started">Get Started</a>
+                <a href="#services" class="btn-services scrollto">Our Services</a>
+                <a href="#team" class="btn-services scrollto">Our Team</a>
+                <a asp-controller="Home" asp-action="Contact" class="btn-services">Contact</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!--==========================
+  Services Section
+============================-->
+<section id="services" class="section-bg mt-2">
+    <div class="container">
+
+        <div class="mb-3">
+            <div class="h3 container-fluid d-flex justify-content-center">Services</div>
+            <div class="h6 container-fluid d-flex justify-content-center">We provide the best software solutions for your problems.</div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5 offset-lg-1 wow bounceInUp" data-wow-duration="1.4s">
+                <div class="box">
+                    <div class="icon"><i class="ion-ios-analytics-outline" style="color: #ff689b;"></i></div>
+                    <h4 class="title">MIS Software System</h4>
+                    <p class="description">The best solution for your business requirement. Using it is easy and fast. Let us impress you.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section><!-- #services -->
+
+<section id="team" class="bg-mis" >
+    <div class="container">
+        <div class="justify-content-center container-fluid">
+            <div class="h5 container-fluid text-center justify-content-center">Team</div>
+        </div>
+
+        <div class="row justify-content-center ml-3">
+
+            <div class="col-lg-3 col-md-6 wow fadeInUp">
+                <div class="member">
+                    <img src="~/img/img-misho.jpg" class="img-fluid" alt="">
+                    <div class="member-info">
+                        <div class="member-info-content">
+                            <a href="https://www.facebook.com/mihailgv" class="h5 text-white">Mihail Petrov</a>
+                            <span>Owner, CTO, Solution Architect, Developer, Sales</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section><!-- #team -->
