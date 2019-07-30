@@ -7,41 +7,48 @@
 
 <link href="~/css/addons/datatables.min.css" rel="stylesheet">
 
-<div class="row">
-    <h1>@Model.WareHouseName</h1>
+<h1 class="d-flex justify-content-center container-fluid">Warehouse</h1>
+<h2 class="d-flex justify-content-center container-fluid">@Model.WareHouseName</h2>
+
+<div class="row container-fluid justify-content-around mb-4">
+    <div class="col-md-2">
+        <a class="btn btn-primary dropdown-toggle container-fluid" type="button" id="dropdownMenu2" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">Warehouse</a>
+
+        <div class="dropdown-menu dropdown-primary container-fluid">
+            @foreach (var warehouse in Model.WarehouseDropdown)
+            {
+                <a asp-controller="WareHouse" asp-action="Index" asp-route-id="@warehouse.Id" class="dropdown-item">@warehouse.Name</a>
+            }
+        </div>
+    </div>
+
     @if (!Model.IsFavorite)
     {
-        <form asp-controller="WareHouse" asp-action="Favorite" asp-route-id="@Model.Id" method="get">
-            <input class="btn btn-primary ml-5" value="Make it Favorite" type="submit" />
-        </form>
+        <div class="col-md-2">
+            <a asp-controller="WareHouse" asp-action="Favorite" asp-route-id="@Model.Id" class="btn btn-primary container-fluid">Make it Favorite</a>
+        </div>
     }
 
-    <a class="btn btn-primary" asp-controller="WareHouse" asp-action="Edit" asp-route-id="@Model.Id">
-        Edit
-    </a>
-    <a class="btn btn-primary" asp-controller="WareHouse" asp-action="Delete" asp-route-id="@Model.Id">
-        Delete
-    </a>
-</div>
-<div>
-    <span>Categories</span>
-    <a asp-controller="Category" asp-action="Create" asp-route-id="@Model.Id">Create</a>
-</div>
-<div>
-    <span>Products</span>
-    <a asp-controller="Product" asp-action="Create" asp-route-id="@Model.Id">Create</a>
-</div>
-
-<div>Choose other warehouse</div>
-<div class="dropdown">
-    <a class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
-       aria-haspopup="true" aria-expanded="false">Warehouse</a>
-
-    <div class="dropdown-menu dropdown-primary">
-        @foreach (var warehouse in Model.WarehouseDropdown)
-        {
-            <a asp-controller="WareHouse" asp-action="Index" asp-route-id="@warehouse.Id" class="dropdown-item">@warehouse.Name</a>
-        }
+    <div class="col-md-2">
+        <a class="btn btn-primary container-fluid" asp-controller="Product" asp-action="Create">
+            Create product
+        </a>
+    </div>
+    <div class="col-md-2">
+        <a class="btn btn-primary container-fluid" asp-controller="Category" asp-action="Create">
+            Create category
+        </a>
+    </div>
+    <div class="col-md-2">
+        <a class="btn btn-primary container-fluid" asp-controller="WareHouse" asp-action="Edit" asp-route-id="@Model.Id">
+            Edit
+        </a>
+    </div>
+    <div class="col-md-2">
+        <a class="btn btn-primary container-fluid" asp-controller="WareHouse" asp-action="Delete" asp-route-id="@Model.Id">
+            Delete
+        </a>
     </div>
 </div>
 
@@ -84,7 +91,6 @@
 </table>
 
 @section Scripts{
-
-    <script type="text/javascript" src="js/addons/datatables.min.js"></script>
+    <script type="text/javascript" src="~/js/addons/datatables.min.js"></script>
     <script src="~/js/site.js"></script>
 }

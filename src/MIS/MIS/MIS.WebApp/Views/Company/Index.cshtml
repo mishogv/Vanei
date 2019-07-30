@@ -9,23 +9,23 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Company details</h1>
+<h1 class="container-fluid d-flex justify-content-center">Company details</h1>
 <hr />
 
 
 <link href="~/css/addons/datatables.min.css" rel="stylesheet">
 
-<div class="h5">
-    <div>
-        <label>
+<div class="row mb-5">
+    <div class="col-md-3">
+        <label class="h6">
             Name:
         </label>
         <span>
             @Model.Name
         </span>
     </div>
-    <div>
-        <label>
+    <div class="col-md-3">
+        <label class="h6">
             Address:
         </label>
         <span>
@@ -35,11 +35,11 @@
 
     @if (this.User.IsInRole(GlobalConstants.CompanyOwnerRole))
     {
-        <div class="container-fluid float-left">
-            <a class="btn btn-primary" asp-area="Owner" asp-controller="Company" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+        <div class="col-md-3" >
+            <a class="btn btn-primary container-fluid justify-content-center" asp-area="Owner" asp-controller="Company" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
         </div>
-        <div class="container-fluid float-left">
-            <a class="btn btn-primary" asp-area="Owner" asp-controller="Company" asp-action="Delete" asp-route-id="@Model.Id" >Delete</a>
+        <div class="col-md-3">
+            <a class="btn btn-primary container-fluid justify-content-center" asp-area="Owner" asp-controller="Company" asp-action="Delete" asp-route-id="@Model.Id" >Delete</a>
         </div>
     }
 </div>

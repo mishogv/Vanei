@@ -5,7 +5,11 @@
 
 
 $(document).ready(function () {
-    $('#dtBasicExample').DataTable();
+    $('#dtBasicExample').DataTable({
+        "scrollX": true
+    });
     $('.dataTables_length').addClass('bs-select');
     $('.dataTables_length').addClass('table-responsive');
+    $('.dataTables_length').addClass('container-fluid');
+    $('.dataTables_length').addClass('custom-table');
 });

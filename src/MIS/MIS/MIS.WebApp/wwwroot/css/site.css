@@ -78,3 +78,7 @@ body {
     width: 37px !important;
     height: 37px !important;
 }
+
+.custom-tabele {
+    overflow: auto;   /* Scrollbar is displayed as it's needed */
+}

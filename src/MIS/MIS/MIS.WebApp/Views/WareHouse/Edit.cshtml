@@ -5,10 +5,10 @@
     ViewData["Title"] = "Edit";
 }
 
-<h4>Edit warehouse</h4>
-<hr />
+<h1 class="d-flex justify-content-center">Edit warehouse</h1>
+<hr class="w-50" />
 
-<div class="row">
+<div class="row container-fluid justify-content-center">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -18,14 +18,15 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
                 <input asp-for="Id" type="hidden" value="@Model.Id" />
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="container-fluid d-flex justify-content-around">
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            
+                <div>
+                    <a class="btn btn-primary" asp-action="Index">Back to List</a>
+                </div>
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
