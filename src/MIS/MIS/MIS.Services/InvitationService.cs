@@ -60,9 +60,6 @@
 
         public async Task<InvitationServiceModel> AcceptInvitationAsync(string invitationId, bool isOwner)
         {
-            //TODO : IF CURRENT USER IS OWNER OF COMPANY WHAT HAPPENED
-            //TODO : DROP HIS ROLE AND DELETE OLD COMPANY IF HAVE OR MAKE OTHER AS OWNER.
-
             var invitation = await this.dbContext.Invitations
                                        .Include(x => x.Company)
                                        .Include(x => x.User)

@@ -26,8 +26,6 @@
 
         public async Task<IActionResult> Create(string id)
         {
-            //TODO : Security parameter tampering
-
             var categories = this.categoryService.GetAllCategories(id);
 
             var result = new CreateProductInputModel()

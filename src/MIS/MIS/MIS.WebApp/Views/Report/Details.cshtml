@@ -41,7 +41,7 @@
             @Model.Username
         </span>
     </div>
-    
+
     <div class="container-fluid float-left">
         <a class="btn btn-primary" asp-controller="Report" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
     </div>
@@ -65,14 +65,7 @@
     </tbody>
 </table>
 
-@section Scripts {
-    <!-- MDBootstrap Datatables  -->
+@section Scripts{
     <script type="text/javascript" src="~/js/addons/datatables.min.js"></script>
-    <script>
-
-        $(document).ready(function () {
-            $('#dtBasicExample').DataTable();
-            $('.dataTables_length').addClass('bs-select');
-        });
-    </script>
+    <script src="~/js/site.js"></script>
 }

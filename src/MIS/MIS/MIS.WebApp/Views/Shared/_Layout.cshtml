@@ -1,6 +1,6 @@
-﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
-@using Microsoft.Extensions.Options
+﻿@using Microsoft.Extensions.Options
 @using reCAPTCHA.AspNetCore
+@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
 @inject IOptions<RecaptchaSettings> RecaptchaSettings
 <!DOCTYPE html>
 <html>
@@ -40,9 +40,15 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-dark bg-primary">
-        <div class="container">
-            &copy; 2019 - MIS - <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-dark">Privacy</a>
+    <footer class="border-top footer bg-primary">
+        <div class="row container-fluid justify-content-center">
+            <div class="text-black-50 text-dark font-weight-bold">
+                <span class="mr-4">&copy; 2019 - MISSoftware</span>
+                <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-black-50 text-dark font-weight-bold">Privacy</a>
+            </div>
+            <div>
+                <a asp-controller="Home" asp-action="Contact" class="container-fluid justify-content-center text-dark font-weight-bold">Contacts</a>
+            </div>  
         </div>
     </footer>
 
@@ -64,12 +70,11 @@
                 integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
         </script>
     </environment>
-    <script src="~/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
     @section Scripts {
         <partial name="_ValidationScriptsPartial" />
-        
+
         <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
         <!-- JQuery -->
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -80,6 +85,9 @@
         <!-- MDB core JavaScript -->
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.5/js/mdb.min.js"></script>
         
+        <script type="text/javascript" src="~/js/addons/datatables.min.js"></script>
+
+        <script src="~/js/site.js" asp-append-version="true"></script>
     }
 </body>
 </html>
