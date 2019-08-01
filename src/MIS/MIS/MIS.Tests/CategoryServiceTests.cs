@@ -218,7 +218,7 @@
             var expectedSecond = await categoryService.CreateAsync(CategoryName + 2, warehouse.Id);
             var expectedThird = await categoryService.CreateAsync(CategoryName + 3, warehouse.Id);
 
-            var actual = await categoryService.GetAllCategories(warehouse.Id);
+            var actual = await categoryService.GetAllCategoriesAsync(warehouse.Id);
             var actualArray = actual.OrderBy(x => x.Name).ToArray();
 
             Assert.AreEqual(expectedFirst.Id, actualArray[0].Id);
@@ -237,7 +237,7 @@
             var expectedSecond = await categoryService.CreateAsync(CategoryName + 2, warehouse.Id);
             var expectedThird = await categoryService.CreateAsync(CategoryName + 3, warehouse.Id);
 
-            var actual = await categoryService.GetAllCategories("asd");
+            var actual = await categoryService.GetAllCategoriesAsync("asd");
 
             Assert.IsEmpty(actual);
         }

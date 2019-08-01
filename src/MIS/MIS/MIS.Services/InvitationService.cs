@@ -52,6 +52,11 @@
             await this.companyService.SetCompanyAsync(invitation, companyId);
             await this.userService.SetInvitationAsync(invitation, userId);
 
+            if (invitation.User == null || invitation.Company == null)
+            {
+                return null;
+            }
+
             await this.dbContext.AddAsync(invitation);
             await this.dbContext.SaveChangesAsync();
 
@@ -99,6 +104,11 @@
         public async Task<InvitationServiceModel> DeclineInvitationAsync(string invitationId)
         {
             var invitation = await this.dbContext.Invitations.FirstOrDefaultAsync(x => x.Id == invitationId);
+
+            if (invitation == null)
+            {
+                return null;
+            }
 
             this.dbContext.Remove(invitation);
             await this.dbContext.SaveChangesAsync();

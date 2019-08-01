@@ -9,6 +9,6 @@
     {
         Task<MessageServiceModel> CreateAsync(string companyId, string username, string text, bool isNotification);
 
-        Task<IEnumerable<MessageServiceModel>> GetAll(string companyId);
+        Task<IEnumerable<MessageServiceModel>> GetAllAsync(string companyId);
     }
 }

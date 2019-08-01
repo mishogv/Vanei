@@ -23,6 +23,6 @@
 
         Task<IEnumerable<CategoryServiceModel>> GetAllByCompanyIdAsync(string companyId);
 
-        Task<IEnumerable<CreateCategoryWareHouseModel>> GetAllCategories(string warehouseId);
+        Task<IEnumerable<CreateCategoryWareHouseModel>> GetAllCategoriesAsync(string warehouseId);
     }
 }

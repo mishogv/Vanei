@@ -26,15 +26,13 @@
 
         public async Task<IActionResult> Create(string id)
         {
-            var categories = await this.categoryService.GetAllCategories(id);
+            var categories = await this.categoryService.GetAllCategoriesAsync(id);
 
             var result = new CreateProductInputModel()
             {
                 Categories = categories,
                 WarehouseId = id
             };
-
-            await Task.CompletedTask;
 
             return this.View(result);
         }
@@ -64,7 +62,7 @@
             var product = await this.productService.GetProductAsync(id);
 
             var result = product.MapTo<EditProductInputModel>();
-            result.Categories = await this.categoryService.GetAllCategories(product.WareHouseId);
+            result.Categories = await this.categoryService.GetAllCategoriesAsync(product.WareHouseId);
 
             return this.View(result);
         }

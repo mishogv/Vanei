@@ -19,6 +19,8 @@
 
     public class MessageService : IMessageService
     {
+        private const int NumberOfMessages = 20;
+
         private readonly MISDbContext dbContext;
         private readonly ICompanyService companyService;
 
@@ -46,12 +48,12 @@
             return message.MapTo<MessageServiceModel>();
         }
 
-        public async Task<IEnumerable<MessageServiceModel>> GetAll(string companyId)
+        public async Task<IEnumerable<MessageServiceModel>> GetAllAsync(string companyId)
         {
             var messages = this.dbContext.Messages
                                .Where(x => x.CompanyId == companyId)
                                .OrderByDescending(x => x.AddedOn)
-                               .Take(20);
+                               .Take(NumberOfMessages);
             
             return await messages
                              .To<MessageServiceModel>()

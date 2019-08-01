@@ -59,7 +59,7 @@ namespace MIS.WebApp.Controllers
 
         public async Task<IActionResult> Chat(string id)
         {
-            var messages = await this.messageService.GetAll(id);
+            var messages = await this.messageService.GetAllAsync(id);
             var result = new CompanyChatViewModel
             {
                 Id = id,

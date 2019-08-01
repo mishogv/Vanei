@@ -23,15 +23,12 @@
 
         private readonly IHtmlSanitizer sanitizer;
         private readonly IMessageService messageService;
-        private readonly UserManager<MISUser> userManager;
 
         public ChatHub(IHtmlSanitizer sanitizer, 
-            IMessageService messageService,
-            UserManager<MISUser> userManager)
+            IMessageService messageService)
         {
             this.sanitizer = sanitizer;
             this.messageService = messageService;
-            this.userManager = userManager;
         }
 
         public async Task AddToGroup(string companyId)
