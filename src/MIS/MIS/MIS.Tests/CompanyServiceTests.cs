@@ -333,6 +333,5 @@
             var dbContext = new MISDbContext(options);
             return dbContext;
         }
-
     }
 }
