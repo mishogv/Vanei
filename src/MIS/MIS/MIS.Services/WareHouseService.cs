@@ -34,6 +34,11 @@
 
             await this.companyService.SetCompanyAsync(warehouse, companyId);
 
+            if (warehouse.Company == null)
+            {
+                return null;
+            }
+
             this.dbContext.Update(warehouse.Company);
             await this.dbContext.SaveChangesAsync();
 
@@ -97,16 +102,22 @@
 
         public async Task<WareHouseServiceModel> MakeFavoriteAsync(string id, string companyId)
         {
-            var warehouseFromDb = await this.dbContext.Companies
-                                 .Include(x => x.WareHouses)
-                                 .Where(x => x.Id == companyId)
-                                 .SelectMany(x => x.WareHouses)
-                                 .Where(x => x.IsFavorite)
-                                 .FirstOrDefaultAsync();
+            var warehouseFromDb = await this.dbContext.WareHouses
+                          .FirstOrDefaultAsync(x => x.IsFavorite && x.CompanyId == companyId);
 
-            warehouseFromDb.IsFavorite = false;
+            if (warehouseFromDb != null)
+            {
+                warehouseFromDb.IsFavorite = false;
+            }
+
 
             var currentWarehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (currentWarehouse == null)
+            {
+                return null;
+            }
+
             currentWarehouse.IsFavorite = true;
             this.dbContext.Update(warehouseFromDb);
             this.dbContext.Update(currentWarehouse);

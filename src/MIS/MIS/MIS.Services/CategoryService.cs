@@ -37,6 +37,12 @@
             };
 
             await this.wareHouseService.AddCategoryAsync(category, warehouseId);
+
+            if (category.WareHouse == null)
+            {
+                return null;
+            }
+
             await this.dbContext.AddAsync(category);
             this.dbContext.Update(category.WareHouse);
             await this.dbContext.SaveChangesAsync();
