@@ -1,6 +1,7 @@
 ﻿namespace MIS.Services
 {
     using System.Linq;
+    using System.Reflection;
     using System.Threading.Tasks;
 
     using Data;
@@ -65,6 +66,11 @@
                                     .Include(x => x.Reports)
                                     .FirstOrDefaultAsync(x => x.Id == id);
 
+            if (company == null)
+            {
+                return null;
+            }
+
             var receipts = company.Receipts;
 
             this.dbContext.RemoveRange(receipts.SelectMany(x => x.ReceiptReports));
@@ -107,7 +113,7 @@
             return company.MapTo<CompanyServiceModel>();
         }
 
-        public async Task<CompanyServiceModel> SetCompanyAsync(Message message, string id)
+        public async Task<CompanyServiceModel> SetCompanyAsync<TDestination>(TDestination dest, string id)
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync(x => x.Id == id);
             if (company == null)
@@ -115,33 +121,9 @@
                 return null;
             }
 
-            message.Company = company;
+            var prop = dest.GetType().GetProperties().FirstOrDefault(x => x.PropertyType == typeof(Company));
 
-            return company.MapTo<CompanyServiceModel>();
-        }
-
-        public async Task<CompanyServiceModel> SetCompanyAsync(Report report, string id)
-        {
-            var company = await this.dbContext.Companies.FirstOrDefaultAsync(x => x.Id == id);
-            if (company == null)
-            {
-                return null;
-            }
-
-            report.Company = company;
-
-            return company.MapTo<CompanyServiceModel>();
-        }
-
-        public async Task<CompanyServiceModel> SetCompanyAsync(Invitation invitation, string id)
-        {
-            var company = await this.dbContext.Companies.FirstOrDefaultAsync(x => x.Id == id);
-            if (company == null)
-            {
-                return null;
-            }
-
-            invitation.Company = company;
+            prop?.SetValue(dest, company);
 
             return company.MapTo<CompanyServiceModel>();
         }
@@ -168,21 +150,6 @@
             return company.MapTo<CompanyServiceModel>();
         }
 
-        public async Task<CompanyServiceModel> SetCompanyAsync(Receipt receipt, string id)
-        {
-            var company = await this.dbContext
-                                    .Companies
-                                    .FirstOrDefaultAsync(x => x.Id == id);
-            if (company == null)
-            {
-                return null;
-            }
-
-            receipt.Company = company;
-
-            return company.MapTo<CompanyServiceModel>();
-        }
-
         public async Task<CompanyServiceModel> CreateAsync(string name, string address, string userId)
         {
             var company = new Company()
@@ -192,6 +159,11 @@
             };
 
             await this.userService.AddToCompanyAsync(company, userId);
+
+            if (company.Employees.Count == 0)
+            {
+                return null;
+            }
 
             await this.dbContext.AddAsync(company);
             await this.dbContext.SaveChangesAsync();

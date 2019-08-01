@@ -21,14 +21,8 @@
 
         Task<CompanyServiceModel> RemoveEmployeeAsync(string id);
 
-        Task<CompanyServiceModel> SetCompanyAsync(Message message, string id);
-
-        Task<CompanyServiceModel> SetCompanyAsync(Report report, string id);
-
-        Task<CompanyServiceModel> SetCompanyAsync(Invitation invitation, string id);
+        Task<CompanyServiceModel> SetCompanyAsync<T>(T obj, string id);
 
         Task<CompanyServiceModel> SetCompanyAsync(WareHouse wareHouse, string id);
-
-        Task<CompanyServiceModel> SetCompanyAsync(Receipt receipt, string id);
     }
 }

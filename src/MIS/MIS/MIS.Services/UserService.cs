@@ -26,6 +26,11 @@
         public async Task AddToCompanyAsync(Company company, string id)
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (user == null)
+            {
+                return;
+            }
             
             company.Employees.Add(user);
         }
@@ -33,6 +38,10 @@
         public async Task SetInvitationAsync(Invitation invitation, string id)
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
+            if (user == null)
+            {
+                return;
+            }
 
             invitation.User = user;
         }
