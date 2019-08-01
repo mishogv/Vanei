@@ -26,7 +26,7 @@
 
         public async Task<IActionResult> Create(string id)
         {
-            var categories = this.categoryService.GetAllCategories(id);
+            var categories = await this.categoryService.GetAllCategories(id);
 
             var result = new CreateProductInputModel()
             {
@@ -64,7 +64,7 @@
             var product = await this.productService.GetProductAsync(id);
 
             var result = product.MapTo<EditProductInputModel>();
-            result.Categories = this.categoryService.GetAllCategories(product.WareHouseId);
+            result.Categories = await this.categoryService.GetAllCategories(product.WareHouseId);
 
             return this.View(result);
         }
