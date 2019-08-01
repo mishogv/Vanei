@@ -13,6 +13,7 @@
     using Microsoft.Extensions.DependencyInjection;
 
     using Data;
+    using Data.Seeding;
 
     using Ganss.XSS;
 
@@ -99,6 +100,8 @@
             services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IHtmlSanitizer, HtmlSanitizer>();
+            services.AddScoped<RolesSeeder>();
+            services.AddScoped<RootAdminSeeder>();
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.Configure<RecaptchaSettings>(this.Configuration.GetSection("Google"));
@@ -120,6 +123,8 @@
             AutoMapperConfig.RegisterMappings(typeof(AdministratorShowUserViewModel).GetTypeInfo().Assembly, 
                 typeof(CompanyServiceModel).GetTypeInfo().Assembly);
 
+            app.UseSeedData();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage(new DeveloperExceptionPageOptions()
@@ -139,7 +144,6 @@
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseSeedDataMiddleware();
 
             app.UseAuthentication();
 
