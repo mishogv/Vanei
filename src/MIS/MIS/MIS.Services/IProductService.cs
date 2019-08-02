@@ -21,6 +21,6 @@
 
         Task<ProductServiceModel> UpdateAsync(string id, string name, decimal price, double quantity, string barcode, string categoryId);
 
-        Task<IEnumerable<ShowReceiptProductViewModel>> GetAllProductsByUsernameAsync(string username);
+        Task<IEnumerable<ShowReceiptProductViewModel>> GetAllProductsCompanyIdAsync(string companyId);
     }
 }

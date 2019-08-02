@@ -27,7 +27,8 @@
             this.categoryService = categoryService;
         }
 
-        public async Task<ProductServiceModel> CreateAsync(string name, decimal price, double quantity, string barcode, string categoryId, string warehouseId)
+        public async Task<ProductServiceModel> CreateAsync(string name, decimal price, double quantity,
+            string barcode, string categoryId, string warehouseId)
         {
             var product = new Product()
             {
@@ -38,6 +39,11 @@
             };
 
             await this.categoryService.SetCategoryAsync(product, categoryId);
+
+            if (product.Category == null)
+            {
+                return null;
+            }
 
             product.WareHouse = product.Category.WareHouse;
             product.Category.Products.Add(product);
@@ -98,7 +104,7 @@
             product.Quantity = quantity;
 
             await this.categoryService.SetCategoryAsync(product, categoryId);
-            
+
             product.Category.Products.Add(product);
             this.db.Update(product);
             await this.db.SaveChangesAsync();
@@ -106,21 +112,13 @@
             return product.MapTo<ProductServiceModel>();
         }
 
-        public async Task<IEnumerable<ShowReceiptProductViewModel>> GetAllProductsByUsernameAsync(string username)
+        public async Task<IEnumerable<ShowReceiptProductViewModel>> GetAllProductsCompanyIdAsync(string companyId)
         {
-            //TODO : Refactor
-            var products = this.db.Users
-                                    .Include(x => x.Company)
-                                    .ThenInclude(x => x.WareHouses)
-                                    .ThenInclude(x => x.Products)
-                                    .Where(x => x.UserName == username)
-                                    .Take(1)
-                                    .SelectMany(x => x.Company.WareHouses)
-                                    .SelectMany(x => x.Products)
-                                    .To<ShowReceiptProductViewModel>()
-                                    .ToList();
-
-            await Task.CompletedTask;
+            var products = await this.db.Products
+                                     .Include(x => x.WareHouse)
+                                     .Where(x => x.WareHouse.CompanyId == companyId)
+                                     .To<ShowReceiptProductViewModel>()
+                                     .ToListAsync();
 
             return products;
         }

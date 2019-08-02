@@ -5,7 +5,10 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+
+    using Models;
 
     using Services;
     using Services.Mapping;
@@ -18,15 +21,26 @@
     {
         private readonly IReceiptService receiptService;
         private readonly IProductService productService;
+        private readonly UserManager<MISUser> userManger;
 
-        public ReceiptController(IReceiptService receiptService, IProductService productService)
+        public ReceiptController(IReceiptService receiptService,
+            IProductService productService,
+            UserManager<MISUser> userManger)
         {
             this.receiptService = receiptService;
             this.productService = productService;
+            this.userManger = userManger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var user = await this.userManger.GetUserAsync(this.User);
+
+            if (user.CompanyId == null)
+            {
+                return this.RedirectToAction("Create", "Company");
+            }
+
             return this.View();
         }
 
@@ -88,7 +102,9 @@
         [HttpGet("/Receipt/AllPorducts")]
         public async Task<ActionResult<IList<ShowReceiptProductViewModel>>> AllProducts()
         {
-            var products = await this.productService.GetAllProductsByUsernameAsync(this.User.Identity.Name);
+            var user = await this.userManger.GetUserAsync(this.User);
+
+            var products = await this.productService.GetAllProductsCompanyIdAsync(user.CompanyId);
 
             return products.ToList();
         }
@@ -106,13 +122,13 @@
         public async Task<IActionResult> Details(int id)
         {
             var receipt = await this.receiptService.GetReceiptAsync(id);
-            
+
             //TODO : parameter tampering
 
             var result = new DetailsReceiptViewModel()
             {
                 Id = receipt.Id,
-                IssuedOn = (DateTime) receipt.IssuedOn,
+                IssuedOn = (DateTime)receipt.IssuedOn,
                 Username = receipt.User.UserName,
                 Products = receipt.ReceiptProducts.Select(x => x.MapTo<DetailsReceiptProductViewModel>())
             };
