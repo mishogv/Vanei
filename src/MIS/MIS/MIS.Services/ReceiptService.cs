@@ -23,7 +23,7 @@
         private readonly IProductService productService;
 
         public ReceiptService(MISDbContext dbContext,
-            IUserService userService, 
+            IUserService userService,
             ICompanyService companyService,
             IProductService productService)
         {
@@ -42,20 +42,28 @@
                               .Where(x => x.User.UserName == username && x.IssuedOn == null)
                               .FirstOrDefaultAsync();
 
-            if (receipt == null)
-            {
-                receipt = new Receipt();
-
-                var companyId = await this.userService.SetReceiptAsync(receipt, username);
-                await this.companyService.SetCompanyAsync(receipt, companyId);
-
-                await this.dbContext.AddAsync(receipt);
-                await this.dbContext.SaveChangesAsync();
-            }
-
-            var result = receipt.MapTo<ReceiptServiceModel>();
+            var result = receipt?.MapTo<ReceiptServiceModel>();
 
             return result;
+        }
+
+        public async Task<ReceiptServiceModel> CreateAsync(string username)
+        {
+            var receipt = new Receipt();
+
+            var companyId = await this.userService.SetReceiptAsync(receipt, username);
+
+            if (companyId == null)
+            {
+                return null;
+            }
+
+            await this.companyService.SetCompanyAsync(receipt, companyId);
+
+            await this.dbContext.AddAsync(receipt);
+            await this.dbContext.SaveChangesAsync();
+
+            return receipt.MapTo<ReceiptServiceModel>();
         }
 
         public async Task<ReceiptProductServiceModel> AddProductToOpenedReceiptByUsernameAsync(string username, string productId, double quantity)
@@ -81,7 +89,12 @@
 
             await this.productService.SetProductAsync(receiptProduct, productId);
 
-            receiptProduct.Total = (decimal) quantity * receiptProduct.Product.Price;
+            if (receiptProduct.Product == null)
+            {
+                return null;
+            }
+
+            receiptProduct.Total = (decimal)quantity * receiptProduct.Product.Price;
 
             await this.dbContext.AddAsync(receiptProduct);
             await this.dbContext.SaveChangesAsync();
@@ -144,15 +157,15 @@
 
         public async Task<ReceiptServiceModel> GetReceiptAsync(int id)
         {
-          var receipt =  await this.dbContext
-                .Receipts
-                .Include(x => x.User)
-                .Include(x => x.ReceiptProducts)
-                .ThenInclude(x => x.Product)
-                .ThenInclude(x => x.Category)
-                .FirstOrDefaultAsync(x => x.Id == id);
+            var receipt = await this.dbContext
+                  .Receipts
+                  .Include(x => x.User)
+                  .Include(x => x.ReceiptProducts)
+                  .ThenInclude(x => x.Product)
+                  .ThenInclude(x => x.Category)
+                  .FirstOrDefaultAsync(x => x.Id == id);
 
-          return receipt.MapTo<ReceiptServiceModel>();
+            return receipt?.MapTo<ReceiptServiceModel>();
         }
 
         public async Task<ReceiptServiceModel> DeleteReceiptByIdAsync(int id)

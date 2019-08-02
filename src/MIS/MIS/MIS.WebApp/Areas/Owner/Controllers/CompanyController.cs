@@ -49,7 +49,6 @@
         [HttpPost]
         public async Task<IActionResult> Edit(EditCompanyInputModel input)
         {
-            //TODO : Security
             if (!this.ModelState.IsValid)
             {
                 return this.View(input);
@@ -62,8 +61,14 @@
 
         public async Task<IActionResult> Delete(string id)
         {
-            await this.companyService.DeleteAsync(id);
+            var result = await this.companyService.DeleteAsync(id);
             var user = await this.userManager.GetUserAsync(this.User);
+
+            if (result == null)
+            {
+                return this.BadRequest();
+            }
+
             await this.userManager.RemoveFromRoleAsync(user, GlobalConstants.CompanyOwnerRole);
 
             await this.signInManager.SignOutAsync();

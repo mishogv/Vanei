@@ -52,7 +52,7 @@
 
             if (user?.CompanyId == null)
             {
-                throw new ArgumentNullException(nameof(user));
+                return null;
             }
 
             receipt.User = user;

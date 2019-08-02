@@ -12,6 +12,8 @@
     {
         Task<ReceiptServiceModel> GetCurrentOpenedReceiptByUsernameAsync(string username);
 
+        Task<ReceiptServiceModel> CreateAsync(string username);
+
         Task<ReceiptProductServiceModel> AddProductToOpenedReceiptByUsernameAsync(string username, string id, double quantity);
 
         Task<ReceiptServiceModel> FinishCurrentOpenReceiptByUsernameAsync(string username);

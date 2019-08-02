@@ -31,6 +31,31 @@
         }
 
 
+        public async Task<ReportServiceModel> CreateAsync(string companyId, string name, DateTime from, DateTime to, MISUser user)
+        {
+            var report = new Report
+            {
+                Name = name,
+                From = from,
+                To = to,
+                User = user,
+            };
+
+            await this.companyService.SetCompanyAsync(report, companyId);
+
+            if (report.Company == null)
+            {
+                return null;
+            }
+
+            await this.receiptService.SetReceiptsAsync(report, from, to, companyId);
+
+            await this.dbContext.AddAsync(report);
+            await this.dbContext.SaveChangesAsync();
+
+            return report.MapTo<ReportServiceModel>();
+        }
+
         public async Task<IEnumerable<ReportServiceModel>> GetAllReportsAsync(string companyId)
         {
             var reports = await this.dbContext.Reports
@@ -64,25 +89,6 @@
             this.dbContext.RemoveRange(report.ReceiptReports);
 
             this.dbContext.Reports.Remove(report);
-            await this.dbContext.SaveChangesAsync();
-
-            return report.MapTo<ReportServiceModel>();
-        }
-
-        public async Task<ReportServiceModel> CreateAsync(string companyId, string name, DateTime from, DateTime to, MISUser user)
-        {
-            var report = new Report
-            {
-                Name = name,
-                From = from,
-                To = to,
-                User = user,
-            };
-
-            await this.companyService.SetCompanyAsync(report, companyId);
-            await this.receiptService.SetReceiptsAsync(report, from, to, companyId);           
-
-            await this.dbContext.AddAsync(report);
             await this.dbContext.SaveChangesAsync();
 
             return report.MapTo<ReportServiceModel>();

@@ -116,12 +116,15 @@
         public async Task<CompanyServiceModel> SetCompanyAsync<TDestination>(TDestination dest, string id)
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync(x => x.Id == id);
+
             if (company == null)
             {
                 return null;
             }
 
-            var prop = dest.GetType().GetProperties().FirstOrDefault(x => x.PropertyType == typeof(Company));
+            var prop = dest.GetType()
+                           .GetProperties()
+                           .FirstOrDefault(x => x.PropertyType == typeof(Company));
 
             prop?.SetValue(dest, company);
 

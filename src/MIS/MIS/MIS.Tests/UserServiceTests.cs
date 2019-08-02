@@ -125,7 +125,7 @@
         }
 
         [Test]
-        public async Task SetReceipt_ShouldThrow_ArgumentNullException()
+        public async Task SetReceipt_ShouldThrow_ReturnNullWithInvalidData()
         {
             var dbContext = this.GetDbContext();
             var receipt = new Receipt();
@@ -141,9 +141,9 @@
             await dbContext.AddAsync(user);
             await dbContext.SaveChangesAsync();
 
-           
+            var actual = await userService.SetReceiptAsync(receipt, "asd");
 
-            Assert.ThrowsAsync<ArgumentNullException>(async () => await userService.SetReceiptAsync(receipt, Name));
+            Assert.IsNull(actual);
         }
 
         [Test]

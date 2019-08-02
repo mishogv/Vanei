@@ -46,7 +46,9 @@
 
         public async Task<ActionResult<CreateReceiptViewModel>> LoadReceipt()
         {
-            var openedReceipt = await this.receiptService.GetCurrentOpenedReceiptByUsernameAsync(this.User.Identity.Name);
+            var openedReceipt = await this.receiptService.GetCurrentOpenedReceiptByUsernameAsync(this.User.Identity.Name) ??
+                                await this.receiptService.CreateAsync(this.User.Identity.Name);
+
             var result = new CreateReceiptViewModel()
             {
                 Username = openedReceipt.User.UserName,
