@@ -2,7 +2,9 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class Invitation : BaseModel<string>
+    using Contracts;
+
+    public class Invitation : BaseModel<string>, IHaveCompany
     {
         [Required]
         public string UserId { get; set; }

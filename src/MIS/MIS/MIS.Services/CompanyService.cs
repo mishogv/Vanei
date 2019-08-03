@@ -11,6 +11,7 @@
     using Microsoft.EntityFrameworkCore;
 
     using MIS.Models;
+    using MIS.Models.Contracts;
 
     using Models;
 
@@ -113,7 +114,7 @@
             return company.MapTo<CompanyServiceModel>();
         }
 
-        public async Task<CompanyServiceModel> SetCompanyAsync<TDestination>(TDestination dest, string id)
+        public async Task<CompanyServiceModel> SetCompanyAsync(IHaveCompany destination, string id)
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -122,11 +123,8 @@
                 return null;
             }
 
-            var prop = dest.GetType()
-                           .GetProperties()
-                           .FirstOrDefault(x => x.PropertyType == typeof(Company));
 
-            prop?.SetValue(dest, company);
+            destination.Company = company;
 
             return company.MapTo<CompanyServiceModel>();
         }

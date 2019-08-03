@@ -11,15 +11,12 @@
 
     public class ProductController : AuthenticationController
     {
-        private readonly IWareHouseService wareHouseService;
         private readonly IProductService productService;
         private readonly ICategoryService categoryService;
 
-        public ProductController(IWareHouseService wareHouseService, 
-            IProductService productService, 
+        public ProductController(IProductService productService,
             ICategoryService categoryService)
         {
-            this.wareHouseService = wareHouseService;
             this.productService = productService;
             this.categoryService = categoryService;
         }
@@ -40,8 +37,6 @@
         [HttpPost]
         public async Task<IActionResult> Create(CreateProductInputModel input)
         {
-            //TODO : VALIDATION AND SECURITY PARAMETER TAMPERING
-            
             if (!this.ModelState.IsValid)
             {
                 return await this.Create(input.WarehouseId);
@@ -57,9 +52,12 @@
 
         public async Task<IActionResult> Edit(string id)
         {
-            //TODO : Security parameter tampering
-
             var product = await this.productService.GetProductAsync(id);
+
+            if (product == null)
+            {
+                return this.RedirectToAction(nameof(Create));
+            }
 
             var result = product.MapTo<EditProductInputModel>();
             result.Categories = await this.categoryService.GetAllCategoriesAsync(product.WareHouseId);
@@ -70,8 +68,6 @@
         [HttpPost]
         public async Task<IActionResult> Edit(EditProductInputModel input)
         {
-            //TODO : Security parameter tampering
-
             await this.productService.UpdateAsync(input.Id, input.Name, input.Price, input.Quantity,
                 input.BarCode, input.CategoryId);
 
@@ -80,7 +76,6 @@
 
         public async Task<IActionResult> Delete(string id)
         {
-            //TODO : Security parameter tampering
             await this.productService.DeleteAsync(id);
 
             return this.RedirectToAction("Index", "WareHouse");

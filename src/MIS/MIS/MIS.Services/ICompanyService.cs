@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
 
     using MIS.Models;
+    using MIS.Models.Contracts;
 
     using Models;
 
@@ -21,7 +22,7 @@
 
         Task<CompanyServiceModel> RemoveEmployeeAsync(string id);
 
-        Task<CompanyServiceModel> SetCompanyAsync<T>(T obj, string id);
+        Task<CompanyServiceModel> SetCompanyAsync(IHaveCompany obj, string id);
 
         Task<CompanyServiceModel> SetCompanyAsync(WareHouse wareHouse, string id);
     }

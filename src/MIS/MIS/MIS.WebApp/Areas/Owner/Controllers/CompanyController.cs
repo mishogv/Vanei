@@ -72,8 +72,9 @@
             await this.userManager.RemoveFromRoleAsync(user, GlobalConstants.CompanyOwnerRole);
 
             await this.signInManager.SignOutAsync();
+            await this.signInManager.SignInAsync(user, false);
 
-            return this.LocalRedirect("/Identity/Account/Login");
+            return this.RedirectToAction("Index", "Home");
         }
 
         public async Task<IActionResult> RemoveEmployee(string id)

@@ -3,9 +3,11 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using Contracts;
+
     using Microsoft.AspNetCore.Identity;
 
-    public class MISUser : IdentityUser
+    public class MISUser : IdentityUser, IHaveCompany
     {
         public MISUser()
         {

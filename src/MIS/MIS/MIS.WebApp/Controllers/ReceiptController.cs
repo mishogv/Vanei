@@ -12,6 +12,7 @@
 
     using Services;
     using Services.Mapping;
+    using Services.Models;
 
     using ViewModels.Input.Receipt;
     using ViewModels.View.Product;
@@ -49,25 +50,11 @@
             var openedReceipt = await this.receiptService.GetCurrentOpenedReceiptByUsernameAsync(this.User.Identity.Name) ??
                                 await this.receiptService.CreateAsync(this.User.Identity.Name);
 
-            var result = new CreateReceiptViewModel()
-            {
-                Username = openedReceipt.User.UserName,
-                Products = openedReceipt.ReceiptProducts
-                                        .OrderByDescending(x => x.AddedOn)
-                                        .Select(x => new ShowReceiptProductViewModel
-                                        {
-                                            Id = x.Id,
-                                            Name = x.Product.Name,
-                                            Quantity = x.Quantity,
-                                            Price = x.Product.Price,
-                                            Total = x.Product.Price * (decimal)x.Quantity,
-                                            Barcode = x.Product.BarCode,
-                                        }).ToList(),
-                Total = openedReceipt.ReceiptProducts.Select(x => x.Total).Sum().ToString("f2")
-            };
+            var result = GetViewModel(openedReceipt);
 
             return result;
         }
+
 
         [HttpGet("/Receipt/Delete")]
         public async Task<ActionResult> Delete()
@@ -87,6 +74,11 @@
 
             var product = await this.receiptService
                                     .AddProductToOpenedReceiptByUsernameAsync(this.User.Identity.Name, input.Id, input.Quantity);
+
+            if (product == null)
+            {
+                return this.BadRequest();
+            }
 
             var result = new ShowReceiptProductViewModel()
             {
@@ -125,7 +117,12 @@
         {
             var receipt = await this.receiptService.GetReceiptAsync(id);
 
-            //TODO : parameter tampering
+            var userId = this.userManger.GetUserId(this.User);
+
+            if (receipt == null || receipt.UserId != userId)
+            {
+                return this.Forbid();
+            }
 
             var result = new DetailsReceiptViewModel()
             {
@@ -141,9 +138,38 @@
 
         public async Task<IActionResult> DeleteReceipt(int id)
         {
-            var receipt = await this.receiptService.DeleteReceiptByIdAsync(id);
+            var userId = this.userManger.GetUserId(this.User);
+            var receipt = await this.receiptService.GetReceiptAsync(id);
 
+            if (receipt == null || receipt?.UserId != userId)
+            {
+                return this.Forbid();
+            }
+
+            await this.receiptService.DeleteReceiptByIdAsync(id);
+            //TODO : const
             return this.RedirectToAction("Index", "Report");
+        }
+
+
+        private static CreateReceiptViewModel GetViewModel(ReceiptServiceModel openedReceipt)
+        {
+            return new CreateReceiptViewModel()
+            {
+                Username = openedReceipt.User.UserName,
+                Products = openedReceipt.ReceiptProducts
+                                        .OrderByDescending(x => x.AddedOn)
+                                        .Select(x => new ShowReceiptProductViewModel
+                                        {
+                                            Id = x.Id,
+                                            Name = x.Product.Name,
+                                            Quantity = x.Quantity,
+                                            Price = x.Product.Price,
+                                            Total = x.Product.Price * (decimal)x.Quantity,
+                                            Barcode = x.Product.BarCode,
+                                        }).ToList(),
+                Total = openedReceipt.ReceiptProducts.Select(x => x.Total).Sum().ToString("f2")
+            };
         }
     }
 }

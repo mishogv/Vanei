@@ -52,7 +52,10 @@
 
             if (isOwner)
             {
+                var user = await this.userManager.GetUserAsync(this.User);
+
                 await this.signInManager.SignOutAsync();
+                await this.signInManager.SignInAsync(user, false);
             }
 
             return this.RedirectToAction("Index", "Company");

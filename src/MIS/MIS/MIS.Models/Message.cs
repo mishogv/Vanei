@@ -3,7 +3,9 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class Message : BaseModel<string>
+    using Contracts;
+
+    public class Message : BaseModel<string>, IHaveCompany
     {
         [Required]
         public string Username { get; set; }

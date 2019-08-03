@@ -3,7 +3,9 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class WareHouse : BaseModel<string>
+    using Contracts;
+
+    public class WareHouse : BaseModel<string>, IHaveCompany
     {
         public WareHouse()
         {

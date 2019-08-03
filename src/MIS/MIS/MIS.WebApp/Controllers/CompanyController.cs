@@ -50,7 +50,7 @@ namespace MIS.WebApp.Controllers
 
             var company = await this.companyService.GetCompanyAsync(user.CompanyId);
 
-            var employees = company.Employees.Select(x => x.MapTo<DetailsCompanyUserViewModel>());
+            company.Employees.MapTo<DetailsCompanyUserViewModel[]>();
 
             var result = company.MapTo<DetailsCompanyViewModel>();
 
@@ -87,8 +87,7 @@ namespace MIS.WebApp.Controllers
             await this.userManager.AddToRoleAsync(user, GlobalConstants.CompanyOwnerRole);
             await this.companyService.CreateAsync(input.Name, input.Address, user.Id);
             await this.signInManager.SignOutAsync();
-
-            this.TempData[GlobalConstants.CompanyOwnerRole] = "You have to log in asdqwd";
+            await this.signInManager.SignInAsync(user, false);
 
             return this.RedirectToAction(nameof(this.Index));
         }

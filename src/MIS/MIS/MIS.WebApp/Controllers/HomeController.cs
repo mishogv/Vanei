@@ -33,10 +33,9 @@
             return this.View();
         }
 
-        public async Task<IActionResult> Contact()
+        public IActionResult Contact()
         {
-            //TODO : implement logic for sending emails
-            return await Task.Run(() => this.View());
+            return this.View();
         }
 
         [HttpPost]

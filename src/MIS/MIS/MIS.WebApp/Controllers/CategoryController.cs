@@ -27,6 +27,7 @@
             this.categoryService = categoryService;
             this.userManager = userManager;
         }
+
         public async Task<IActionResult> Index()
         {
             var user = await this.userManager.GetUserAsync(this.User);
@@ -71,18 +72,17 @@
                 return this.View(categoryInput);
             }
 
-            //TODO : VALIDATE AND SECURITY
-
             await this.categoryService.CreateAsync(categoryInput.Name, categoryInput.Id);
-
+            //TODO : constant
             return this.RedirectToAction("Index", "WareHouse");
         }
 
         public async Task<IActionResult> Edit(string id)
         {
+            //TODO CHECK
             var category = await this.categoryService.GetCategoryAsync(id);
 
-            return this.View(category.MapTo<EditCategoryInputModel>());
+            return this.View(category?.MapTo<EditCategoryInputModel>());
         }
 
         [HttpPost]
@@ -100,7 +100,7 @@
 
         public async Task<IActionResult> Delete(string id)
         {
-            //TODO PARAMTER TAMPERING
+            //TODO : Check
             var category = await this.categoryService.DeleteAsync(id);
 
             return this.RedirectToAction(nameof(this.Index));

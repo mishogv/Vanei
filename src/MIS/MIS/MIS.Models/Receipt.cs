@@ -4,7 +4,9 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class Receipt : BaseModel<int>
+    using Contracts;
+
+    public class Receipt : BaseModel<int>, IHaveCompany
     {
         public Receipt()
         {

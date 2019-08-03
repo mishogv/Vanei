@@ -4,7 +4,9 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class Report : BaseModel<string>
+    using Contracts;
+
+    public class Report : BaseModel<string>, IHaveCompany
     {
         public Report()
         {
