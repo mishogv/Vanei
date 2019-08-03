@@ -6,6 +6,8 @@
 
     using Common;
 
+    using Data;
+
     using Microsoft.AspNetCore.Identity;
 
     using Models;
@@ -18,7 +20,6 @@
 
     public class AdministratorServiceTests : BaseServiceTests
     {
-
         [Test]
         public async Task CreateAdministratorByIdAsync_ShouldReturn_TrueIfSuccess()
         {

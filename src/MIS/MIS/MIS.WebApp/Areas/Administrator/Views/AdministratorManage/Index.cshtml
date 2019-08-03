@@ -30,7 +30,21 @@
                 <td>@user.Username</td>
                 <td>@user.FirstName</td>
                 <td>@user.LastName</td>
-                <td>@user.CompanyName</td>
+                <td>
+                    <div class="d-flex container-fluid justify-content-between">
+                        <div>
+                            @user.CompanyName
+                        </div>
+                        @if (user.CompanyId != null)
+                        {
+                            <div>
+                                <a asp-action="Delete" asp-route-id="@user.CompanyId">
+                                    <img src="~/ico/x-2x.png" class="mx-auto" />
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </td>
                 <td>@user.Email</td>
                 <td>@user.PhoneNumber</td>
                 <td>
@@ -55,14 +69,6 @@
 </table>
 
 @section Scripts {
-    <!-- MDBootstrap Datatables  -->
     <script type="text/javascript" src="~/js/addons/datatables.min.js"></script>
-
-    <script>
-        //TODO : move in other file
-        $(document).ready(function () {
-            $('#dtBasicExample').DataTable();
-            $('.dataTables_length').addClass('bs-select');
-        });
-    </script>
+    <script src="~/js/site.js"></script>
 }

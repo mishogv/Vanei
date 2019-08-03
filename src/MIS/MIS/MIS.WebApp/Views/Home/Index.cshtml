@@ -14,7 +14,14 @@
         <div class="intro-info">
             <h2>We provide<br><span>solutions</span><br>for your business!</h2>
             <div>
-                <a asp-area="Identity" asp-page="/Account/Register" class="btn-get-started">Get Started</a>
+                @if (!this.User.Identity.IsAuthenticated)
+                {
+                    <a asp-area="Identity" asp-page="/Account/Register" class="btn-get-started">Get Started</a>
+                }
+                else
+                {
+                    <a asp-action="Index" asp-controller="WareHouse" class="btn-get-started">Get Started</a>
+                }
                 <a href="#services" class="btn-services scrollto">Our Services</a>
                 <a href="#team" class="btn-services scrollto">Our Team</a>
                 <a asp-controller="Home" asp-action="Contact" class="btn-services">Contact</a>

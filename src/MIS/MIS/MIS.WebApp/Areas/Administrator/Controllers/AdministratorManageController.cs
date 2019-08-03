@@ -19,15 +19,15 @@
     {
         private readonly IAdministratorService administratorService;
         private readonly UserManager<MISUser> userManager;
-        private readonly SignInManager<MISUser> signInManager;
+        private readonly ICompanyService companyService;
 
         public AdministratorManageController(IAdministratorService administratorService,
             UserManager<MISUser> userManager,
-            SignInManager<MISUser> signInManager)
+            ICompanyService companyService)
         {
             this.administratorService = administratorService;
             this.userManager = userManager;
-            this.signInManager = signInManager;
+            this.companyService = companyService;
         }
 
         public async Task<IActionResult> Index()
@@ -44,25 +44,11 @@
                 dict.Add(user, rolesToAdd);
             }
 
-            var result = new List<AdministratorShowUserViewModel>();
-
-            foreach (var kvp in dict)
-            {
-                result.Add(new AdministratorShowUserViewModel()
-                {
-                    Id = kvp.Key.Id,
-                    LastName = kvp.Key.LastName,
-                    FirstName = kvp.Key.FirstName,
-                    Email = kvp.Key.Email,
-                    Role = kvp.Value,
-                    PhoneNumber = kvp.Key.PhoneNumber ?? GlobalConstants.NotApplicable,
-                    CompanyName = kvp.Key.Company == null ? GlobalConstants.NotApplicable : kvp.Key.Company.Name,
-                    Username = kvp.Key.UserName
-                });
-            }
+            var result = MapModels(dict);
 
             return this.View(result);
         }
+
 
         public async Task<IActionResult> Create(string id)
         {
@@ -83,6 +69,43 @@
             var result = await this.administratorService.RemoveAdministratorByIdAsync(id);
 
             return this.RedirectToAction(nameof(this.Index));
+        }
+
+        public async Task<IActionResult> Delete(string id)
+        {
+            var rootAdmin = await this.userManager.FindByNameAsync(GlobalConstants.RootAdminName);
+
+            if (id == rootAdmin.CompanyId)
+            {
+                return this.Forbid();
+            }
+
+            var result = await this.companyService.DeleteAsync(id);
+
+            return this.RedirectToAction(nameof(this.Index));
+        }
+
+        private static List<AdministratorShowUserViewModel> MapModels(Dictionary<MISUser, string> dict)
+        {
+            var result = new List<AdministratorShowUserViewModel>();
+
+            foreach (var kvp in dict)
+            {
+                result.Add(new AdministratorShowUserViewModel()
+                {
+                    Id = kvp.Key.Id,
+                    CompanyId = kvp.Key.CompanyId,
+                    LastName = kvp.Key.LastName,
+                    FirstName = kvp.Key.FirstName,
+                    Email = kvp.Key.Email,
+                    Role = kvp.Value,
+                    PhoneNumber = kvp.Key.PhoneNumber ?? GlobalConstants.NotApplicable,
+                    CompanyName = kvp.Key.Company == null ? GlobalConstants.NotApplicable : kvp.Key.Company.Name,
+                    Username = kvp.Key.UserName
+                });
+            }
+
+            return result;
         }
     }
 }
