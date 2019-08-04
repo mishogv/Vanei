@@ -25,9 +25,7 @@
         {
             var dbContext = this.GetDbContext();
             var userService = new UserService(dbContext);
-            var userStore = new Mock<IUserStore<MISUser>>();
-            var userMangerMock = new Mock<UserManager<MISUser>>(userStore.Object, null, null, null, null, null, null, null, null); 
-            var invitationService = new InvitationService(dbContext, userMangerMock.Object,
+            var invitationService = new InvitationService(dbContext,
                 new CompanyService(dbContext, userService), userService);
 
             var company = new Company()
@@ -59,9 +57,7 @@
         {
             var dbContext = this.GetDbContext();
             var userService = new UserService(dbContext);
-            var userStore = new Mock<IUserStore<MISUser>>();
-            var userMangerMock = new Mock<UserManager<MISUser>>(userStore.Object, null, null, null, null, null, null, null, null);
-            var invitationService = new InvitationService(dbContext, userMangerMock.Object,
+            var invitationService = new InvitationService(dbContext,
                 new CompanyService(dbContext, userService), userService);
 
 
@@ -75,10 +71,7 @@
         {
             var dbContext = this.GetDbContext();
             var userService = new UserService(dbContext);
-            var userStore = new Mock<IUserStore<MISUser>>();
-            var userMangerMock = new Mock<UserManager<MISUser>>(userStore.Object, null, null, null, null, 
-                null, null, null, null);
-            var invitationService = new InvitationService(dbContext, userMangerMock.Object,
+            var invitationService = new InvitationService(dbContext,
                 new CompanyService(dbContext, userService), userService);
 
             var company = new Company()
@@ -111,10 +104,7 @@
         {
             var dbContext = this.GetDbContext();
             var userService = new UserService(dbContext);
-            var userStore = new Mock<IUserStore<MISUser>>();
-            var userMangerMock = new Mock<UserManager<MISUser>>(userStore.Object, null, null, null, null,
-                null, null, null, null);
-            var invitationService = new InvitationService(dbContext, userMangerMock.Object,
+            var invitationService = new InvitationService(dbContext,
                 new CompanyService(dbContext, userService), userService);
 
             var actual = await invitationService.AcceptInvitationAsync("asd", false);
@@ -127,10 +117,7 @@
         {
             var dbContext = this.GetDbContext();
             var userService = new UserService(dbContext);
-            var userStore = new Mock<IUserStore<MISUser>>();
-            var userMangerMock = new Mock<UserManager<MISUser>>(userStore.Object, null, null, null, null,
-                null, null, null, null);
-            var invitationService = new InvitationService(dbContext, userMangerMock.Object,
+            var invitationService = new InvitationService(dbContext,
                 new CompanyService(dbContext, userService), userService);
 
             var company = new Company()
@@ -163,10 +150,7 @@
         {
             var dbContext = this.GetDbContext();
             var userService = new UserService(dbContext);
-            var userStore = new Mock<IUserStore<MISUser>>();
-            var userMangerMock = new Mock<UserManager<MISUser>>(userStore.Object, null, null, null, null,
-                null, null, null, null);
-            var invitationService = new InvitationService(dbContext, userMangerMock.Object,
+            var invitationService = new InvitationService(dbContext,
                 new CompanyService(dbContext, userService), userService);
 
             var actual = await invitationService.DeclineInvitationAsync("asd");
@@ -179,10 +163,7 @@
         {
             var dbContext = this.GetDbContext();
             var userService = new UserService(dbContext);
-            var userStore = new Mock<IUserStore<MISUser>>();
-            var userMangerMock = new Mock<UserManager<MISUser>>(userStore.Object, null, null, null, null,
-                null, null, null, null);
-            var invitationService = new InvitationService(dbContext, userMangerMock.Object,
+            var invitationService = new InvitationService(dbContext,
                 new CompanyService(dbContext, userService), userService);
 
             var company = new Company()
@@ -217,10 +198,7 @@
         {
             var dbContext = this.GetDbContext();
             var userService = new UserService(dbContext);
-            var userStore = new Mock<IUserStore<MISUser>>();
-            var userMangerMock = new Mock<UserManager<MISUser>>(userStore.Object, null, null, null, null,
-                null, null, null, null);
-            var invitationService = new InvitationService(dbContext, userMangerMock.Object,
+            var invitationService = new InvitationService(dbContext,
                 new CompanyService(dbContext, userService), userService);
 
 

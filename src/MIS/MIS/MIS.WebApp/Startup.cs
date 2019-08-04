@@ -95,7 +95,6 @@
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IReceiptService, ReceiptService>();
             services.AddScoped<IWareHouseService, WareHouseService>();
-            services.AddScoped<IAdministratorService, AdministratorService>();
             services.AddScoped<IInvitationService, InvitationService>();
             services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<IUserService, UserService>();

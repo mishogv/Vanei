@@ -48,11 +48,11 @@
                 <td>@user.Email</td>
                 <td>@user.PhoneNumber</td>
                 <td>
-                    <div class="d-flex container-fluid justify-content-between">
-                        <div>
+                    <div class="row container-fluid justify-content-between">
+                        <div class="col-md-9">
                             @user.Role
                         </div>
-                        <div>
+                        <div class="col-md-3 container-fluid justify-content-end">
                             <a asp-area="Administrator" asp-controller="AdministratorManage" asp-action="Create" asp-route-id="@user.Id">
                                 <img src="~/ico/plus-2x.png" class="mx-auto" />
                             </a>

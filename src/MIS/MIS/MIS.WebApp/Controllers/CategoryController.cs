@@ -82,7 +82,12 @@
             //TODO CHECK
             var category = await this.categoryService.GetCategoryAsync(id);
 
-            return this.View(category?.MapTo<EditCategoryInputModel>());
+            if (category == null)
+            {
+                return this.RedirectToAction(nameof(this.Create));
+            }
+
+            return this.View(category.MapTo<EditCategoryInputModel>());
         }
 
         [HttpPost]
@@ -100,7 +105,6 @@
 
         public async Task<IActionResult> Delete(string id)
         {
-            //TODO : Check
             var category = await this.categoryService.DeleteAsync(id);
 
             return this.RedirectToAction(nameof(this.Index));

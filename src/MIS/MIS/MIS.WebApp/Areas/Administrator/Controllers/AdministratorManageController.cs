@@ -8,6 +8,7 @@
 
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
 
     using Models;
 
@@ -17,27 +18,21 @@
 
     public class AdministratorManageController : AdministratorController
     {
-        private readonly IAdministratorService administratorService;
         private readonly UserManager<MISUser> userManager;
         private readonly ICompanyService companyService;
-        private readonly IUserService userService;
 
-        public AdministratorManageController(IAdministratorService administratorService,
-            UserManager<MISUser> userManager,
-            ICompanyService companyService,
-            IUserService userService)
+        public AdministratorManageController(UserManager<MISUser> userManager,
+            ICompanyService companyService)
         {
-            this.administratorService = administratorService;
             this.userManager = userManager;
             this.companyService = companyService;
-            this.userService = userService;
         }
 
         public async Task<IActionResult> Index()
         {
             var dict = new Dictionary<MISUser, string>();
-            var users = this.administratorService
-                            .GetAllUsers()
+            var users = this.userManager.Users
+                            .Include(x => x.Company)
                             .ToList();
 
             foreach (var user in users)
@@ -55,21 +50,28 @@
 
         public async Task<IActionResult> Create(string id)
         {
-            await this.administratorService.CreateAdministratorByIdAsync(id);
+            var user = await this.userManager.FindByIdAsync(id);
+
+            if (user == null || user.UserName == GlobalConstants.RootAdminName)
+            {
+                return this.RedirectToAction(nameof(this.Index));
+            }
+
+            await this.userManager.AddToRoleAsync(user, GlobalConstants.AdministratorAreaRole);
 
             return this.RedirectToAction(nameof(this.Index));
         }
 
         public async Task<IActionResult> Remove(string id)
         {
-            var currentUserId = this.userManager.GetUserId(this.User);
+            var user = await this.userManager.FindByIdAsync(id);
 
-            if (currentUserId == id)
+            if (user == null || user.UserName == GlobalConstants.RootAdminName)
             {
                 return this.RedirectToAction(nameof(this.Index));
             }
 
-            await this.administratorService.RemoveAdministratorByIdAsync(id);
+            await this.userManager.RemoveFromRoleAsync(user, GlobalConstants.AdministratorAreaRole);
 
             return this.RedirectToAction(nameof(this.Index));
         }

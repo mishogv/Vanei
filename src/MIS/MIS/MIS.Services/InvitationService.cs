@@ -20,17 +20,14 @@
     public class InvitationService : IInvitationService
     {
         private readonly MISDbContext dbContext;
-        private readonly UserManager<MISUser> userManager;
         private readonly ICompanyService companyService;
         private readonly IUserService userService;
 
         public InvitationService(MISDbContext dbContext,
-            UserManager<MISUser> userManager,
             ICompanyService companyService,
             IUserService userService)
         {
             this.dbContext = dbContext;
-            this.userManager = userManager;
             this.companyService = companyService;
             this.userService = userService;
         }
@@ -76,22 +73,6 @@
             }
 
             var user = invitation.User;
-
-            //TODO : avoid this
-            if (isOwner)
-            {
-                await this.userManager.RemoveFromRoleAsync(user, GlobalConstants.CompanyOwnerRole);
-
-                if (user.Company.Employees.Count == 1)
-                {
-                    await this.companyService.DeleteAsync(user.Company.Id);
-                }
-                else
-                {
-                   var newOwner =  user.Company.Employees.FirstOrDefault(x => x.Id != user.Id);
-                   await this.userManager.AddToRoleAsync(newOwner, GlobalConstants.CompanyOwnerRole);
-                }
-            }
 
             user.Company = invitation.Company;
 

@@ -98,6 +98,7 @@
             var employee = await this.dbContext.Companies
                                      .Include(x => x.Employees)
                                      .SelectMany(x => x.Employees)
+                                     .Include(x => x.Company)
                                      .FirstOrDefaultAsync(x => x.Id == id);
 
             var company = employee?.Company;
@@ -107,6 +108,7 @@
                 return null;
             }
 
+            employee.Company = null;
             company.Employees.Remove(employee);
             this.dbContext.Update(company);
             await this.dbContext.SaveChangesAsync();

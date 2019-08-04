@@ -7,6 +7,7 @@
 
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
 
     using Models;
 
@@ -54,6 +55,7 @@
             {
                 var user = await this.userManager.GetUserAsync(this.User);
 
+                await this.userManager.RemoveFromRoleAsync(user, GlobalConstants.CompanyOwnerRole);
                 await this.signInManager.SignOutAsync();
                 await this.signInManager.SignInAsync(user, false);
             }
@@ -64,7 +66,6 @@
         public async Task<IActionResult> Decline(string id)
         {
             await this.invitationService.DeclineInvitationAsync(id);
-
             return this.RedirectToAction(nameof(this.Index));
         }
     }
