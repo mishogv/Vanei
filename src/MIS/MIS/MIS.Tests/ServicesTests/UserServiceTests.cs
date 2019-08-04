@@ -16,14 +16,27 @@
 
     public class UserServiceTests : BaseServiceTests
     {
+        private MISDbContext dbContext;
+        private IUserService userService;
+
         private const string Name = "pesho";
+
+        [SetUp]
+        public void Init()
+        {
+            var options = new DbContextOptionsBuilder<MISDbContext>()
+                          .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                          .Options;
+
+            this.dbContext = new MISDbContext(options);
+
+            this.userService = new UserService(this.dbContext);
+        }
 
         [Test]
         public async Task AddToCompany_ShouldReturn_CorrectUser()
         {
-            var dbContext = this.GetDbContext();
             var company = new Company();
-            var userService = new UserService(dbContext);
             var user = new MISUser()
             {
                 CompanyId = company.Id,
@@ -33,10 +46,10 @@
                 UserName = Name,
             };
 
-            await dbContext.AddAsync(user);
-            await dbContext.SaveChangesAsync();
+            await this.dbContext.AddAsync(user);
+            await this.dbContext.SaveChangesAsync();
 
-            await userService.AddToCompanyAsync(company, user.Id);
+            await this.userService.AddToCompanyAsync(company, user.Id);
             var actual = company.Employees.FirstOrDefault(x => x.Id == user.Id);
 
             Assert.AreEqual(user.Id, actual.Id);
@@ -45,11 +58,9 @@
         [Test]
         public async Task AddToCompany_ShouldReturn_EmptyCollectionOfUsers()
         {
-            var dbContext = this.GetDbContext();
             var company = new Company();
-            var userService = new UserService(dbContext);
 
-            await userService.AddToCompanyAsync(company, "asd");
+            await this.userService.AddToCompanyAsync(company, "asd");
 
             Assert.IsEmpty(company.Employees);
         }
@@ -57,21 +68,16 @@
         [Test]
         public async Task SetInvitation_ShouldReturn_CorrectUser()
         {
-            var dbContext = this.GetDbContext();
             var invitation = new Invitation();
-            var userService = new UserService(dbContext);
             var user = new MISUser()
             {
-                Email = Name,
-                FirstName = Name,
-                LastName = Name,
-                UserName = Name,
+                Email = Name, FirstName = Name, LastName = Name, UserName = Name,
             };
 
-            await dbContext.AddAsync(user);
-            await dbContext.SaveChangesAsync();
+            await this.dbContext.AddAsync(user);
+            await this.dbContext.SaveChangesAsync();
 
-            await userService.SetInvitationAsync(invitation, user.Id);
+            await this.userService.SetInvitationAsync(invitation, user.Id);
             var actual = invitation.User;
 
             Assert.AreEqual(user.Id, actual.Id);
@@ -80,21 +86,16 @@
         [Test]
         public async Task SetInvitation_ShouldReturn_Null()
         {
-            var dbContext = this.GetDbContext();
             var invitation = new Invitation();
-            var userService = new UserService(dbContext);
             var user = new MISUser()
             {
-                Email = Name,
-                FirstName = Name,
-                LastName = Name,
-                UserName = Name,
+                Email = Name, FirstName = Name, LastName = Name, UserName = Name,
             };
 
-            await dbContext.AddAsync(user);
-            await dbContext.SaveChangesAsync();
+            await this.dbContext.AddAsync(user);
+            await this.dbContext.SaveChangesAsync();
 
-            await userService.SetInvitationAsync(invitation, "asd");
+            await this.userService.SetInvitationAsync(invitation, "asd");
             var actual = invitation.User;
 
             Assert.IsNull(actual);
@@ -103,23 +104,18 @@
         [Test]
         public async Task SetReceipt_ShouldReturn_CorrectUser()
         {
-            var dbContext = this.GetDbContext();
             var receipt = new Receipt();
-            var userService = new UserService(dbContext);
             var user = new MISUser()
             {
-                Email = Name,
-                FirstName = Name,
-                LastName = Name,
-                UserName = Name,
+                Email = Name, FirstName = Name, LastName = Name, UserName = Name,
             };
 
-            await dbContext.AddAsync(user);
-            await dbContext.SaveChangesAsync();
+            await this.dbContext.AddAsync(user);
+            await this.dbContext.SaveChangesAsync();
 
             user.CompanyId = "123";
 
-            await userService.SetReceiptAsync(receipt, Name);
+            await this.userService.SetReceiptAsync(receipt, Name);
 
             Assert.AreEqual(user.Id, receipt.User.Id);
         }
@@ -127,21 +123,16 @@
         [Test]
         public async Task SetReceipt_ShouldThrow_ReturnNullWithInvalidData()
         {
-            var dbContext = this.GetDbContext();
             var receipt = new Receipt();
-            var userService = new UserService(dbContext);
             var user = new MISUser()
             {
-                Email = Name,
-                FirstName = Name,
-                LastName = Name,
-                UserName = Name,
+                Email = Name, FirstName = Name, LastName = Name, UserName = Name,
             };
 
-            await dbContext.AddAsync(user);
-            await dbContext.SaveChangesAsync();
+            await this.dbContext.AddAsync(user);
+            await this.dbContext.SaveChangesAsync();
 
-            var actual = await userService.SetReceiptAsync(receipt, "asd");
+            var actual = await this.userService.SetReceiptAsync(receipt, "asd");
 
             Assert.IsNull(actual);
         }
@@ -149,40 +140,28 @@
         [Test]
         public async Task GetAllUsers_ShouldReturn_CorrectUsers()
         {
-            var dbContext = this.GetDbContext();
             var receipt = new Receipt();
-            var userService = new UserService(dbContext);
             var userFirst = new MISUser()
             {
-                Email = Name,
-                FirstName = Name,
-                LastName = Name,
-                UserName = Name + 1,
+                Email = Name, FirstName = Name, LastName = Name, UserName = Name + 1,
             };
 
             var userSecond = new MISUser()
             {
-                Email = Name,
-                FirstName = Name,
-                LastName = Name,
-                UserName = Name + 2,
+                Email = Name, FirstName = Name, LastName = Name, UserName = Name + 2,
             };
 
             var userThird = new MISUser()
             {
-                Email = Name,
-                FirstName = Name,
-                LastName = Name,
-                UserName = Name + 3,
+                Email = Name, FirstName = Name, LastName = Name, UserName = Name + 3,
             };
 
+            await this.dbContext.AddAsync(userFirst);
+            await this.dbContext.AddAsync(userSecond);
+            await this.dbContext.AddAsync(userThird);
+            await this.dbContext.SaveChangesAsync();
 
-            await dbContext.AddAsync(userFirst);
-            await dbContext.AddAsync(userSecond);
-            await dbContext.AddAsync(userThird);
-            await dbContext.SaveChangesAsync();
-
-            var actual = await userService.GetAllUsersAsync();
+            var actual = await this.userService.GetAllUsersAsync();
             var actualArray = actual.OrderBy(x => x.Username).ToArray();
 
             Assert.AreEqual(userFirst.Id, actualArray[0].Id);
@@ -193,24 +172,11 @@
         [Test]
         public async Task GetAllUsers_ShouldReturn_EmptyCollection()
         {
-            var dbContext = this.GetDbContext();
             var receipt = new Receipt();
-            var userService = new UserService(dbContext);
 
-            var actual = await userService.GetAllUsersAsync();
+            var actual = await this.userService.GetAllUsersAsync();
 
             Assert.IsEmpty(actual);
         }
-
-        private MISDbContext GetDbContext()
-        {
-            var options = new DbContextOptionsBuilder<MISDbContext>()
-                          .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                          .Options;
-
-            var dbContext = new MISDbContext(options);
-            return dbContext;
-        }
-
     }
 }

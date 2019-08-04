@@ -24,7 +24,6 @@
         public double Quantity { get; set; }
 
         [Required]
-        [RegularExpression(@"^8[0-9]{11}([0-9]{2})?$")]
         public string BarCode { get; set; }
 
         public IEnumerable<CreateCategoryWareHouseModel> Categories { get; set; }

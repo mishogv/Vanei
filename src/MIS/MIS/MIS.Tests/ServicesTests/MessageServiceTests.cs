@@ -16,23 +16,32 @@
 
     public class MessageServiceTests : BaseServiceTests
     {
+        private MISDbContext dbContext;
+        private IMessageService messagesService;
+
+        [SetUp]
+        public async Task Init()
+        {
+            var options = new DbContextOptionsBuilder<MISDbContext>()
+                          .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                          .Options;
+
+            this.dbContext = new MISDbContext(options);
+
+            var userService = new UserService(this.dbContext);
+            var companyService = new CompanyService(this.dbContext, userService);
+            this.messagesService = new MessageService(this.dbContext, companyService);
+        }
+
         [Test]
         public async Task CreateMessageWithNotificationFalse_ShouldReturn_CorrectMessage()
         {
-            var dbContext = this.GetDbContext();
-            var companyService = new CompanyService(dbContext, new UserService(dbContext));
-            var company = new Company()
-            {
-                Address = "asd",
-                Name = "asd",
-            };
+            var company = new Company() {Address = "asd", Name = "asd",};
 
-            await dbContext.AddAsync(company);
-            await dbContext.SaveChangesAsync();
-            var messagesService = new MessageService(dbContext, companyService);
-
-            var actual = await messagesService.CreateAsync(company.Id, "asd", "asd", false);
-            var expected = await dbContext.Messages.FirstOrDefaultAsync();
+            await this.dbContext.AddAsync(company);
+            await this.dbContext.SaveChangesAsync();
+            var actual = await this.messagesService.CreateAsync(company.Id, "asd", "asd", false);
+            var expected = await this.dbContext.Messages.FirstOrDefaultAsync();
 
             Assert.AreEqual(expected.Id, actual.Id);
             Assert.AreEqual("asd", actual.Text);
@@ -41,20 +50,13 @@
         [Test]
         public async Task CreateMessageWithJoinNotification_ShouldReturn_CorrectMessage()
         {
-            var dbContext = this.GetDbContext();
-            var companyService = new CompanyService(dbContext, new UserService(dbContext));
-            var company = new Company()
-            {
-                Address = "asd",
-                Name = "asd",
-            };
+            var company = new Company() {Address = "asd", Name = "asd",};
 
-            await dbContext.AddAsync(company);
-            await dbContext.SaveChangesAsync();
-            var messagesService = new MessageService(dbContext, companyService);
+            await this.dbContext.AddAsync(company);
+            await this.dbContext.SaveChangesAsync();
 
-            var actual = await messagesService.CreateAsync(company.Id, "asd", "{0} has joined the group {1}", true);
-            var expected = await dbContext.Messages.FirstOrDefaultAsync();
+            var actual = await this.messagesService.CreateAsync(company.Id, "asd", "{0} has joined the group {1}", true);
+            var expected = await this.dbContext.Messages.FirstOrDefaultAsync();
 
             Assert.AreEqual(expected.Id, actual.Id);
             Assert.AreEqual("asd has joined the group asd", actual.Text);
@@ -63,23 +65,19 @@
         [Test]
         public async Task GetAll_ShouldReturn_CorrectMessageCollection()
         {
-            var dbContext = this.GetDbContext();
-            var companyService = new CompanyService(dbContext, new UserService(dbContext));
-            var company = new Company()
-            {
-                Address = "asd",
-                Name = "asd",
-            };
+            var company = new Company() {Address = "asd", Name = "asd",};
 
-            await dbContext.AddAsync(company);
-            await dbContext.SaveChangesAsync();
-            var messagesService = new MessageService(dbContext, companyService);
+            await this.dbContext.AddAsync(company);
+            await this.dbContext.SaveChangesAsync();
 
-            var expectedFirst = await messagesService.CreateAsync(company.Id, "asd", "{0} has left the group {1}", true);
-            var expectedSecond = await messagesService.CreateAsync(company.Id, "asd1", "{0} has left the group {1}", true);
-            var expectedThird = await messagesService.CreateAsync(company.Id, "asd2", "{0} has left the group {1}", true);
+            var expectedFirst =
+                await this.messagesService.CreateAsync(company.Id, "asd", "{0} has left the group {1}", true);
+            var expectedSecond =
+                await this.messagesService.CreateAsync(company.Id, "asd1", "{0} has left the group {1}", true);
+            var expectedThird =
+                await this.messagesService.CreateAsync(company.Id, "asd2", "{0} has left the group {1}", true);
 
-            var actual = await messagesService.GetAllAsync(company.Id);
+            var actual = await this.messagesService.GetAllAsync(company.Id);
             var actualArray = actual.OrderBy(x => x.Username).ToArray();
 
             Assert.AreEqual(expectedFirst.Id, actualArray[0].Id);
@@ -90,24 +88,9 @@
         [Test]
         public async Task GetAll_ShouldReturn_EmptyCollection()
         {
-            var dbContext = this.GetDbContext();
-            var companyService = new CompanyService(dbContext, new UserService(dbContext));
-            var messagesService = new MessageService(dbContext, companyService);
-            var messages = await messagesService.GetAllAsync("asd");
+            var messages = await this.messagesService.GetAllAsync("asd");
 
             Assert.IsEmpty(messages);
-        }
-
-
-
-        private MISDbContext GetDbContext()
-        {
-            var options = new DbContextOptionsBuilder<MISDbContext>()
-                          .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                          .Options;
-
-            var dbContext = new MISDbContext(options);
-            return dbContext;
         }
     }
 }
