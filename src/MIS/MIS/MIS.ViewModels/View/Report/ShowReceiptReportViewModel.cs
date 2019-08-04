@@ -1,10 +1,14 @@
 ﻿namespace MIS.ViewModels.View.Report
 {
     using System;
+    using System.Linq;
+
+    using AutoMapper;
 
     using Models;
 
     using Services.Mapping;
+    using Services.Models;
 
     public class ShowReceiptReportViewModel : IMapFrom<Receipt>
     {

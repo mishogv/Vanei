@@ -32,13 +32,14 @@
 
             if (user.CompanyId == null)
             {
+                //TODO : const
                 return this.RedirectToAction("Create", "Company");
             }
 
             var reports = await this.reportService.GetAllReportsAsync(user.CompanyId);
             var result = new IndexReportViewModel()
             {
-                Reports = reports.Select(x => x.MapTo<IndexReportShowViewModel>())
+                Reports = reports.MapTo<IndexReportShowViewModel[]>(),
             };
 
             return this.View(result);
@@ -52,39 +53,36 @@
         [HttpPost]
         public async Task<IActionResult> Create(CreateReportInputModel input)
         {
-            //TODO : SECURITY
             var user = await this.userManager.GetUserAsync(this.User);
 
-            if (user.CompanyId == null)
+            if (!this.ModelState.IsValid)
             {
-                return this.RedirectToAction("Create", "Company");
+                return this.View(input);
             }
 
-            var report = await this.reportService.CreateAsync(user.CompanyId, input.Name, input.From, input.To, user);
+            await this.reportService.CreateAsync(user.CompanyId, input.Name, input.From, input.To, user);
 
-            return this.RedirectToAction("Index");
+            return this.RedirectToAction(nameof(this.Index));
         }
 
         public async Task<IActionResult> Details(string id)
         {
             var report = await this.reportService.GetReportAsync(id);
 
-            var result = new DetailsReportViewModel()
+            if (report == null)
             {
-                Id = report.Id,
-                Name = report.Name,
-                From = report.From,
-                To = report.To,
-                Username = report.User.UserName,
-                Receipts = report.ReceiptReports.Select(x => x.Receipt).Select(x => x.MapTo<ShowReceiptReportViewModel>()),
-            };
+                return this.RedirectToAction(nameof(this.Create));
+            }
+
+            var result = report.MapTo<DetailsReportViewModel>();
+
+            result.Receipts = report.ReceiptReports.Select(x => x.Receipt).MapTo<ShowReceiptReportViewModel[]>();
 
             return this.View(result);
         }
 
         public async Task<IActionResult> Delete(string id)
         {
-            //TODO : security
             await this.reportService.DeleteReportAsync(id);
 
             return this.RedirectToAction(nameof(this.Index));

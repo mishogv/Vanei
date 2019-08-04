@@ -77,6 +77,7 @@
 
             var user = invitation.User;
 
+            //TODO : avoid this
             if (isOwner)
             {
                 await this.userManager.RemoveFromRoleAsync(user, GlobalConstants.CompanyOwnerRole);

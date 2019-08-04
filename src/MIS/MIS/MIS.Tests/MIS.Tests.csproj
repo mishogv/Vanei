@@ -19,4 +19,8 @@
     <ProjectReference Include="..\MIS.Services\MIS.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ControllersTests\" />
+  </ItemGroup>
+
 </Project>

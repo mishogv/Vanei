@@ -34,7 +34,6 @@ namespace MIS.WebApp.Controllers
 
         public async Task<IActionResult> Index(string id)
         {
-            //TODO : Security
             var user = await this.userManager.GetUserAsync(this.User);
 
             if (user.CompanyId == null)
@@ -44,36 +43,20 @@ namespace MIS.WebApp.Controllers
 
             var warehouses = await this.wareHouseService.GetWarehousesByCompanyIdAsync(user.CompanyId);
 
-            WareHouseServiceModel currentWarehouse = null;
-            var wareHouseServiceModels = warehouses as WareHouseServiceModel[] ?? warehouses.ToArray();
-
-            if (id == null)
-            {
-                currentWarehouse = wareHouseServiceModels.FirstOrDefault(x => x.IsFavorite);
-            }
-            else
-            {
-                currentWarehouse = wareHouseServiceModels.FirstOrDefault(x => x.Id == id);
-            }
-
+            var currentWarehouse = id == null
+                                         ? warehouses.FirstOrDefault(x => x.IsFavorite)
+                                         : warehouses.FirstOrDefault(x => x.Id == id);
 
             if (currentWarehouse == null)
             {
                 return this.RedirectToAction("Create", "WareHouse");
             }
 
-            var products = currentWarehouse.Products.Select(x => x.MapTo<WareHouseIndexProductViewModel>()).ToList();
-
-            //TODO : auto mapper 
-            var result = new IndexWarehouseViewModel
-            {
-                Id = currentWarehouse.Id,
-                IsFavorite = currentWarehouse.IsFavorite,
-                Products = products,
-                WareHouseName = currentWarehouse.Name,
-                WarehouseDropdown = wareHouseServiceModels.Select(x => x.MapTo<IndexWarehouseDropdownViewModel>())
-            };
-
+            var products = currentWarehouse.Products.MapTo<WareHouseIndexProductViewModel[]>();
+            var result = currentWarehouse.MapTo<IndexWarehouseViewModel>();
+            result.Products = products;
+            result.WarehouseDropdown = warehouses.MapTo<IndexWarehouseDropdownViewModel[]>();
+          
             return this.View(result);
         }
 
@@ -85,8 +68,6 @@ namespace MIS.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateWareHouseInputModel wareHouseInput)
         {
-            //TODO : SECURITY
-
             if (!this.ModelState.IsValid)
             {
                 return this.View(wareHouseInput);
@@ -94,7 +75,7 @@ namespace MIS.WebApp.Controllers
 
             var user = await this.userManager.GetUserAsync(this.User);
 
-            var serviceModel = await this.wareHouseService.CreateAsync(wareHouseInput.Name, user.CompanyId);
+            await this.wareHouseService.CreateAsync(wareHouseInput.Name, user.CompanyId);
 
             return this.RedirectToAction(nameof(this.Index));
         }
@@ -103,7 +84,6 @@ namespace MIS.WebApp.Controllers
         {
             var user = await this.userManager.GetUserAsync(this.User);
 
-            //TODO : PARAMETER TAMPERING SECURITY
             await this.wareHouseService.MakeFavoriteAsync(id, user.CompanyId);
 
             return this.RedirectToAction(nameof(this.Index));
@@ -111,8 +91,12 @@ namespace MIS.WebApp.Controllers
 
         public async Task<IActionResult> Edit(string id)
         {
-            //TODO : Security
             var warehouse = await this.wareHouseService.GetWareHouseAsync(id);
+
+            if (warehouse == null)
+            {
+                return this.RedirectToAction(nameof(this.Create));
+            }
 
             return this.View(warehouse.MapTo<EditWarehouseInputModel>());
         }
@@ -120,7 +104,11 @@ namespace MIS.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(EditWarehouseInputModel input)
         {
-            //TODO : Security
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(input);
+            }
+
             await this.wareHouseService.EditAsync(input.Id, input.Name);
 
             return this.RedirectToAction(nameof(this.Index));
@@ -128,7 +116,6 @@ namespace MIS.WebApp.Controllers
 
         public async Task<IActionResult> Delete(string id)
         {
-            //TODO : Security
             var warehouse = await this.wareHouseService.DeleteAsync(id);
 
             return this.RedirectToAction(nameof(this.Index));

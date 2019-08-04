@@ -20,14 +20,17 @@
         private readonly IAdministratorService administratorService;
         private readonly UserManager<MISUser> userManager;
         private readonly ICompanyService companyService;
+        private readonly IUserService userService;
 
         public AdministratorManageController(IAdministratorService administratorService,
             UserManager<MISUser> userManager,
-            ICompanyService companyService)
+            ICompanyService companyService,
+            IUserService userService)
         {
             this.administratorService = administratorService;
             this.userManager = userManager;
             this.companyService = companyService;
+            this.userService = userService;
         }
 
         public async Task<IActionResult> Index()
@@ -44,7 +47,7 @@
                 dict.Add(user, rolesToAdd);
             }
 
-            var result = MapModels(dict);
+            var result = MapUserViewModels(dict);
 
             return this.View(result);
         }
@@ -52,7 +55,7 @@
 
         public async Task<IActionResult> Create(string id)
         {
-            var result = await this.administratorService.CreateAdministratorByIdAsync(id);
+            await this.administratorService.CreateAdministratorByIdAsync(id);
 
             return this.RedirectToAction(nameof(this.Index));
         }
@@ -66,7 +69,7 @@
                 return this.RedirectToAction(nameof(this.Index));
             }
 
-            var result = await this.administratorService.RemoveAdministratorByIdAsync(id);
+            await this.administratorService.RemoveAdministratorByIdAsync(id);
 
             return this.RedirectToAction(nameof(this.Index));
         }
@@ -85,7 +88,7 @@
             return this.RedirectToAction(nameof(this.Index));
         }
 
-        private static List<AdministratorShowUserViewModel> MapModels(Dictionary<MISUser, string> dict)
+        private static List<AdministratorShowUserViewModel> MapUserViewModels(Dictionary<MISUser, string> dict)
         {
             var result = new List<AdministratorShowUserViewModel>();
 

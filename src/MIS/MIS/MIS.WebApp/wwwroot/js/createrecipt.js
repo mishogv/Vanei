@@ -10,7 +10,7 @@ function loadData(num) {
 
     autoCompleteShowData(productsForAutocomplete, selector);
 
-    setData(productsForAutocomplete, selector, products, index, numberInSequence);
+    setData(products, index, numberInSequence);
 }
 
 function getAllProducts(products, productsForAutocomplete) {
@@ -48,7 +48,7 @@ function autoCompleteShowData(productsForAutocomplete, selector) {
                 console.log(ui.item);
                 $(selector).val(ui.item.value);
                 index.index = ui.item.desc;
-                return false;
+                return setData(products, index, numberInSequence);
             },
             select: function (event, ui) {
                 $(selector).val(ui.item.value);
@@ -58,7 +58,7 @@ function autoCompleteShowData(productsForAutocomplete, selector) {
     }
 }
 
-function setData(productsForAutocomplete, selector, products, index, numberInSequence) {
+function setData(products, index, numberInSequence) {
     if (index.index !== 0 && index.index !== -1) {
         index.index = products.findIndex(x => x.id === index.index);
         $('#product-id-number-' + numberInSequence.number).val(products[index.index].id).prop('disabled', true);

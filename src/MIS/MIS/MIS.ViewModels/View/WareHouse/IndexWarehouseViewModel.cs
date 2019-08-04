@@ -4,7 +4,10 @@
 
     using Product;
 
-    public class IndexWarehouseViewModel
+    using Services.Mapping;
+    using Services.Models;
+
+    public class IndexWarehouseViewModel : IMapFrom<WareHouseServiceModel>
     {
         public string Id { get; set; }
 

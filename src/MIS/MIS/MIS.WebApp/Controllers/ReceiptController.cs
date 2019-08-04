@@ -50,7 +50,7 @@
             var openedReceipt = await this.receiptService.GetCurrentOpenedReceiptByUsernameAsync(this.User.Identity.Name) ??
                                 await this.receiptService.CreateAsync(this.User.Identity.Name);
 
-            var result = GetViewModel(openedReceipt);
+            var result = this.GetViewModel(openedReceipt);
 
             return result;
         }
@@ -129,7 +129,7 @@
                 Id = receipt.Id,
                 IssuedOn = (DateTime)receipt.IssuedOn,
                 Username = receipt.User.UserName,
-                Products = receipt.ReceiptProducts.Select(x => x.MapTo<DetailsReceiptProductViewModel>())
+                Products = receipt.ReceiptProducts.MapTo<DetailsReceiptProductViewModel[]>()
             };
 
             return this.View(result);
@@ -141,7 +141,7 @@
             var userId = this.userManger.GetUserId(this.User);
             var receipt = await this.receiptService.GetReceiptAsync(id);
 
-            if (receipt == null || receipt?.UserId != userId)
+            if (receipt == null || receipt.UserId != userId)
             {
                 return this.Forbid();
             }
@@ -152,9 +152,9 @@
         }
 
 
-        private static CreateReceiptViewModel GetViewModel(ReceiptServiceModel openedReceipt)
+        private CreateReceiptViewModel GetViewModel(ReceiptServiceModel openedReceipt)
         {
-            return new CreateReceiptViewModel()
+            var result = new CreateReceiptViewModel()
             {
                 Username = openedReceipt.User.UserName,
                 Products = openedReceipt.ReceiptProducts
@@ -168,8 +168,10 @@
                                             Total = x.Product.Price * (decimal)x.Quantity,
                                             Barcode = x.Product.BarCode,
                                         }).ToList(),
-                Total = openedReceipt.ReceiptProducts.Select(x => x.Total).Sum().ToString("f2")
             };
+
+            result.Total = result.Products.Select(x => x.Total).Sum().ToString("f2");
+            return result;
         }
     }
 }

@@ -94,7 +94,7 @@
                 return null;
             }
 
-            receiptProduct.Total = (decimal)quantity * receiptProduct.Product.Price;
+            receiptProduct.Total = (decimal) quantity * receiptProduct.Product.Price;
 
             await this.dbContext.AddAsync(receiptProduct);
             await this.dbContext.SaveChangesAsync();

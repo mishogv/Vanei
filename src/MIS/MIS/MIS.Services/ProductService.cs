@@ -93,6 +93,8 @@
         public async Task<ProductServiceModel> UpdateAsync(string id, string name, decimal price, double quantity, string barcode, string categoryId)
         {
             var product = await this.db.Products
+                                    .Include(x => x.ReceiptProducts)
+                                    .ThenInclude(x => x.Receipt)
                                     .FirstOrDefaultAsync(x => x.Id == id);
             if (product == null)
             {
@@ -103,10 +105,19 @@
             product.Price = price;
             product.Quantity = quantity;
 
+            foreach (var productReceiptProduct in product.ReceiptProducts)
+            {
+                productReceiptProduct.Receipt.Total -= productReceiptProduct.Total;
+                productReceiptProduct.Total = product.Price * (decimal) productReceiptProduct.Quantity;
+                productReceiptProduct.Receipt.Total += productReceiptProduct.Total;
+            }
+
+
             await this.categoryService.SetCategoryAsync(product, categoryId);
 
             product.Category.Products.Add(product);
             this.db.Update(product);
+            this.db.UpdateRange(product.ReceiptProducts);
             await this.db.SaveChangesAsync();
 
             return product.MapTo<ProductServiceModel>();

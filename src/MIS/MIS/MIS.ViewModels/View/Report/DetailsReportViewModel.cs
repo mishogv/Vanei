@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
 
     using Services.Mapping;
 
@@ -16,7 +17,8 @@
 
         public string Id { get; set; }
 
-        public string Username { get; set; }
+        [DisplayName("Username")]
+        public string UserUserName { get; set; }
 
         public string Name { get; set; }
 
