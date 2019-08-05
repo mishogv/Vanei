@@ -14,8 +14,6 @@
 
     using Models;
 
-    using ViewModels.View.Product;
-
     public class ProductService : IProductService
     {
         private readonly MISDbContext db;
@@ -123,14 +121,14 @@
             return product.MapTo<ProductServiceModel>();
         }
 
-        public async Task<IEnumerable<ProductShowReceiptViewModel>> GetAllProductsCompanyIdAsync(string companyId)
+        public async Task<IEnumerable<ProductServiceModel>> GetAllProductsCompanyIdAsync(string companyId)
         {
             var products = await this.db.Products
                                      .Include(x => x.WareHouse)
                                      .Where(x => x.WareHouse.CompanyId == companyId)
-                                     .To<ProductShowReceiptViewModel>()
+                                     .To<ProductServiceModel>()
                                      .ToListAsync();
-            //TODO : RETURN SERVICE MODEL
+
             return products;
         }
     }

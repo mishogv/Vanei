@@ -5,8 +5,9 @@
     using Models;
 
     using Services.Mapping;
+    using Services.Models;
 
-    public class InvitationUserViewModel : IMapFrom<MISUser>
+    public class InvitationUserViewModel : IMapFrom<MISUserServiceModel>
     {
         public InvitationUserViewModel()
         {

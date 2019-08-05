@@ -116,12 +116,12 @@
         }
 
 
-        public async Task<IEnumerable<CategoryCreateWareHouseInputModel>> GetAllCategoriesAsync(string warehouseId)
+        public async Task<IEnumerable<CategoryServiceModel>> GetAllCategoriesAsync(string warehouseId)
         {
             return await this.dbContext
                        .Categories
                        .Where(x => x.WareHouseId == warehouseId)
-                       .ProjectTo<CategoryCreateWareHouseInputModel>()
+                       .To<CategoryServiceModel>()
                        .ToListAsync();
         }
     }

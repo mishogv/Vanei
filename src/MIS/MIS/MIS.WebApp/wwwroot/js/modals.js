@@ -54,3 +54,34 @@ $(document).on('click',
         $('.modal-body').text(employeeName);
         $('.continue-delete').attr('href', hrefValue);
     });
+
+$(document).on('click',
+    '.admin-user-modal',
+    function () {
+        $('.modal-title').text('Do you want to remove this user from admin role?');
+        let employeeName = $(this).attr('value');
+        let hrefValue = $(this).attr('href');
+        $('.modal-body').text(employeeName);
+        $('.continue-delete').attr('href', hrefValue);
+    });
+
+$(document).on('click',
+    '.admin-company-modal',
+    function () {
+        $('.modal-title').text('Do you want to delete this company?');
+        let employeeName = $(this).attr('value');
+        let hrefValue = $(this).attr('href');
+        $('.modal-body').text(employeeName);
+        $('.continue-delete').attr('href', hrefValue);
+    });
+
+
+$(document).on('click',
+    '.admin-add-modal',
+    function () {
+        $('.modal-title').text('Do you want to make this user admin?');
+        let employeeName = $(this).attr('value');
+        let hrefValue = $(this).attr('href');
+        $('.modal-body').text(employeeName);
+        $('.continue-delete').attr('href', hrefValue);
+    });

@@ -162,7 +162,7 @@
             await this.dbContext.SaveChangesAsync();
 
             var actual = await this.userService.GetAllUsersAsync();
-            var actualArray = actual.OrderBy(x => x.Username).ToArray();
+            var actualArray = actual.OrderBy(x => x.UserName).ToArray();
 
             Assert.AreEqual(userFirst.Id, actualArray[0].Id);
             Assert.AreEqual(userSecond.Id, actualArray[1].Id);
@@ -172,8 +172,6 @@
         [Test]
         public async Task GetAllUsers_ShouldReturn_EmptyCollection()
         {
-            var receipt = new Receipt();
-
             var actual = await this.userService.GetAllUsersAsync();
 
             Assert.IsEmpty(actual);

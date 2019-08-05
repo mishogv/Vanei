@@ -7,6 +7,7 @@
     using Services;
     using Services.Mapping;
 
+    using ViewModels.Input.Category;
     using ViewModels.Input.Product;
 
     public class ProductController : AuthenticationController
@@ -31,7 +32,7 @@
 
             var result = new ProductCreateInputModel()
             {
-                Categories = categories,
+                Categories = categories.MapTo<CategoryCreateWareHouseInputModel[]>(),
                 WarehouseId = id
             };
 
@@ -64,8 +65,8 @@
             }
 
             var result = product.MapTo<EditProductInputModel>();
-            result.Categories = await this.categoryService.GetAllCategoriesAsync(product.WareHouseId);
-
+            var categories = await this.categoryService.GetAllCategoriesAsync(product.WareHouseId);
+            result.Categories = categories.MapTo<CategoryCreateWareHouseInputModel[]>();
             return this.View(result);
         }
 

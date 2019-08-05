@@ -12,6 +12,9 @@
     using Models;
 
     using Services;
+    using Services.Mapping;
+
+    using ViewModels.View.Invitation;
 
     using WebApp.Controllers;
 
@@ -45,8 +48,9 @@
             }
 
             var users = await this.userService.GetAllUsersAsync();
+            var mappedUsers = users.MapTo<InvitationUserViewModel[]>();
 
-            foreach (var user in users)
+            foreach (var user in mappedUsers)
             {
                 user.IsAvailableForInvite = true;
                 if (user.CompanyName == null)
@@ -69,7 +73,7 @@
                 }
             }
 
-            return this.View(users);
+            return this.View(mappedUsers);
         }
 
         public async Task<IActionResult> Invite(string id)

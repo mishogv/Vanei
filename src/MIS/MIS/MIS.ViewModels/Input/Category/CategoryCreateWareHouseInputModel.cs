@@ -2,11 +2,10 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    using Models;
-
     using Services.Mapping;
+    using Services.Models;
 
-    public class CategoryCreateWareHouseInputModel : IMapFrom<Category>
+    public class CategoryCreateWareHouseInputModel : IMapFrom<CategoryServiceModel>
     {
         private const int MinLength = 2;
         private const int MaxLength = 24;

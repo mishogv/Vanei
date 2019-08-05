@@ -12,6 +12,8 @@
 
     using MIS.Models;
 
+    using Models;
+
     using ViewModels.View.Invitation;
 
     public class UserService : IUserService
@@ -61,12 +63,12 @@
         }
 
 
-        public async Task<IEnumerable<InvitationUserViewModel>> GetAllUsersAsync()
+        public async Task<IEnumerable<MISUserServiceModel>> GetAllUsersAsync()
         {
             var users = await this.dbContext.Users
                                   .Include(x => x.Company)
                                   .Include(x => x.Invitations)
-                                  .To<InvitationUserViewModel>()
+                                  .To<MISUserServiceModel>()
                                   .ToListAsync();
 
             return users;

@@ -107,7 +107,7 @@
 
             var products = await this.productService.GetAllProductsCompanyIdAsync(user.CompanyId);
 
-            return products.ToList();
+            return products.MapTo<ProductShowReceiptViewModel[]>();
         }
 
 

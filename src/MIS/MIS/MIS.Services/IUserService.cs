@@ -5,6 +5,8 @@
 
     using MIS.Models;
 
+    using Models;
+
     using ViewModels.View.Invitation;
 
     public interface IUserService
@@ -15,6 +17,6 @@
 
         Task<string> SetReceiptAsync(Receipt receipt, string username);
 
-        Task<IEnumerable<InvitationUserViewModel>> GetAllUsersAsync();
+        Task<IEnumerable<MISUserServiceModel>> GetAllUsersAsync();
     }
 }
