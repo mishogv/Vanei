@@ -44,6 +44,14 @@
             [EmailAddress]
             public string Email { get; set; }
 
+            [Required]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
@@ -66,6 +74,8 @@
             Input = new InputModel
             {
                 Email = email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
                 PhoneNumber = phoneNumber
             };
 
@@ -86,6 +96,11 @@
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
+
+            user.FirstName = Input.FirstName;
+            user.LastName = Input.LastName;
+
+            await this._userManager.UpdateAsync(user);
 
             var email = await _userManager.GetEmailAsync(user);
             if (Input.Email != email)

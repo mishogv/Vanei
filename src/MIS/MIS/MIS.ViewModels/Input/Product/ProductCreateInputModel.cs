@@ -1,6 +1,7 @@
 ﻿namespace MIS.ViewModels.Input.Product
 {
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
     using Category;
@@ -13,6 +14,7 @@
         private const double DoubleMinValue = 0.0001;
         private const string DecimalMinValue = "0.01";
         private const string DecimalMaxValue = "79228162514264337593543950335";
+        private const string BarCodeDisplayName = "Barcode";
 
         [Required]
         [StringLength(MaxLength, MinimumLength = MinLength)]
@@ -25,6 +27,7 @@
         public double Quantity { get; set; }
 
         [Required]
+        [DisplayName(BarCodeDisplayName)]
         public string BarCode { get; set; }
 
         public IEnumerable<CategoryCreateWareHouseInputModel> Categories { get; set; }
