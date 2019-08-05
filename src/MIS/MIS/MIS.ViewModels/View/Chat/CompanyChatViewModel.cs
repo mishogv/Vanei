@@ -6,11 +6,11 @@
     {
         public CompanyChatViewModel()
         {
-            this.Messages = new List<ChatHubMessageViewModel>();
+            this.Messages = new List<MessageViewModel>();
         }
 
         public string Id { get; set; }
 
-        public IEnumerable<ChatHubMessageViewModel> Messages { get; set; }
+        public IEnumerable<MessageViewModel> Messages { get; set; }
     }
 }

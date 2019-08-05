@@ -3,7 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class CreateReportInputModel
+    public class ReportCreateInputModel
     {
         [Required]
         public string Name { get; set; }

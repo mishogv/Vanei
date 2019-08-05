@@ -6,12 +6,15 @@
 
     using Services.Models;
 
-    public class EditCategoryInputModel : IMapFrom<CategoryServiceModel>
+    public class CategoryEditInputModel : IMapFrom<CategoryServiceModel>
     {
+        private const int MinLength = 2;
+        private const int MaxLength = 24;
+
         public string Id { get; set; }
 
         [Required]
-        [StringLength(24, MinimumLength = 2)]
+        [StringLength(MaxLength, MinimumLength = MinLength)]
         public string Name { get; set; }
     }
 }

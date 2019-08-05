@@ -17,6 +17,9 @@
 
     public class ReportController : AuthenticationController
     {
+        private const string RedirectCreate = "Create";
+        private const string RedirectCompany = "Company";
+
         private readonly IReportService reportService;
         private readonly UserManager<MISUser> userManager;
 
@@ -32,14 +35,13 @@
 
             if (user.CompanyId == null)
             {
-                //TODO : const
-                return this.RedirectToAction("Create", "Company");
+                return this.RedirectToAction(RedirectCreate, RedirectCompany);
             }
 
             var reports = await this.reportService.GetAllReportsAsync(user.CompanyId);
-            var result = new IndexReportViewModel()
+            var result = new ReportIndexViewModel()
             {
-                Reports = reports.MapTo<IndexReportShowViewModel[]>(),
+                Reports = reports.MapTo<ReportIndexShowViewModel[]>(),
             };
 
             return this.View(result);
@@ -47,11 +49,11 @@
 
         public IActionResult Create()
         {
-            return this.View(new CreateReportInputModel() { From = DateTime.UtcNow, To = DateTime.UtcNow});
+            return this.View(new ReportCreateInputModel() { From = DateTime.UtcNow, To = DateTime.UtcNow});
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateReportInputModel input)
+        public async Task<IActionResult> Create(ReportCreateInputModel input)
         {
             var user = await this.userManager.GetUserAsync(this.User);
 
@@ -74,9 +76,9 @@
                 return this.RedirectToAction(nameof(this.Create));
             }
 
-            var result = report.MapTo<DetailsReportViewModel>();
+            var result = report.MapTo<ReportDetailsViewModel>();
 
-            result.Receipts = report.ReceiptReports.Select(x => x.Receipt).MapTo<ShowReceiptReportViewModel[]>();
+            result.Receipts = report.ReceiptReports.Select(x => x.Receipt).MapTo<ReportShowReceiptViewModel[]>();
 
             return this.View(result);
         }

@@ -20,6 +20,12 @@
 
     public class ReceiptController : AuthenticationController
     {
+        private const string RedirectCreate = "Create";
+        private const string RedirectCompany = "Company";
+
+        private const string RedirectIndex = "Index";
+        private const string RedirectReport = "Report";
+
         private readonly IReceiptService receiptService;
         private readonly IProductService productService;
         private readonly UserManager<MISUser> userManger;
@@ -39,13 +45,13 @@
 
             if (user.CompanyId == null)
             {
-                return this.RedirectToAction("Create", "Company");
+                return this.RedirectToAction(RedirectCreate, RedirectCompany);
             }
 
             return this.View();
         }
 
-        public async Task<ActionResult<CreateReceiptViewModel>> LoadReceipt()
+        public async Task<ActionResult<ReceiptCreateViewModel>> LoadReceipt()
         {
             var openedReceipt = await this.receiptService.GetCurrentOpenedReceiptByUsernameAsync(this.User.Identity.Name) ??
                                 await this.receiptService.CreateAsync(this.User.Identity.Name);
@@ -65,7 +71,7 @@
 
         [IgnoreAntiforgeryToken]
         [HttpPost("/Receipt/Add")]
-        public async Task<ActionResult<ShowReceiptProductViewModel>> AddProduct([FromBody]AddReceiptProductInputModel input)
+        public async Task<ActionResult<ProductShowReceiptViewModel>> AddProduct([FromBody]ReceiptAddProductInputModel input)
         {
             if (!this.ModelState.IsValid)
             {
@@ -77,10 +83,11 @@
 
             if (product == null)
             {
-                return this.BadRequest();
+                return this.BadRequest(this.ModelState);
             }
 
-            var result = new ShowReceiptProductViewModel()
+            //TODO : automapper
+            var result = new ProductShowReceiptViewModel()
             {
                 Id = product.Id,
                 Name = product.Product.Name,
@@ -94,7 +101,7 @@
         }
 
         [HttpGet("/Receipt/AllPorducts")]
-        public async Task<ActionResult<IList<ShowReceiptProductViewModel>>> AllProducts()
+        public async Task<ActionResult<IList<ProductShowReceiptViewModel>>> AllProducts()
         {
             var user = await this.userManger.GetUserAsync(this.User);
 
@@ -124,12 +131,12 @@
                 return this.Forbid();
             }
 
-            var result = new DetailsReceiptViewModel()
+            var result = new ReceiptDetailsViewModel()
             {
                 Id = receipt.Id,
                 IssuedOn = (DateTime)receipt.IssuedOn,
                 Username = receipt.User.UserName,
-                Products = receipt.ReceiptProducts.MapTo<DetailsReceiptProductViewModel[]>()
+                Products = receipt.ReceiptProducts.MapTo<ReceiptProductDetailsViewModel[]>()
             };
 
             return this.View(result);
@@ -147,19 +154,18 @@
             }
 
             await this.receiptService.DeleteReceiptByIdAsync(id);
-            //TODO : const
-            return this.RedirectToAction("Index", "Report");
+            return this.RedirectToAction(RedirectIndex, RedirectReport);
         }
 
 
-        private CreateReceiptViewModel GetViewModel(ReceiptServiceModel openedReceipt)
+        private ReceiptCreateViewModel GetViewModel(ReceiptServiceModel openedReceipt)
         {
-            var result = new CreateReceiptViewModel()
+            var result = new ReceiptCreateViewModel()
             {
                 Username = openedReceipt.User.UserName,
                 Products = openedReceipt.ReceiptProducts
                                         .OrderByDescending(x => x.AddedOn)
-                                        .Select(x => new ShowReceiptProductViewModel
+                                        .Select(x => new ProductShowReceiptViewModel
                                         {
                                             Id = x.Id,
                                             Name = x.Product.Name,

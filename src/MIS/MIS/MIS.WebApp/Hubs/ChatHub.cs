@@ -6,10 +6,7 @@
 
     using Ganss.XSS;
 
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.SignalR;
-
-    using Models;
 
     using Services;
     using Services.Mapping;
@@ -18,13 +15,14 @@
 
     public class ChatHub : Hub
     {
+        private const string SignalRMethodName = "NewMessage";
         private const string MessageJoinGroupTemplate = "{0} has joined the group {1}";
         private const string MessageLeftGroupTemplate = "{0} has left the group {1}";
 
         private readonly IHtmlSanitizer sanitizer;
         private readonly IMessageService messageService;
 
-        public ChatHub(IHtmlSanitizer sanitizer, 
+        public ChatHub(IHtmlSanitizer sanitizer,
             IMessageService messageService)
         {
             this.sanitizer = sanitizer;
@@ -40,7 +38,7 @@
             message.Username = GlobalConstants.System;
 
             await this.Clients.Group(message.Company.Name)
-                         .SendAsync("NewMessage", message.MapTo<ChatHubMessageViewModel>());
+                         .SendAsync(SignalRMethodName, message.MapTo<MessageViewModel>());
         }
 
         public async Task RemoveFromGroup(string companyId)
@@ -54,7 +52,7 @@
             message.Username = GlobalConstants.System;
 
             await this.Clients.Group(message.Company.Name)
-                      .SendAsync("NewMessage", message.MapTo<ChatHubMessageViewModel>());
+                      .SendAsync(SignalRMethodName, message.MapTo<MessageViewModel>());
         }
 
         public async Task Send(string companyId, string message)
@@ -65,7 +63,7 @@
             var generatedMessage = await this.messageService.CreateAsync(companyId, username, sanitizedMessage, false);
 
             await this.Clients.Group(generatedMessage.Company.Name)
-                      .SendAsync("NewMessage", generatedMessage.MapTo<ChatHubMessageViewModel>());
+                      .SendAsync(SignalRMethodName, generatedMessage.MapTo<MessageViewModel>());
         }
     }
 }

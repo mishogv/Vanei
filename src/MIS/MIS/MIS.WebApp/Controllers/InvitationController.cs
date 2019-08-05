@@ -7,7 +7,6 @@
 
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
 
     using Models;
 
@@ -18,6 +17,9 @@
 
     public class InvitationController : AuthenticationController
     {
+        private const string RedirectCompany = "Company";
+        private const string RedirectIndex = "Index";
+
         private readonly UserManager<MISUser> userManager;
         private readonly SignInManager<MISUser> signInManager;
         private readonly IInvitationService invitationService;
@@ -60,7 +62,7 @@
                 await this.signInManager.SignInAsync(user, false);
             }
 
-            return this.RedirectToAction("Index", "Company");
+            return this.RedirectToAction(RedirectIndex, RedirectCompany);
         }
 
         public async Task<IActionResult> Decline(string id)

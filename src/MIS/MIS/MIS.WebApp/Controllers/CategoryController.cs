@@ -19,6 +19,12 @@
 
     public class CategoryController : AuthenticationController
     {
+        private const string RedirectCreate = "Create";
+        private const string RedirectCompany = "Company";
+
+        private const string RedirectIndex = "Index";
+        private const string RedirectWareHouse = "WareHouse";
+
         private readonly ICategoryService categoryService;
         private readonly UserManager<MISUser> userManager;
 
@@ -34,7 +40,7 @@
 
             if (user.CompanyId == null)
             {
-                return this.RedirectToAction("Create", "Company");
+                return this.RedirectToAction(RedirectCreate, RedirectCompany);
             }
 
             var categories = await this.categoryService.GetAllByCompanyIdAsync(user.CompanyId);
@@ -61,25 +67,23 @@
 
         public IActionResult Create(string id)
         {
-            return this.View(new CreateCategoryInputModel { Id = id});
+            return this.View(new CategoryCreateInputModel { Id = id});
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateCategoryInputModel categoryInput)
+        public async Task<IActionResult> Create(CategoryCreateInputModel input)
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View(categoryInput);
+                return this.View(input);
             }
 
-            await this.categoryService.CreateAsync(categoryInput.Name, categoryInput.Id);
-            //TODO : constant
-            return this.RedirectToAction("Index", "WareHouse");
+            await this.categoryService.CreateAsync(input.Name, input.Id);
+            return this.RedirectToAction(RedirectIndex, RedirectWareHouse);
         }
 
         public async Task<IActionResult> Edit(string id)
         {
-            //TODO CHECK
             var category = await this.categoryService.GetCategoryAsync(id);
 
             if (category == null)
@@ -87,11 +91,11 @@
                 return this.RedirectToAction(nameof(this.Create));
             }
 
-            return this.View(category.MapTo<EditCategoryInputModel>());
+            return this.View(category.MapTo<CategoryEditInputModel>());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(EditCategoryInputModel input)
+        public async Task<IActionResult> Edit(CategoryEditInputModel input)
         {
             if (!this.ModelState.IsValid)
             {

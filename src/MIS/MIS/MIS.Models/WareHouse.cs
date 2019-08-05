@@ -7,6 +7,9 @@
 
     public class WareHouse : BaseModel<string>, IHaveCompany
     {
+        private const int MinLength = 3;
+        private const int MaxLength = 24;
+
         public WareHouse()
         {
             this.Categories = new HashSet<Category>();
@@ -14,7 +17,7 @@
         }
 
         [Required]
-        [StringLength(24, MinimumLength = 3)]
+        [StringLength(MaxLength, MinimumLength = MinLength)]
         public string Name { get; set; }
 
         public bool IsFavorite { get; set; }

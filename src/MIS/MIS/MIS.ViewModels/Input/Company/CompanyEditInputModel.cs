@@ -6,16 +6,19 @@
 
     using Services.Models;
 
-    public class EditCompanyInputModel : IMapFrom<CompanyServiceModel>
+    public class CompanyEditInputModel : IMapFrom<CompanyServiceModel>
     {
+        private const int MinLength = 4;
+        private const int MaxLength = 40;
+
         public string Id { get; set; }
 
         [Required]
-        [StringLength(40, MinimumLength = 4)]
+        [StringLength(MaxLength, MinimumLength = MinLength)]
         public string Name { get; set; }
 
         [Required]
-        [StringLength(40, MinimumLength = 4)]
+        [StringLength(MaxLength, MinimumLength = MinLength)]
         public string Address { get; set; }
     }
 }

@@ -4,6 +4,8 @@
     using System.Text;
     using System.Threading.Tasks;
 
+    using Common;
+
     using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +17,7 @@
     {
         private const string Email = "mihogv@gmail.com";
         private const string Template = "<p><b>{0}</b>: {1}</p></br>";
+        private const string SuccessfulMessage = "Thank you for contacting us. We will answer you soon.";
 
         private readonly IEmailSender emailSender;
 
@@ -41,7 +44,7 @@
         [HttpPost]
         public async Task<IActionResult> Contact(ContactCreateInputModel input)
         {
-            //TODO TEMP DATA successful MESSAGE
+            this.TempData[GlobalConstants.TempDataContact] = SuccessfulMessage;
             var htmlMessage = new StringBuilder();
             htmlMessage.AppendLine(string.Format(Template, nameof(input.Name), input.Name));
             htmlMessage.AppendLine(string.Format(Template, nameof(input.Email), input.Email));

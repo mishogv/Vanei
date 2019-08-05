@@ -2,15 +2,11 @@
 
 namespace MIS.WebApp.Controllers
 {
-    using System.Linq;
     using System.Threading.Tasks;
 
     using Common;
 
-    using Hubs;
-
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.SignalR;
 
     using Models;
 
@@ -63,7 +59,7 @@ namespace MIS.WebApp.Controllers
             var result = new CompanyChatViewModel
             {
                 Id = id,
-                Messages = messages.MapTo<ChatHubMessageViewModel[]>()
+                Messages = messages.MapTo<MessageViewModel[]>()
             };
 
             return this.View(result);
@@ -71,11 +67,11 @@ namespace MIS.WebApp.Controllers
 
         public IActionResult Create()
         {
-            return this.View(new CreateCompanyInputModel());
+            return this.View(new CompanyCreateInputModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateCompanyInputModel input)
+        public async Task<IActionResult> Create(CompanyCreateInputModel input)
         {
             if (!this.ModelState.IsValid)
             {

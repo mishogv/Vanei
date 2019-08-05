@@ -123,14 +123,14 @@
             return product.MapTo<ProductServiceModel>();
         }
 
-        public async Task<IEnumerable<ShowReceiptProductViewModel>> GetAllProductsCompanyIdAsync(string companyId)
+        public async Task<IEnumerable<ProductShowReceiptViewModel>> GetAllProductsCompanyIdAsync(string companyId)
         {
             var products = await this.db.Products
                                      .Include(x => x.WareHouse)
                                      .Where(x => x.WareHouse.CompanyId == companyId)
-                                     .To<ShowReceiptProductViewModel>()
+                                     .To<ProductShowReceiptViewModel>()
                                      .ToListAsync();
-
+            //TODO : RETURN SERVICE MODEL
             return products;
         }
     }

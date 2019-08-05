@@ -6,12 +6,15 @@
 
     using Services.Models;
 
-    public class EditWarehouseInputModel : IMapFrom<WareHouseServiceModel>
+    public class WarehouseEditInputModel : IMapFrom<WareHouseServiceModel>
     {
+        private const int MinLength = 3;
+        private const int MaxLength = 24;
+
         public string Id { get; set; }
 
         [Required]
-        [StringLength(24, MinimumLength = 3)]
+        [StringLength(MaxLength, MinimumLength = MinLength)]
         public string Name { get; set; }
     }
 }

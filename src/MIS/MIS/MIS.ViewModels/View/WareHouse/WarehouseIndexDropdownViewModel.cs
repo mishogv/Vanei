@@ -4,7 +4,7 @@
 
     using Services.Models;
 
-    public class IndexWarehouseDropdownViewModel : IMapFrom<WareHouseServiceModel>
+    public class WarehouseIndexDropdownViewModel : IMapFrom<WareHouseServiceModel>
     {
         public string Id { get; set; }
 

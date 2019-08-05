@@ -11,6 +11,10 @@
 
     public class ProductController : AuthenticationController
     {
+        private const string RedirectIndex = "Index";
+        private const string RedirectWareHouse = "WareHouse";
+
+
         private readonly IProductService productService;
         private readonly ICategoryService categoryService;
 
@@ -25,7 +29,7 @@
         {
             var categories = await this.categoryService.GetAllCategoriesAsync(id);
 
-            var result = new CreateProductInputModel()
+            var result = new ProductCreateInputModel()
             {
                 Categories = categories,
                 WarehouseId = id
@@ -35,7 +39,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateProductInputModel input)
+        public async Task<IActionResult> Create(ProductCreateInputModel input)
         {
             if (!this.ModelState.IsValid)
             {
@@ -47,7 +51,7 @@
                       .CreateAsync(input.Name, input.Price, input.Quantity,
                           input.BarCode, input.CategoryId, input.WarehouseId);
 
-            return this.RedirectToAction("Index", "WareHouse");
+            return this.RedirectToAction(RedirectIndex, RedirectWareHouse);
         }
 
         public async Task<IActionResult> Edit(string id)
@@ -71,14 +75,14 @@
             await this.productService.UpdateAsync(input.Id, input.Name, input.Price, input.Quantity,
                 input.BarCode, input.CategoryId);
 
-            return this.RedirectToAction("Index", "WareHouse");
+            return this.RedirectToAction(RedirectIndex, RedirectWareHouse);
         }
 
         public async Task<IActionResult> Delete(string id)
         {
             await this.productService.DeleteAsync(id);
 
-            return this.RedirectToAction("Index", "WareHouse");
+            return this.RedirectToAction(RedirectIndex, RedirectWareHouse);
         }
     }
 }

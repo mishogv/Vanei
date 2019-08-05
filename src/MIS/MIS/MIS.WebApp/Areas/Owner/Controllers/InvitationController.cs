@@ -19,6 +19,9 @@
     [Authorize(Roles = GlobalConstants.CompanyOwnerRole)]
     public class InvitationController : AuthenticationController
     {
+        private const string RedirectCreate = "Create";
+        private const string RedirectCompany = "Company";
+
         private readonly IInvitationService invitationService;
         private readonly UserManager<MISUser> userManager;
         private readonly IUserService userService;
@@ -38,7 +41,7 @@
 
             if (currentUser.CompanyId == null)
             {
-                return this.RedirectToAction("Create", "Company");
+                return this.RedirectToAction(RedirectCreate, RedirectCompany);
             }
 
             var users = await this.userService.GetAllUsersAsync();

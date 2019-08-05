@@ -6,7 +6,7 @@
 
     using Services.Models;
 
-    public class IndexReportShowViewModel : IMapFrom<ReportServiceModel>
+    public class ReportIndexShowViewModel : IMapFrom<ReportServiceModel>
     {
         public string Id { get; set; }
 

@@ -5,13 +5,16 @@
 
     public class Category : BaseModel<string>
     {
+        private const int MinLength = 2;
+        private const int MaxLength = 24;
+
         public Category()
         {
             this.Products = new HashSet<Product>();
         }
 
         [Required]
-        [StringLength(24, MinimumLength = 2)]
+        [StringLength(MaxLength, MinimumLength = MinLength)]
         public string Name { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }

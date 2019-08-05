@@ -19,6 +19,8 @@
 
     using Hubs;
 
+    using Microsoft.AspNetCore.Authentication.Cookies;
+    using Microsoft.AspNetCore.Authentication.Facebook;
     using Microsoft.AspNetCore.Identity.UI.Services;
 
     using Middlewares;
@@ -44,7 +46,7 @@
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
@@ -80,11 +82,16 @@
 
             #endregion
 
-            services.AddAuthentication()
+            services.AddAuthentication(options =>
+                    {
+                        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                        options.DefaultChallengeScheme = FacebookDefaults.AuthenticationScheme;
+                    })
+                    .AddCookie()
                     .AddFacebook(options =>
                     {
                         options.AppId = this.Configuration["Facebook:Key"];
-                        options.AppSecret = this.Configuration["Facebook:Secret"];  
+                        options.AppSecret = this.Configuration["Facebook:Secret"];
                     });
 
             #region Custom services
@@ -119,7 +126,7 @@
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            AutoMapperConfig.RegisterMappings(typeof(AdministratorShowUserViewModel).GetTypeInfo().Assembly, 
+            AutoMapperConfig.RegisterMappings(typeof(AdministratorShowUserViewModel).GetTypeInfo().Assembly,
                 typeof(CompanyServiceModel).GetTypeInfo().Assembly);
 
             app.UseSeedData();

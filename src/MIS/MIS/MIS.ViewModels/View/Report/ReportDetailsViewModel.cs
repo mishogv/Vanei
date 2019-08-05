@@ -8,11 +8,11 @@
 
     using Services.Models;
 
-    public class DetailsReportViewModel : IMapFrom<ReportServiceModel>
+    public class ReportDetailsViewModel : IMapFrom<ReportServiceModel>
     {
-        public DetailsReportViewModel()
+        public ReportDetailsViewModel()
         {
-            this.Receipts = new List<ShowReceiptReportViewModel>();
+            this.Receipts = new List<ReportShowReceiptViewModel>();
         }
 
         public string Id { get; set; }
@@ -26,6 +26,6 @@
 
         public DateTime To { get; set; }
 
-        public IEnumerable<ShowReceiptReportViewModel> Receipts { get; set; }
+        public IEnumerable<ReportShowReceiptViewModel> Receipts { get; set; }
     }
 }

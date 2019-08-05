@@ -5,16 +5,22 @@
 
     public class Product : BaseModel<string>
     {
+        private const int MinLength = 3;
+        private const int MaxLength = 24;
+
+        private const string DecimalMinValue = "0.01";
+        private const string DecimalMaxValue = "79228162514264337593543950335M";
+
         public Product()
         {
             this.ReceiptProducts = new HashSet<ReceiptProduct>();
         }
 
         [Required]
-        [StringLength(24, MinimumLength = 3)]
+        [StringLength(MaxLength, MinimumLength = MinLength)]
         public string Name { get; set; }
 
-        [Range(typeof(decimal) ,"0.01", "79228162514264337593543950335M")]
+        [Range(typeof(decimal) ,DecimalMinValue, DecimalMaxValue)]
         public decimal Price { get; set; }
 
         /// <summary>

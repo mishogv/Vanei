@@ -2,9 +2,7 @@
 {
     using MIS.Models;
 
-    using Models;
-
-    using Services.Mapping;
+    using Mapping;
 
     public class ProductServiceModel : IMapFrom<Product>
     {

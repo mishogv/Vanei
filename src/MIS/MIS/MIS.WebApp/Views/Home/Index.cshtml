@@ -1,8 +1,19 @@
-﻿@{
+﻿@using MIS.Common
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <link rel="stylesheet" href="~/css/home.css" />
+
+@if (this.TempData[GlobalConstants.TempDataContact] != null)
+{
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        @TempData[GlobalConstants.TempDataContact]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
 
 <section id="intro" class="clearfix">
     <div class="container">
@@ -55,7 +66,7 @@
     </div>
 </section><!-- #services -->
 
-<section id="team" class="bg-mis" >
+<section id="team" class="bg-mis">
     <div class="container">
         <div class="justify-content-center container-fluid">
             <div class="h5 container-fluid text-center justify-content-center">Team</div>

@@ -5,11 +5,7 @@
 
     using Category;
 
-    using Services.Mapping;
-
-    using Services.Models;
-
-    public class EditProductInputModel : IMapFrom<ProductServiceModel>
+    public class ProductCreateInputModel
     {
         private const int MinLength = 3;
         private const int MaxLength = 24;
@@ -17,8 +13,6 @@
         private const double DoubleMinValue = 0.0001;
         private const string DecimalMinValue = "0.01";
         private const string DecimalMaxValue = "79228162514264337593543950335M";
-
-        public string Id { get; set; }
 
         [Required]
         [StringLength(MaxLength, MinimumLength = MinLength)]
@@ -37,5 +31,8 @@
 
         [Required]
         public string CategoryId { get; set; }
+
+        [Required]
+        public string WarehouseId { get; set; }
     }
 }

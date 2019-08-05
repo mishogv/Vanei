@@ -7,7 +7,7 @@
     using Services.Mapping;
     using Services.Models;
 
-    public class IndexWarehouseViewModel : IMapFrom<WareHouseServiceModel>
+    public class WarehouseIndexViewModel : IMapFrom<WareHouseServiceModel>
     {
         public string Id { get; set; }
 
@@ -15,8 +15,8 @@
         
         public string Name { get; set; }
         
-        public IEnumerable<WareHouseIndexProductViewModel> Products { get; set; }
+        public IEnumerable<ProductWareHouseIndexViewModel> Products { get; set; }
 
-        public IEnumerable<IndexWarehouseDropdownViewModel> WarehouseDropdown { get; set; }
+        public IEnumerable<WarehouseIndexDropdownViewModel> WarehouseDropdown { get; set; }
     }
 }

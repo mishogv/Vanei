@@ -7,7 +7,7 @@
 
     using Services.Models;
 
-    public class DetailsReceiptViewModel : IMapFrom<ReceiptServiceModel>
+    public class ReceiptDetailsViewModel : IMapFrom<ReceiptServiceModel>
     {
         public int Id { get; set; }
 
@@ -15,6 +15,6 @@
 
         public string Username { get; set; }
 
-        public IEnumerable<DetailsReceiptProductViewModel> Products { get; set; }
+        public IEnumerable<ReceiptProductDetailsViewModel> Products { get; set; }
     }
 }

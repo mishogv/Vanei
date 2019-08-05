@@ -4,18 +4,18 @@
 
     using Services.Mapping;
 
-    public class WareHouseIndexProductViewModel : IMapFrom<Product>
+    public class ProductShowReceiptViewModel : IMapFrom<Product>
     {
         public string Id { get; set; }
 
         public string Name { get; set; }
 
-        public decimal Price { get; set; }
-
         public double Quantity { get; set; }
 
-        public string BarCode { get; set; }
+        public decimal Total { get; set; }
 
-        public string CategoryName { get; set; }
+        public decimal Price { get; set; }
+
+        public string Barcode { get; set; }
     }
 }

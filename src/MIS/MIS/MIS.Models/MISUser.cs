@@ -9,6 +9,9 @@
 
     public class MISUser : IdentityUser, IHaveCompany
     {
+        private const int MinLength = 3;
+        private const int MaxLength = 30;
+
         public MISUser()
         {
             this.Receipts = new HashSet<Receipt>();
@@ -17,11 +20,11 @@
         }
 
         [Required]
-        [StringLength(30, MinimumLength = 3)]
+        [StringLength(MaxLength, MinimumLength = MinLength)]
         public string FirstName { get; set; }
 
         [Required]
-        [StringLength(30, MinimumLength = 3)]
+        [StringLength(MaxLength, MinimumLength = MinLength)]
         public string LastName { get; set; }
 
         [Required]

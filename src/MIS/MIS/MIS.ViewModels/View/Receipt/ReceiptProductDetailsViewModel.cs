@@ -6,7 +6,7 @@
 
     using Services.Mapping;
 
-    public class DetailsReceiptProductViewModel : IMapFrom<ReceiptProduct>
+    public class ReceiptProductDetailsViewModel : IMapFrom<ReceiptProduct>
     {
         public string ProductName { get; set; }
 

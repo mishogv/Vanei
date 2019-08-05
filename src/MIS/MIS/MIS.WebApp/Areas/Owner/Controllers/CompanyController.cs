@@ -21,6 +21,9 @@
     [Authorize(Roles = GlobalConstants.CompanyOwnerRole)]
     public class CompanyController : AuthenticationController
     {
+        private const string RedirectIndex = "Index";
+        private const string RedirectHome = "Home";
+
         private readonly ICompanyService companyService;
         private readonly UserManager<MISUser> userManager;
         private readonly SignInManager<MISUser> signInManager;
@@ -43,11 +46,11 @@
                 return this.NotFound();
             }
 
-            return this.View(company.MapTo<EditCompanyInputModel>());
+            return this.View(company.MapTo<CompanyEditInputModel>());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(EditCompanyInputModel input)
+        public async Task<IActionResult> Edit(CompanyEditInputModel input)
         {
             if (!this.ModelState.IsValid)
             {
@@ -56,7 +59,7 @@
 
             await this.companyService.EditAsync(input.Id, input.Name, input.Address);
 
-            return this.RedirectToAction("Index");
+            return this.RedirectToAction(RedirectIndex);
         }
 
         public async Task<IActionResult> Delete(string id)
@@ -74,14 +77,14 @@
             await this.signInManager.SignOutAsync();
             await this.signInManager.SignInAsync(user, false);
 
-            return this.RedirectToAction("Index", "Home");
+            return this.RedirectToAction(RedirectIndex, RedirectHome);
         }
 
         public async Task<IActionResult> RemoveEmployee(string id)
         {
             await this.companyService.RemoveEmployeeAsync(id);
 
-            return this.RedirectToAction("Index");
+            return this.RedirectToAction(RedirectIndex);
         }
     }
 }

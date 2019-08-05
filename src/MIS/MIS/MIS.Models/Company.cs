@@ -5,6 +5,9 @@
 
     public class Company : BaseModel<string>
     {
+        private const int MinLength = 4;
+        private const int MaxLength = 40;
+
         public Company()
         {
             this.Employees = new HashSet<MISUser>();
@@ -16,11 +19,11 @@
         }
 
         [Required]
-        [StringLength(40, MinimumLength = 4)]
+        [StringLength(MaxLength, MinimumLength = MinLength)]
         public string Name { get; set; }
 
         [Required]
-        [StringLength(40, MinimumLength = 4)]
+        [StringLength(MaxLength, MinimumLength = MinLength)]
         public string Address { get; set; }
 
 

@@ -3,7 +3,7 @@
     using Services.Mapping;
     using Services.Models;
 
-    public class ChatHubMessageViewModel : IMapFrom<MessageServiceModel>
+    public class MessageViewModel : IMapFrom<MessageServiceModel>
     {
         public string Username { get; set; }
 

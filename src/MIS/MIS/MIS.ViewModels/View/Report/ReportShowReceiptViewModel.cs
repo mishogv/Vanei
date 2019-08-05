@@ -10,7 +10,7 @@
     using Services.Mapping;
     using Services.Models;
 
-    public class ShowReceiptReportViewModel : IMapFrom<Receipt>
+    public class ReportShowReceiptViewModel : IMapFrom<Receipt>
     {
         public int Id { get; set; }
 

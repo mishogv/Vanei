@@ -4,6 +4,8 @@
     using System.Text.Encodings.Web;
     using System.Threading.Tasks;
 
+    using Common;
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.UI.Services;
@@ -103,8 +105,8 @@
                 var result = await this._userManager.CreateAsync(user, this.Input.Password);
                 if (result.Succeeded)
                 {
-                    this.TempData["ConfirmEmail"] = "Please confirm your email, before you try to login.";
-                    this._logger.LogInformation("User created a new account with password.");
+                    this.TempData[GlobalConstants.TempDataConfirmEmail] = "Please confirm your email, before you try to login.";
+                    this._logger.LogInformation("User created as new account with password.");
 
                     var code = await this._userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = this.Url.Page(

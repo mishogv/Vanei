@@ -18,6 +18,8 @@
 
     public class AdministratorManageController : AdministratorController
     {
+        private const string Separator = ", ";
+
         private readonly UserManager<MISUser> userManager;
         private readonly ICompanyService companyService;
 
@@ -38,7 +40,7 @@
             foreach (var user in users)
             {
                 var roles = await this.userManager.GetRolesAsync(user);
-                var rolesToAdd = roles.Count == 0 ? GlobalConstants.UserRoleName : string.Join(", ", roles);
+                var rolesToAdd = roles.Count == 0 ? GlobalConstants.UserRoleName : string.Join(Separator, roles);
                 dict.Add(user, rolesToAdd);
             }
 

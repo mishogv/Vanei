@@ -13,8 +13,6 @@ namespace MIS.WebApp.Controllers
     using Services;
     using Services.Mapping;
 
-    using Services.Models;
-
     using ViewModels.Input.WareHouse;
     using ViewModels.View.Product;
     using ViewModels.View.WareHouse;
@@ -22,6 +20,10 @@ namespace MIS.WebApp.Controllers
     [Authorize]
     public class WareHouseController : AuthenticationController
     {
+        private const string RedirectCreate = "Create";
+        private const string RedirectCompany = "Company";
+        private const string RedirectWareHouse = "WareHouse";
+
         private readonly IWareHouseService wareHouseService;
         private readonly UserManager<MISUser> userManager;
 
@@ -38,7 +40,7 @@ namespace MIS.WebApp.Controllers
 
             if (user.CompanyId == null)
             {
-                return this.RedirectToAction("Create", "Company");
+                return this.RedirectToAction(RedirectCreate, RedirectCompany);
             }
 
             var warehouses = await this.wareHouseService.GetWarehousesByCompanyIdAsync(user.CompanyId);
@@ -49,33 +51,33 @@ namespace MIS.WebApp.Controllers
 
             if (currentWarehouse == null)
             {
-                return this.RedirectToAction("Create", "WareHouse");
+                return this.RedirectToAction(RedirectCreate, RedirectWareHouse);
             }
 
-            var products = currentWarehouse.Products.MapTo<WareHouseIndexProductViewModel[]>();
-            var result = currentWarehouse.MapTo<IndexWarehouseViewModel>();
+            var products = currentWarehouse.Products.MapTo<ProductWareHouseIndexViewModel[]>();
+            var result = currentWarehouse.MapTo<WarehouseIndexViewModel>();
             result.Products = products;
-            result.WarehouseDropdown = warehouses.MapTo<IndexWarehouseDropdownViewModel[]>();
+            result.WarehouseDropdown = warehouses.MapTo<WarehouseIndexDropdownViewModel[]>();
           
             return this.View(result);
         }
 
         public IActionResult Create()
         {
-            return this.View(new CreateWareHouseInputModel());
+            return this.View(new WareHouseCreateInputModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateWareHouseInputModel wareHouseInput)
+        public async Task<IActionResult> Create(WareHouseCreateInputModel input)
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View(wareHouseInput);
+                return this.View(input);
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
 
-            await this.wareHouseService.CreateAsync(wareHouseInput.Name, user.CompanyId);
+            await this.wareHouseService.CreateAsync(input.Name, user.CompanyId);
 
             return this.RedirectToAction(nameof(this.Index));
         }
@@ -98,11 +100,11 @@ namespace MIS.WebApp.Controllers
                 return this.RedirectToAction(nameof(this.Create));
             }
 
-            return this.View(warehouse.MapTo<EditWarehouseInputModel>());
+            return this.View(warehouse.MapTo<WarehouseEditInputModel>());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(EditWarehouseInputModel input)
+        public async Task<IActionResult> Edit(WarehouseEditInputModel input)
         {
             if (!this.ModelState.IsValid)
             {

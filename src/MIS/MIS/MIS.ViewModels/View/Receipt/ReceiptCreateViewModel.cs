@@ -4,12 +4,12 @@
 
     using Product;
 
-    public class CreateReceiptViewModel
+    public class ReceiptCreateViewModel
     {
         public string Total { get; set; }
 
         public string Username { get; set; }
 
-        public IList<ShowReceiptProductViewModel> Products { get; set; }
+        public IList<ProductShowReceiptViewModel> Products { get; set; }
     }
 }
