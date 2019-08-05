@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MIS.Services.Models", "MIS.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MIS.Services.Mapping", "MIS.Services.Mapping\MIS.Services.Mapping.csproj", "{5910CD32-6FDB-446D-AA26-4ECAECA8F1BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIS.Tests", "MIS.Tests\MIS.Tests.csproj", "{C97C5B24-5A78-42B1-BA8F-5FEABF38B40A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MIS.Tests", "MIS.Tests\MIS.Tests.csproj", "{C97C5B24-5A78-42B1-BA8F-5FEABF38B40A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
