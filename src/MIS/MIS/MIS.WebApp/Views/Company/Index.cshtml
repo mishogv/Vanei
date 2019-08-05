@@ -39,7 +39,7 @@
             <a class="btn btn-primary container-fluid justify-content-center" asp-area="Owner" asp-controller="Company" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
         </div>
         <div class="col-md-3">
-            <a class="btn btn-primary container-fluid justify-content-center" asp-area="Owner" asp-controller="Company" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+            <a  value="@Model.Name" id="company-delete" data-toggle="modal" data-target="#basicExampleModal"  class="btn btn-primary container-fluid justify-content-center" asp-area="Owner" asp-controller="Company" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
         </div>
     }
 </div>
@@ -66,7 +66,7 @@
                         @if (this.User.IsInRole(GlobalConstants.CompanyOwnerRole) && employee.Username != this.User.Identity.Name)
                         {
                             <div>
-                                <a asp-area="Owner" asp-controller="Company" asp-action="RemoveEmployee" asp-route-id="@employee.Id">
+                                <a  value="@employee.Username" class="employee-modal" data-toggle="modal" data-target="#basicExampleModal" asp-area="Owner" asp-controller="Company" asp-action="RemoveEmployee" asp-route-id="@employee.Id">
                                     <img src="~/ico/x-2x.png" class="mx-auto" />
                                 </a>
                             </div>
@@ -78,8 +78,30 @@
     </tbody>
 </table>
 
+
+<!-- Modal -->
+<div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Do you want to delete this product?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                <a class="btn btn-danger continue-delete">Continue</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
-    <!-- MDBootstrap Datatables  -->
+    <script src="~/js/modals.js"></script>
     <script type="text/javascript" src="~/js/addons/datatables.min.js"></script>
     <script src="~/js/site.js"></script>
 }

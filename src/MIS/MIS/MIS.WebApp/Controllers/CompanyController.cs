@@ -59,7 +59,7 @@ namespace MIS.WebApp.Controllers
             var result = new CompanyChatViewModel
             {
                 Id = id,
-                Messages = messages.MapTo<MessageViewModel[]>()
+                Messages = messages?.MapTo<MessageViewModel[]>()
             };
 
             return this.View(result);
