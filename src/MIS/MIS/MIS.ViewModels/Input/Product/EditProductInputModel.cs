@@ -16,7 +16,7 @@
 
         private const double DoubleMinValue = 0.0001;
         private const string DecimalMinValue = "0.01";
-        private const string DecimalMaxValue = "79228162514264337593543950335M";
+        private const string DecimalMaxValue = "79228162514264337593543950335";
 
         public string Id { get; set; }
 

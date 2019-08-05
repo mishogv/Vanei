@@ -9,7 +9,7 @@
         private const int MaxLength = 24;
 
         private const string DecimalMinValue = "0.01";
-        private const string DecimalMaxValue = "79228162514264337593543950335M";
+        private const string DecimalMaxValue = "79228162514264337593543950335";
 
         public Product()
         {

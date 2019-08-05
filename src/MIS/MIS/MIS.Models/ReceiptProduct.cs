@@ -6,7 +6,7 @@
     public class ReceiptProduct : BaseModel<string>
     {
         private const string DecimalMinValue = "0.01";
-        private const string DecimalMaxValue = "79228162514264337593543950335M";
+        private const string DecimalMaxValue = "79228162514264337593543950335";
 
         public int ReceiptId { get; set; }
         public Receipt Receipt { get; set; }
