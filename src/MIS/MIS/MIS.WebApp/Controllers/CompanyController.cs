@@ -39,7 +39,7 @@ namespace MIS.WebApp.Controllers
         {
             var user = await this.userManager.GetUserAsync(this.User);
 
-            if (user.CompanyId == null)
+            if (user?.CompanyId == null)
             {
                 return this.RedirectToAction(nameof(this.Create));
             }
