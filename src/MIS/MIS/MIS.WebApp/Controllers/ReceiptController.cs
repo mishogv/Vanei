@@ -86,28 +86,17 @@
                 return this.BadRequest(this.ModelState);
             }
 
-            //TODO : automapper
-            var result = new ProductShowReceiptViewModel()
-            {
-                Id = product.Id,
-                Name = product.Product.Name,
-                Quantity = product.Quantity,
-                Price = product.Product.Price,
-                Total = product.Product.Price * (decimal)product.Quantity,
-                Barcode = product.Product.BarCode,
-            };
-
-            return result;
+            return product.MapTo<ProductShowReceiptViewModel>();
         }
 
         [HttpGet("/Receipt/AllPorducts")]
-        public async Task<ActionResult<IList<ProductShowReceiptViewModel>>> AllProducts()
+        public async Task<ActionResult<IList<ProductReceiptViewModel>>> AllProducts()
         {
             var user = await this.userManger.GetUserAsync(this.User);
 
             var products = await this.productService.GetAllProductsCompanyIdAsync(user.CompanyId);
 
-            return products.MapTo<ProductShowReceiptViewModel[]>();
+            return products.MapTo<ProductReceiptViewModel[]>();
         }
 
 
@@ -165,15 +154,8 @@
                 Username = openedReceipt.User.UserName,
                 Products = openedReceipt.ReceiptProducts
                                         .OrderByDescending(x => x.AddedOn)
-                                        .Select(x => new ProductShowReceiptViewModel
-                                        {
-                                            Id = x.Id,
-                                            Name = x.Product.Name,
-                                            Quantity = x.Quantity,
-                                            Price = x.Product.Price,
-                                            Total = x.Product.Price * (decimal)x.Quantity,
-                                            Barcode = x.Product.BarCode,
-                                        }).ToList(),
+                                        .MapTo<ProductShowReceiptViewModel[]>()
+                                        .ToList(),
             };
 
             result.Total = result.Products.Select(x => x.Total).Sum().ToString("f2");

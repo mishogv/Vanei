@@ -162,7 +162,7 @@ function renderProducts(data) {
             +
             '<td>'
             +
-            '<input type="text" class="form-control" id="product-name-number-' + i + '" value="' + data.products[i].name + '" disabled="disabled"  />'
+            '<input type="text" class="form-control" id="product-name-number-' + i + '" value="' + data.products[i].productName + '" disabled="disabled"  />'
             +
             '</td>'
             +
@@ -174,13 +174,13 @@ function renderProducts(data) {
             +
             '<td>'
             +
-            '<input type="text" class="form-control" id="product-barcode-number-' + i + '" value="' + data.products[i].barcode + '" disabled="disabled"  />'
+            '<input type="text" class="form-control" id="product-barcode-number-' + i + '" value="' + data.products[i].productBarcode + '" disabled="disabled"  />'
             +
             '</td>'
             +
             '<td>'
             +
-            '<input type="number" class="form-control" id="product-price-number-' + i + '" value="' + data.products[i].price + '" disabled="disabled"  />'
+            '<input type="number" class="form-control" id="product-price-number-' + i + '" value="' + data.products[i].productPrice + '" disabled="disabled"  />'
             +
             '</td>'
             +

@@ -44,6 +44,11 @@
         [HttpPost]
         public async Task<IActionResult> Contact(ContactCreateInputModel input)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(input);
+            }
+
             this.TempData[GlobalConstants.TempDataContact] = SuccessfulMessage;
             var htmlMessage = new StringBuilder();
             htmlMessage.AppendLine(string.Format(Template, nameof(input.Name), input.Name));
