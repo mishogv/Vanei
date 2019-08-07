@@ -22,7 +22,12 @@
         [SetUp]
         public async Task Init()
         {
-            this.dbContext = this.GetDbContext();
+            var options = new DbContextOptionsBuilder<MISDbContext>()
+                          .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                          .Options;
+
+            this.dbContext = new MISDbContext(options);
+
             var userService = new UserService(this.dbContext);
             var companyService = new CompanyService(this.dbContext, userService);
             var warehouseService = new WareHouseService(this.dbContext, companyService);
@@ -69,7 +74,7 @@
         }
 
         [Test]
-        public async Task CreateReport_ShouldReturn_CorrectReport()
+        public async Task CreateReport_WithValidData_ShouldReturnCorrectReport()
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync();
 
@@ -92,7 +97,7 @@
         }
 
         [Test]
-        public async Task CreateReport_ShouldReturn_NullWithInvalidData()
+        public async Task CreateReport_WithInvalidData_ShouldReturnNull()
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync();
 
@@ -113,7 +118,7 @@
         }
 
         [Test]
-        public async Task GetAllReports_ShouldReturn_CorrectReports()
+        public async Task GetAllReports_WithValidData_ShouldReturnCorrectReports()
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync();
             var company = await this.dbContext.Companies.FirstOrDefaultAsync();
@@ -146,7 +151,7 @@
         }
 
         [Test]
-        public async Task GetAllReports_ShouldReturn_EmptyCollection()
+        public async Task GetAllReports_WithInvalidData_ShouldReturnEmptyCollection()
         {
             var actual = await this.reportService.GetAllReportsAsync("invalidId");
 
@@ -176,7 +181,7 @@
         }
 
         [Test]
-        public async Task GetReport_ShouldReturn_NullWithInvalidData()
+        public async Task GetReport_WithInvalidData_ShouldReturnNull()
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync();
 
@@ -198,7 +203,7 @@
         }
 
         [Test]
-        public async Task DeleteReport_ShouldReturn_CorrectReport()
+        public async Task DeleteReport_WithValidData_ShouldReturnCorrectReport()
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync();
 
@@ -221,7 +226,7 @@
         }
 
         [Test]
-        public async Task DeleteReport_ShouldReturn_NullWithInvalidData()
+        public async Task DeleteReport_WithInvalidData_ShouldReturnNull()
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync();
 
@@ -241,16 +246,6 @@
             var actual = await this.reportService.DeleteReportAsync("invalidId");
 
             Assert.IsNull(actual);
-        }
-
-        private MISDbContext GetDbContext()
-        {
-            var options = new DbContextOptionsBuilder<MISDbContext>()
-                          .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                          .Options;
-
-            var dbContext = new MISDbContext(options);
-            return dbContext;
         }
     }
 }

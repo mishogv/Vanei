@@ -22,7 +22,11 @@
         [SetUp]
         public async Task Init()
         {
-            this.dbContext = this.GetDbContext();
+            var options = new DbContextOptionsBuilder<MISDbContext>()
+                          .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                          .Options;
+
+            this.dbContext = new MISDbContext(options);
             var userService = new UserService(this.dbContext);
             var companyService = new CompanyService(this.dbContext, userService);
             var warehouseService = new WareHouseService(this.dbContext, companyService);
@@ -73,7 +77,7 @@
 
 
         [Test]
-        public async Task GetCurrentOpenedReceipt_ShouldReturn_CorrectReceipt()
+        public async Task GetCurrentOpenedReceipt_WithValidData_ShouldReturnCorrectReceipt()
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync();
 
@@ -94,7 +98,7 @@
         }
 
         [Test]
-        public async Task GetCurrentOpenedReceipt_ShouldReturn_NullWithInvalidData()
+        public async Task GetCurrentOpenedReceipt_WithInvalidData_ShouldReturnNull()
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync();
 
@@ -103,7 +107,7 @@
         }
 
         [Test]
-        public async Task CreateReceipt_ShouldReturn_CorrectReceipt()
+        public async Task CreateReceipt_WithValidData_ShouldReturnCorrectReceipt()
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync();
 
@@ -114,7 +118,7 @@
         }
 
         [Test]
-        public async Task CreateReceipt_ShouldReturn_NullWithInvalidData()
+        public async Task CreateReceipt_WithInvalidData_ShouldReturnNull()
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync();
 
@@ -124,7 +128,7 @@
         }
 
         [Test]
-        public async Task AddProductToCurrentOpenedReceipt_ShouldReturn_CorrectReceipt()
+        public async Task AddProductToCurrentOpenedReceipt_WithValidData_ShouldReturnCorrectReceipt()
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync();
             var category = await this.dbContext.Categories.Include(x => x.WareHouse).FirstOrDefaultAsync();
@@ -154,7 +158,7 @@
         }
 
         [Test]
-        public async Task AddProductToCurrentOpenedReceipt_ShouldReturn_NullWithInvalidProductId()
+        public async Task AddProductToCurrentOpenedReceipt_WithInvalidProductId_ShouldReturnNull()
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync();
             var category = await this.dbContext.Categories.Include(x => x.WareHouse).FirstOrDefaultAsync();
@@ -180,7 +184,7 @@
         }
 
         [Test]
-        public async Task AddProductToCurrentOpenedReceipt_ShouldReturn_NullWithInvalidUsername()
+        public async Task AddProductToCurrentOpenedReceipt_WithInvalidUsername_ShouldReturnNull()
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync();
             var category = await this.dbContext.Categories.Include(x => x.WareHouse).FirstOrDefaultAsync();
@@ -206,7 +210,7 @@
         }
 
         [Test]
-        public async Task FinishCurrentOpenedReceipt_ShouldReturn_CorrectReceipt()
+        public async Task FinishCurrentOpenedReceipt_WithValidData_ShouldReturnCorrectReceipt()
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync();
             var category = await this.dbContext.Categories.Include(x => x.WareHouse).FirstOrDefaultAsync();
@@ -234,7 +238,7 @@
         }
 
         [Test]
-        public async Task FinishCurrentOpenedReceipt_ShouldReturn_NullWithEmptyReceiptProducts()
+        public async Task FinishCurrentOpenedReceipt_WithEmptyCollectionOfReceiptProducts_ShouldReturnNull()
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync();
             var category = await this.dbContext.Categories.Include(x => x.WareHouse).FirstOrDefaultAsync();
@@ -259,7 +263,7 @@
         }
 
         [Test]
-        public async Task FinishCurrentOpenedReceipt_ShouldReturn_NullWithInvalidData()
+        public async Task FinishCurrentOpenedReceipt_WithInvalidData_ShouldReturnNull()
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync();
             var category = await this.dbContext.Categories.Include(x => x.WareHouse).FirstOrDefaultAsync();
@@ -284,7 +288,7 @@
         }
 
         [Test]
-        public async Task DeleteReceipt_ShouldReturn_CorrectReceipt()
+        public async Task DeleteReceipt_WithValidData_ShouldReturnCorrectReceipt()
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync();
             var category = await this.dbContext.Categories.Include(x => x.WareHouse).FirstOrDefaultAsync();
@@ -312,7 +316,7 @@
         }
 
         [Test]
-        public async Task DeleteReceipt_ShouldReturn_NullWithInvalidData()
+        public async Task DeleteReceipt_WithInvalidData_ShouldReturnNull()
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync();
             var category = await this.dbContext.Categories.Include(x => x.WareHouse).FirstOrDefaultAsync();
@@ -339,7 +343,7 @@
         }
 
         [Test]
-        public async Task GetReceipt_ShouldReturn_CorrectReceipt()
+        public async Task GetReceipt_WithValidData_ShouldReturnCorrectReceipt()
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync();
             var category = await this.dbContext.Categories.Include(x => x.WareHouse).FirstOrDefaultAsync();
@@ -367,7 +371,7 @@
         }
 
         [Test]
-        public async Task GetReceipt_ShouldReturn_NullWithInvalidData()
+        public async Task GetReceipt_WithInvalidData_ShouldReturnNull()
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync();
             var category = await this.dbContext.Categories.Include(x => x.WareHouse).FirstOrDefaultAsync();
@@ -395,7 +399,7 @@
 
 
         [Test]
-        public async Task DeleteReceiptById_ShouldReturn_CorrectReceipt()
+        public async Task DeleteReceiptById_WithValidData_ShouldReturnCorrectReceipt()
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync();
             var category = await this.dbContext.Categories.Include(x => x.WareHouse).FirstOrDefaultAsync();
@@ -422,7 +426,7 @@
         }
 
         [Test]
-        public async Task DeleteReceiptById_ShouldReturn_NullWithInvalidId()
+        public async Task DeleteReceiptById_WithInvalidId_ShouldReturnNull()
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync();
             var category = await this.dbContext.Categories.Include(x => x.WareHouse).FirstOrDefaultAsync();
@@ -449,7 +453,7 @@
         }
 
         [Test]
-        public async Task SetReceipts_ShouldReturn_CorrectReceipts()
+        public async Task SetReceipts_WithValidData_ShouldReturnCorrectReceipts()
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync();
             var category = await this.dbContext.Categories.Include(x => x.WareHouse).FirstOrDefaultAsync();
@@ -489,18 +493,6 @@
 
             Assert.AreEqual(firstReceipt.Id, actualArray[0].Id);
             Assert.AreEqual(secondReceipt.Id, actualArray[1].Id);
-        }
-
-
-        private MISDbContext GetDbContext()
-        {
-            var options = new DbContextOptionsBuilder<MISDbContext>()
-                          .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                          .Options;
-
-            var dbContext = new MISDbContext(options);
-
-            return dbContext;
         }
     }
 }

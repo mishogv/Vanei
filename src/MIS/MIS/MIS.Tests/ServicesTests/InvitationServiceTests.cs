@@ -34,7 +34,7 @@
         }
 
         [Test]
-        public async Task InviteAsync_ShouldReturn_CorrectInvitation()
+        public async Task InviteAsync_WithValidData_ShouldReturnCorrectInvitation()
         {
             var company = new Company() {Address = "asd", Name = "asd",};
 
@@ -51,7 +51,7 @@
         }
 
         [Test]
-        public async Task InviteAsync_ShouldReturn_NullWithIncorrectData()
+        public async Task InviteAsync_WithInvalidData_ShouldReturnNull()
         {
             var actual = await this.invitationService.InviteAsync("asd", "asd");
 
@@ -59,7 +59,7 @@
         }
 
         [Test]
-        public async Task AcceptInvitation_ShouldReturn_CorrectInvitation()
+        public async Task AcceptInvitation_WithValidData_ShouldReturnCorrectInvitation()
         {
             var company = new Company() {Address = "asd", Name = "asd",};
 
@@ -77,7 +77,7 @@
         }
 
         [Test]
-        public async Task AcceptInvitation_ShouldReturn_NullWithIncorrectData()
+        public async Task AcceptInvitation_WithInvalidData_ShouldReturnNull()
         {
             var actual = await this.invitationService.AcceptInvitationAsync("asd", false);
 
@@ -85,7 +85,7 @@
         }
 
         [Test]
-        public async Task DeclineInvitation_ShouldReturn_CorrectInvitation()
+        public async Task DeclineInvitation_WithValidData_ShouldReturnCorrectInvitation()
         {
             var company = new Company() {Address = "asd", Name = "asd",};
 
@@ -103,7 +103,7 @@
         }
 
         [Test]
-        public async Task DeclineInvitation_ShouldReturn_NullWithIncorrectData()
+        public async Task DeclineInvitation_WithInvalidData_ShouldReturnNull()
         {
             var actual = await this.invitationService.DeclineInvitationAsync("asd");
 
@@ -111,7 +111,7 @@
         }
 
         [Test]
-        public async Task GetAllInvitation_ShouldReturn_CorrectInvitations()
+        public async Task GetAllInvitation_WithValidData_ShouldReturnCorrectInvitations()
         {
             var company = new Company() {Address = "asd", Name = "asd",};
 
@@ -130,21 +130,11 @@
         }
 
         [Test]
-        public async Task GetAllInvitation_ShouldReturn_EmptyCollection()
+        public async Task GetAllInvitation_WithInvalidId_ShouldReturnEmptyCollection()
         {
             var actual = await this.invitationService.GetAllAsync("asd");
 
             Assert.IsEmpty(actual);
-        }
-
-        private MISDbContext GetDbContext()
-        {
-            var options = new DbContextOptionsBuilder<MISDbContext>()
-                          .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                          .Options;
-
-            var dbContext = new MISDbContext(options);
-            return dbContext;
         }
     }
 }

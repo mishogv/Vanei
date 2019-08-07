@@ -38,7 +38,7 @@
         }
 
         [Test]
-        public async Task CreateWarehouse_ShouldReturn_CorrectWarehouse()
+        public async Task CreateWarehouse_WithValidData_ShouldReturnCorrectWarehouse()
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync();
 
@@ -49,7 +49,7 @@
         }
 
         [Test]
-        public async Task CreateWarehouse_ShouldReturn_NullWithInvalidCompanyId()
+        public async Task CreateWarehouse_WithInvalidData_ShouldReturnNull()
         {
             var actual = await this.warehouseService.CreateAsync(WarehouseName, "asd");
 
@@ -57,7 +57,7 @@
         }
 
         [Test]
-        public async Task GetWarehouse_ShouldReturn_CorrectWarehouse()
+        public async Task GetWarehouse_WithValidData_ShouldReturnCorrectWarehouse()
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync();
 
@@ -68,7 +68,7 @@
         }
 
         [Test]
-        public async Task GetWarehouse_ShouldReturn_NullWithWrongId()
+        public async Task GetWarehouse_WithInvalidData_ShouldReturnNull()
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync();
 
@@ -78,7 +78,7 @@
         }
 
         [Test]
-        public async Task DeleteWarehouse_ShouldReturn_CorrectWarehouse()
+        public async Task DeleteWarehouse_WithValidData_ShouldReturnCorrectWarehouse()
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync();
 
@@ -89,7 +89,7 @@
         }
 
         [Test]
-        public async Task DeleteWarehouse_ShouldReturn_NullWithWrongId()
+        public async Task DeleteWarehouse_WithInvalidData_ShouldReturnNull()
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync();
 
@@ -100,7 +100,7 @@
         }
 
         [Test]
-        public async Task EditWarehouse_ShouldReturn_CorrectWarehouse()
+        public async Task EditWarehouse_WithValidData_ShouldReturnCorrectWarehouse()
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync();
 
@@ -112,7 +112,7 @@
         }
 
         [Test]
-        public async Task EditWarehouse_ShouldReturn_NullWithWrongId()
+        public async Task EditWarehouse_WithInvalidData_ShouldReturnNull()
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync();
 
@@ -123,7 +123,7 @@
         }
 
         [Test]
-        public async Task MakeFavoriteWarehouse_ShouldReturn_CorrectWarehouse()
+        public async Task MakeFavoriteWarehouse_WithValidData_ShouldReturnCorrectWarehouse()
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync();
 
@@ -135,7 +135,7 @@
         }
 
         [Test]
-        public async Task MakeFavoriteWarehouse_ShouldReturn_NullWithWrongId()
+        public async Task MakeFavoriteWarehouse_WithInvalidData_ShouldReturnNull()
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync();
 
@@ -146,7 +146,7 @@
         }
 
         [Test]
-        public async Task AddCategory_ShouldReturn_TrueWithCorrectData()
+        public async Task AddCategory_WithValidData_ShouldReturnTrueWithCorrectData()
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync();
 
@@ -161,7 +161,7 @@
         }
 
         [Test]
-        public async Task AddCategory_ShouldReturn_FalseAndSetNullWithInvalidData()
+        public async Task AddCategory_WithInvalidData_ShouldReturnFalseAndSetNull()
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync();
 
@@ -176,7 +176,7 @@
         }
 
         [Test]
-        public async Task GetWarehouses_ShouldReturn_CorrectWarehouses()
+        public async Task GetWarehouses_WithValidData_ShouldReturnCorrectWarehouses()
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync();
 
@@ -193,7 +193,7 @@
         }
 
         [Test]
-        public async Task GetWarehouses_ShouldReturn_EmptyCollection()
+        public async Task GetWarehouses_WithInvalidData_ShouldReturnEmptyCollection()
         {
             var company = await this.dbContext.Companies.FirstOrDefaultAsync();
 

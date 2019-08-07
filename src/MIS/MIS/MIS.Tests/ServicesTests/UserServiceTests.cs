@@ -34,7 +34,7 @@
         }
 
         [Test]
-        public async Task AddToCompany_ShouldReturn_CorrectUser()
+        public async Task AddToCompany_WithValidData_ShouldReturnCorrectUser()
         {
             var company = new Company();
             var user = new MISUser()
@@ -56,7 +56,7 @@
         }
 
         [Test]
-        public async Task AddToCompany_ShouldReturn_EmptyCollectionOfUsers()
+        public async Task AddToCompany_WithInvalidData_ShouldReturnEmptyCollectionOfUsers()
         {
             var company = new Company();
 
@@ -66,7 +66,7 @@
         }
 
         [Test]
-        public async Task SetInvitation_ShouldReturn_CorrectUser()
+        public async Task SetInvitation_WithValidData_ShouldReturnCorrectUser()
         {
             var invitation = new Invitation();
             var user = new MISUser()
@@ -84,7 +84,7 @@
         }
 
         [Test]
-        public async Task SetInvitation_ShouldReturn_Null()
+        public async Task SetInvitation_WithInvalidData_ShouldReturnNull()
         {
             var invitation = new Invitation();
             var user = new MISUser()
@@ -102,7 +102,7 @@
         }
 
         [Test]
-        public async Task SetReceipt_ShouldReturn_CorrectUser()
+        public async Task SetReceipt_WithValidData_ShouldReturnCorrectUser()
         {
             var receipt = new Receipt();
             var user = new MISUser()
@@ -121,7 +121,7 @@
         }
 
         [Test]
-        public async Task SetReceipt_ShouldThrow_ReturnNullWithInvalidData()
+        public async Task SetReceipt_WithInvalidData_ShouldReturnNull()
         {
             var receipt = new Receipt();
             var user = new MISUser()
@@ -138,7 +138,7 @@
         }
 
         [Test]
-        public async Task GetAllUsers_ShouldReturn_CorrectUsers()
+        public async Task GetAllUsers_WithValidData_ShouldReturnCorrectUsers()
         {
             var receipt = new Receipt();
             var userFirst = new MISUser()
@@ -170,7 +170,7 @@
         }
 
         [Test]
-        public async Task GetAllUsers_ShouldReturn_EmptyCollection()
+        public async Task GetAllUsers_WithInvalidData_ShouldReturnEmptyCollection()
         {
             var actual = await this.userService.GetAllUsersAsync();
 

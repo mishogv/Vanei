@@ -62,7 +62,7 @@
         }
 
         [Test]
-        public async Task EditCategory_ShouldReturn_CorrectCategoryWithEditedData()
+        public async Task EditCategory_WithEditedData_ShouldReturnCorrectCategory()
         {
             var warehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync();
             var expected = await this.categoryService.CreateAsync(CategoryName, warehouse.Id);
@@ -74,10 +74,10 @@
         }
 
         [Test]
-        public async Task EditCategory_ShouldReturn_NullWithInvalidId()
+        public async Task EditCategory_WithInvalidId_ShouldReturnNull()
         {
             var warehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync();
-            var expected = await this.categoryService.CreateAsync(CategoryName, warehouse.Id);
+            await this.categoryService.CreateAsync(CategoryName, warehouse.Id);
 
             var actual = await this.categoryService.EditAsync("asd", "newName");
 
@@ -85,7 +85,7 @@
         }
 
         [Test]
-        public async Task DeleteCategory_ShouldReturn_CorrectCategory()
+        public async Task DeleteCategory_WithValidData_ShouldReturnCorrectCategory()
         {
             var warehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync();
             var expected = await this.categoryService.CreateAsync(CategoryName, warehouse.Id);
@@ -96,7 +96,7 @@
         }
 
         [Test]
-        public async Task DeleteCategory_ShouldReturn_NullWithInvalidId()
+        public async Task DeleteCategory_WithInvalidId_ShouldReturnNull()
         {
             var warehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync();
             var expected = await this.categoryService.CreateAsync(CategoryName, warehouse.Id);
@@ -107,7 +107,7 @@
         }
 
         [Test]
-        public async Task GetCategory_ShouldReturn_CorrectCategory()
+        public async Task GetCategory_WithValidData_ShouldReturnCorrectCategory()
         {
             var warehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync();
             var expected = await this.categoryService.CreateAsync(CategoryName, warehouse.Id);
@@ -118,7 +118,7 @@
         }
 
         [Test]
-        public async Task GetCategory_ShouldReturn_NullWithInvalidId()
+        public async Task GetCategory_WithInvalidId_ShouldReturnNull()
         {
             var warehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync();
             var expected = await this.categoryService.CreateAsync(CategoryName, warehouse.Id);
@@ -129,7 +129,7 @@
         }
 
         [Test]
-        public async Task SetCategory_ShouldSet_CorrectCategory()
+        public async Task SetCategory_WithValidData_ShouldSetCorrectCategory()
         {
             var warehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync();
             var expected = await this.categoryService.CreateAsync(CategoryName, warehouse.Id);
@@ -142,7 +142,7 @@
         }
 
         [Test]
-        public async Task SetCategory_ShouldSet_NullWithInvalidId()
+        public async Task SetCategory_WithInvalidId_ShouldSetNull()
         {
             var product = new Product();
 
@@ -152,7 +152,7 @@
         }
 
         [Test]
-        public async Task GetAllCategoriesByCompanyId_ShouldReturn_CorrectCategories()
+        public async Task GetAllCategoriesByCompanyId_WithValidId_ShouldReturnCorrectCategories()
         {
             var warehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync();
             var expectedFirst = await this.categoryService.CreateAsync(CategoryName + 1, warehouse.Id);
@@ -168,17 +168,15 @@
         }
 
         [Test]
-        public async Task GetAllCategoriesByCompanyId_ShouldReturn_EmptyCollection()
+        public async Task GetAllCategoriesByCompanyId_ShouldReturnEmptyCollection()
         {
-            var warehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync();
-
             var actual = await this.categoryService.GetAllByCompanyIdAsync("asd");
 
             Assert.IsEmpty(actual);
         }
 
         [Test]
-        public async Task GetAllCategoriesByWarehouseId_ShouldReturn_CorrectCategories()
+        public async Task GetAllCategoriesByWarehouseId_WithValidData_ShouldReturnCorrectCategories()
         {
             var warehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync();
             var expectedFirst = await this.categoryService.CreateAsync(CategoryName + 1, warehouse.Id);
@@ -194,7 +192,7 @@
         }
 
         [Test]
-        public async Task GetAllCategoriesByWarehouseId_ShouldReturn_EmptyCollection()
+        public async Task GetAllCategoriesByWarehouseId_ShouldReturnEmptyCollection()
         {
             var warehouse = await this.dbContext.WareHouses.FirstOrDefaultAsync();
 

@@ -32,7 +32,7 @@
 
     using WebApp.Controllers;
 
-    public class CompanyControllerTests
+    public class CompanyControllerTests : BaseControllerTests
     {
         private MISDbContext dbContext;
         private ICompanyService companyService;
@@ -105,7 +105,7 @@
         }
 
         [Test]
-        public void IndexShouldReturnView()
+        public void Index_WithValidData_ShouldReturnView()
             => MyController<CompanyController>
                .Instance()
                .WithDependencies(this.companyService, this.messageService,
@@ -120,7 +120,7 @@
                .ShouldPassForThe<ViewResult>(x => Assert.IsAssignableFrom<DetailsCompanyViewModel>(x.Model));
 
         [Test]
-        public void Index_Should_ReturnRedirectToCreate()
+        public void Index_WithInvalidData_ShouldReturnRedirectToCreate()
             => MyController<CompanyController>
                .Instance()
                .WithDependencies(this.companyService, this.messageService,
@@ -131,7 +131,7 @@
                .RedirectToAction("Create");
 
         [Test]
-        public void Chat_ShouldReturn_ViewWithMessageCountTwo()
+        public void Chat_WithValidData_ShouldReturnViewWithMessageCountTwo()
             => MyController<CompanyController>
                .Instance()
                .WithDependencies(this.companyService, this.messageService,
@@ -146,7 +146,7 @@
                    => Assert.AreEqual(2, ((CompanyChatViewModel)x.Model).Messages.Count()));
 
         [Test]
-        public void Chat_ShouldReturn_ViewWithMessagesEmptyCollection()
+        public void Chat_WithInvalidData_ShouldReturnViewWithMessagesEmptyCollection()
             => MyController<CompanyController>
                .Instance()
                .WithDependencies(this.companyService, this.messageService,
@@ -158,7 +158,7 @@
                .ShouldPassForThe<ViewResult>(x => Assert.IsEmpty(((CompanyChatViewModel)x.Model).Messages));
 
         [Test]
-        public void Create_ShouldReturn_View()
+        public void Create_WithValidData_ShouldReturnView()
             => MyController<CompanyController>
                .Instance()
                .WithDependencies(this.companyService, this.messageService,
@@ -172,7 +172,7 @@
                .ShouldPassForThe<ViewResult>(x => Assert.IsAssignableFrom<CompanyCreateInputModel>(x.Model));
 
         [Test]
-        public void Create_ShouldReturn_ViewWithInvalidModelState()
+        public void Create_WithInvalidData_ShouldReturnViewWithInvalidModelState()
             => MyController<CompanyController>
                .Instance()
                .WithDependencies(this.companyService, this.messageService,
@@ -189,7 +189,7 @@
                .View();
 
         [Test]
-        public void Create_ShouldReturn_RedirectWithValidModelState()
+        public void Create_WithValidData_ShouldReturnRedirectWithValidModelState()
             => MyController<CompanyController>
                .Instance()
                .WithDependencies(this.companyService, this.messageService,

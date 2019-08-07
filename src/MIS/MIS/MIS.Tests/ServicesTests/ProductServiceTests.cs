@@ -22,8 +22,11 @@
         [SetUp]
         public async Task Init()
         {
+            var options = new DbContextOptionsBuilder<MISDbContext>()
+                          .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                          .Options;
 
-            this.dbContext = this.GetDbContext();
+            this.dbContext = new MISDbContext(options);
 
             this.productService = new ProductService(this.dbContext,
                 new CategoryService(
@@ -59,7 +62,7 @@
         }
 
         [Test]
-        public async Task CreateProduct_ShouldReturn_CorrectProduct()
+        public async Task CreateProduct_WithValidData_ShouldReturnCorrectProduct()
         {
             var category = await this.dbContext.Categories.FirstOrDefaultAsync();
 
@@ -72,7 +75,7 @@
         }
 
         [Test]
-        public async Task CreateProduct_ShouldReturn_NullWithInvalidData()
+        public async Task CreateProduct_WithInvalidData_ShouldReturnNull()
         {
             var category = await this.dbContext.Categories.FirstOrDefaultAsync();
 
@@ -83,7 +86,7 @@
         }
 
         [Test]
-        public async Task GetProduct_ShouldReturn_CorrectProduct()
+        public async Task GetProduct_WithValidData_ShouldReturnCorrectProduct()
         {
             var category = await this.dbContext.Categories.FirstOrDefaultAsync();
 
@@ -96,7 +99,7 @@
         }
 
         [Test]
-        public async Task GetProduct_ShouldReturn_NullWithInvalidData()
+        public async Task GetProduct_WithInvalidData_ShouldReturnNull()
         {
             var category = await this.dbContext.Categories.FirstOrDefaultAsync();
 
@@ -107,7 +110,7 @@
         }
 
         [Test]
-        public async Task DeleteProduct_ShouldReturn_CorrectProduct()
+        public async Task DeleteProduct_WithValidData_ShouldReturnCorrectProduct()
         {
             var category = await this.dbContext.Categories.FirstOrDefaultAsync();
 
@@ -120,7 +123,7 @@
         }
 
         [Test]
-        public async Task DeleteProduct_ShouldReturn_NullWithInvalidData()
+        public async Task DeleteProduct_WithInvalidId_ShouldReturnNull()
         {
             var actual = await
                 this.productService.DeleteAsync("invalidId");
@@ -129,7 +132,7 @@
         }
 
         [Test]
-        public async Task SetProduct_ShouldReturn_CorrectProduct()
+        public async Task SetProduct_WithValidData_ShouldReturnCorrectProduct()
         {
             var category = await this.dbContext.Categories.FirstOrDefaultAsync();
 
@@ -144,7 +147,7 @@
         }
 
         [Test]
-        public async Task SetProduct_ShouldReturn_NullWithInvalidData()
+        public async Task SetProduct_WithInvalidData_ShouldReturnNull()
         {
             var category = await this.dbContext.Categories.FirstOrDefaultAsync();
 
@@ -156,7 +159,7 @@
         }
 
         [Test]
-        public async Task UpdateProduct_ShouldReturn_CorrectProduct()
+        public async Task UpdateProduct_WithValidData_ShouldReturnCorrectProduct()
         {
             var category = await this.dbContext.Categories.FirstOrDefaultAsync();
 
@@ -176,7 +179,7 @@
         }
 
         [Test]
-        public async Task UpdateProduct_ShouldReturn_NullWithInvalidData()
+        public async Task UpdateProduct_WithInvalidData_ShouldReturnNull()
         {
             var category = await this.dbContext.Categories.FirstOrDefaultAsync();
 
@@ -192,7 +195,7 @@
         }
 
         [Test]
-        public async Task GetAllProducts_ShouldReturn_CorrectProducts()
+        public async Task GetAllProducts_WithvalidData_ShouldReturnCorrectProducts()
         {
             var category = await this.dbContext.Categories
                                      .Include(x => x.WareHouse)
@@ -217,7 +220,7 @@
 
 
         [Test]
-        public async Task GetAllProducts_ShouldReturn_EmptyProductsCollection()
+        public async Task GetAllProducts_WithInvalidId_ShouldReturnEmptyProductsCollection()
         {
             var category = await this.dbContext.Categories
                                      .Include(x => x.WareHouse)
@@ -225,18 +228,6 @@
 
             var actual = await this.productService.GetAllProductsCompanyIdAsync("asd");
             Assert.IsEmpty(actual);
-        }
-
-
-        private MISDbContext GetDbContext()
-        {
-            var options = new DbContextOptionsBuilder<MISDbContext>()
-                          .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                          .Options;
-
-            var dbContext = new MISDbContext(options);
-
-            return dbContext;
         }
     }
 }

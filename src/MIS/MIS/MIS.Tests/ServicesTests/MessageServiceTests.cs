@@ -48,7 +48,7 @@
         }
 
         [Test]
-        public async Task CreateMessageWithJoinNotification_ShouldReturn_CorrectMessage()
+        public async Task CreateMessageWithJoinNotification_WithValidData_ShouldReturnCorrectMessage()
         {
             var company = new Company() {Address = "asd", Name = "asd",};
 
@@ -63,7 +63,7 @@
         }
 
         [Test]
-        public async Task GetAll_ShouldReturn_CorrectMessageCollection()
+        public async Task GetAll_WithValidData_ShouldReturnCorrectMessageCollection()
         {
             var company = new Company() {Address = "asd", Name = "asd",};
 
@@ -86,7 +86,7 @@
         }
 
         [Test]
-        public async Task GetAll_ShouldReturn_EmptyCollection()
+        public async Task GetAll_WithInvalidId_ShouldReturnEmptyCollection()
         {
             var messages = await this.messagesService.GetAllAsync("asd");
 

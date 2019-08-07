@@ -36,7 +36,7 @@
         }
 
         [Test]
-        public async Task CreateCompany_ShouldReturn_CorrectCompany()
+        public async Task CreateCompany_WithValidData_ShouldReturnCorrectCompany()
         {
             var actual = await this.companyService.CreateAsync(CompanyName, CompanyAddress);
             var expected = await this.dbContext.Companies.FirstOrDefaultAsync();
@@ -45,7 +45,7 @@
         }
 
         [Test]
-        public async Task EditCompany_ShouldReturn_CorrectCompany()
+        public async Task EditCompany_WithValidData_ShouldReturnCorrectCompany()
         {
             var company = await this.companyService.CreateAsync(CompanyName, CompanyAddress);
             var editedCompany = await this.companyService.EditAsync(company.Id, "Asd", "asd");
@@ -56,7 +56,7 @@
         }
 
         [Test]
-        public async Task EditCompany_ShouldReturn_NullWithWrongId()
+        public async Task EditCompany_WithInvalidId_ShouldReturnNull()
         {
             var editedCompany = await this.companyService.EditAsync("123", "Asd", "asd");
 
@@ -64,7 +64,7 @@
         }
 
         [Test]
-        public async Task DeleteCompany_ShouldReturn_CorrectCompanyId()
+        public async Task DeleteCompany_WithValidData_ShouldReturnCorrectCompanyId()
         {
             var company = await this.companyService.CreateAsync(CompanyName, CompanyAddress);
             var deletedCompany = await this.companyService.DeleteAsync(company.Id);
@@ -73,7 +73,7 @@
         }
 
         [Test]
-        public async Task DeleteCompany_ShouldReturn_NullWithWrongId()
+        public async Task DeleteCompany_WithInvalidId_ShouldReturnNull()
         {
             var deletedCompany = await this.companyService.DeleteAsync("423");
 
@@ -81,7 +81,7 @@
         }
 
         [Test]
-        public async Task GetCompany_ShouldReturn_CorrectCompany()
+        public async Task GetCompany_WithValidData_ShouldReturnCorrectCompany()
         {
             var company = await this.companyService.CreateAsync(CompanyName, CompanyAddress);
             var actual = await this.companyService.GetCompanyAsync(company.Id);
@@ -92,7 +92,7 @@
         }
 
         [Test]
-        public async Task GetCompany_ShouldReturn_NullWithWrongId()
+        public async Task GetCompany_WithInvalidId_ShouldReturnNull()
         {
             var actual = await this.companyService.GetCompanyAsync("asd");
 
@@ -100,7 +100,7 @@
         }
 
         [Test]
-        public async Task RemoveEmployee_ShouldReturn_CorrectEmployee()
+        public async Task RemoveEmployee_WithValidData_ShouldReturnCorrectEmployee()
         {
             var company = await this.companyService.CreateAsync(CompanyName, CompanyAddress);
 
@@ -122,7 +122,7 @@
         }
 
         [Test]
-        public async Task RemoveEmployee_ShouldReturn_Null()
+        public async Task RemoveEmployee_WithInvalidData_ShouldReturnNull()
         {
             var company = await this.companyService.CreateAsync(CompanyName, CompanyAddress);
 
@@ -144,7 +144,7 @@
         }
 
         [Test]
-        public async Task SetCompany_ShouldReturn_CorrectCompanyId()
+        public async Task SetCompany_WithValidData_ShouldReturnCorrectCompanyId()
         {
             var company = await this.companyService.CreateAsync(CompanyName, CompanyAddress);
 
@@ -156,7 +156,7 @@
         }
 
         [Test]
-        public async Task SetCompany_ShouldReturn_NullWithWrongId()
+        public async Task SetCompany_WithInvalidId_ShouldReturnNull()
         {
             var company = await this.companyService.CreateAsync(CompanyName, CompanyAddress);
 
@@ -168,7 +168,7 @@
         }
 
         [Test]
-        public async Task SetWarehouseCompany_ShouldSet_CorrectCompanyAndWarehouseIsFavoriteTrue()
+        public async Task SetWarehouseCompany_WithValidData_ShouldSetCorrectCompanyAndWarehouseIsFavoriteTrue()
         {
             var company = await this.companyService.CreateAsync(CompanyName, CompanyAddress);
 
@@ -181,7 +181,7 @@
         }
 
         [Test]
-        public async Task SetWarehouseCompany_ShouldSet_CorrectCompanyAndWarehouseIsFavoriteFalse()
+        public async Task SetWarehouseCompany_WithValidData_ShouldSetCorrectCompanyAndWarehouseIsFavoriteFalse()
         {
             var company = await this.companyService.CreateAsync(CompanyName, CompanyAddress);
 
@@ -204,7 +204,7 @@
         }
 
         [Test]
-        public async Task SetWarehouseCompany_ShouldReturn_Null()
+        public async Task SetWarehouseCompany_WithInvalidData_ShouldReturnNull()
         {
             var company = await this.companyService.CreateAsync(CompanyName, CompanyAddress);
 
@@ -216,7 +216,7 @@
         }
 
         [Test]
-        public async Task CreateCompany_ShouldWorkCorrectly()
+        public async Task CreateCompany_WithValidData_ShouldWorkCorrectly()
         {
             var user = new MISUser()
             {
@@ -234,7 +234,7 @@
         }
 
         [Test]
-        public async Task CreateCompany_ShouldReturn_Null()
+        public async Task CreateCompany_WithInvalidData_ShouldReturnNull()
         {
             var user = new MISUser()
             {

@@ -8,7 +8,7 @@
         private const int MaxLength = 24;
 
         [Required]
-        public string Id { get; set; }
+        public string WareHouseId { get; set; }
 
         [Required]
         [StringLength(MaxLength, MinimumLength = MinLength)]

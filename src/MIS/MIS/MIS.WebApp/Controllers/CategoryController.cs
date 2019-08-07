@@ -38,7 +38,7 @@
         {
             var user = await this.userManager.GetUserAsync(this.User);
 
-            if (user.CompanyId == null)
+            if (user?.CompanyId == null)
             {
                 return this.RedirectToAction(RedirectCreate, RedirectCompany);
             }
@@ -67,7 +67,7 @@
 
         public IActionResult Create(string id)
         {
-            return this.View(new CategoryCreateInputModel { Id = id});
+            return this.View(new CategoryCreateInputModel { WareHouseId = id});
         }
 
         [HttpPost]
@@ -78,7 +78,7 @@
                 return this.View(input);
             }
 
-            await this.categoryService.CreateAsync(input.Name, input.Id);
+            await this.categoryService.CreateAsync(input.Name, input.WareHouseId);
             return this.RedirectToAction(RedirectIndex, RedirectWareHouse);
         }
 
