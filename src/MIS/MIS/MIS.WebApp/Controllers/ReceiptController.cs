@@ -43,12 +43,12 @@
         {
             var user = await this.userManger.GetUserAsync(this.User);
 
-            if (user.CompanyId == null)
+            if (user?.CompanyId == null)
             {
                 return this.RedirectToAction(RedirectCreate, RedirectCompany);
             }
 
-            return this.View();
+            return this.View(); 
         }
 
         public async Task<ActionResult<ReceiptCreateViewModel>> LoadReceipt()
@@ -60,7 +60,7 @@
 
             return result;
         }
-
+        
 
         [HttpGet("/Receipt/Delete")]
         public async Task<ActionResult> Delete()
@@ -83,7 +83,7 @@
 
             if (product == null)
             {
-                return this.BadRequest(this.ModelState);
+                return this.BadRequest();
             }
 
             return product.MapTo<ProductShowReceiptViewModel>();
@@ -94,13 +94,13 @@
         {
             var user = await this.userManger.GetUserAsync(this.User);
 
-            var products = await this.productService.GetAllProductsCompanyIdAsync(user.CompanyId);
-
+            var products = await this.productService.GetAllProductsCompanyIdAsync(user?.CompanyId);
+            
             return products.MapTo<ProductReceiptViewModel[]>();
         }
 
 
-        [HttpGet]
+        [HttpGet("Finish")]
         public async Task<ActionResult> Finish()
         {
             await this.receiptService.FinishCurrentOpenReceiptByUsernameAsync(this.User.Identity.Name);
