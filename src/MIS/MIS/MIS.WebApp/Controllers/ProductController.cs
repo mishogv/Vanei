@@ -20,7 +20,7 @@
         private readonly ICategoryService categoryService;
 
         public ProductController(IProductService productService,
-            ICategoryService categoryService)
+            ICategoryService categoryService)   
         {
             this.productService = productService;
             this.categoryService = categoryService;
@@ -73,6 +73,11 @@
         [HttpPost]
         public async Task<IActionResult> Edit(EditProductInputModel input)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(input);
+            }
+
             await this.productService.UpdateAsync(input.Id, input.Name, input.Price, input.Quantity,
                 input.BarCode, input.CategoryId);
 
