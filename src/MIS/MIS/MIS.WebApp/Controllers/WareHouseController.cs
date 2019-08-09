@@ -38,7 +38,7 @@ namespace MIS.WebApp.Controllers
         {
             var user = await this.userManager.GetUserAsync(this.User);
 
-            if (user.CompanyId == null)
+            if (user?.CompanyId == null)
             {
                 return this.RedirectToAction(RedirectCreate, RedirectCompany);
             }
@@ -77,7 +77,7 @@ namespace MIS.WebApp.Controllers
 
             var user = await this.userManager.GetUserAsync(this.User);
 
-            await this.wareHouseService.CreateAsync(input.Name, user.CompanyId);
+            await this.wareHouseService.CreateAsync(input.Name, user?.CompanyId);
 
             return this.RedirectToAction(nameof(this.Index));
         }
