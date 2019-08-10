@@ -19,12 +19,12 @@
                 <input type="hidden" asp-for="WareHouseId" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="row container-fluid justify-content-around">
+            <div class="container-fluid d-flex justify-content-around">
                 <div class="">
-                    <input type="submit" value="Create" class="btn btn-primary container-fluid" />
+                    <input type="submit" value="Create" class="btn btn-primary" />
                 </div>
                 <div class="">
-                    <a asp-controller="WareHouse" asp-action="Index" class="btn btn-primary container-fluid">Back</a>
+                    <a asp-controller="WareHouse" asp-action="Index" class="btn btn-primary">Back</a>
                 </div>
             </div>
         </form>

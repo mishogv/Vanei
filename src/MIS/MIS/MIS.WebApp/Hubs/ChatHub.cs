@@ -16,8 +16,8 @@
     public class ChatHub : Hub
     {
         private const string SignalRMethodName = "NewMessage";
-        private const string MessageJoinGroupTemplate = "{0} has joined the group {1}";
-        private const string MessageLeftGroupTemplate = "{0} has left the group {1}";
+        private const string MessageJoinGroupTemplate = "{0} has joined the group {1}.";
+        private const string MessageLeftGroupTemplate = "{0} has left the group {1}.";
 
         private readonly IHtmlSanitizer sanitizer;
         private readonly IMessageService messageService;
