@@ -81,11 +81,7 @@
 
             #endregion
 
-            services.AddAuthentication(options =>
-                    {
-                        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                        options.DefaultChallengeScheme = FacebookDefaults.AuthenticationScheme;
-                    })
+            services.AddAuthentication()
                     .AddCookie()
                     .AddFacebook(options =>
                     {
