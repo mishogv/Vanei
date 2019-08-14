@@ -77,13 +77,25 @@
             public string ConfirmPassword { get; set; }
         }
 
-        public void OnGet(string returnUrl = null)
+        public IActionResult OnGet(string returnUrl = null)
         {
+            if (this.User.Identity.IsAuthenticated)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
             this.ReturnUrl = returnUrl;
+
+            return this.Page();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            if (this.User.Identity.IsAuthenticated)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
             returnUrl = returnUrl ?? this.Url.Content("~/");
             if (this.ModelState.IsValid)
             {

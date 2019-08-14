@@ -56,8 +56,13 @@
             public bool RememberMe { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task<IActionResult> OnGetAsync(string returnUrl = null)
         {
+            if (this.User.Identity.IsAuthenticated)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
@@ -71,10 +76,17 @@
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             ReturnUrl = returnUrl;
+
+            return this.Page();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            if (this.User.Identity.IsAuthenticated)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
             returnUrl = returnUrl ?? Url.Content("~/");
 
             var recaptcha = await this.recaptchaService.Validate(this.Request);

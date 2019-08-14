@@ -100,7 +100,7 @@
         }
 
 
-        [HttpGet("Finish")]
+        [HttpGet("/Receipt/Finish")]
         public async Task<ActionResult> Finish()
         {
             await this.receiptService.FinishCurrentOpenReceiptByUsernameAsync(this.User.Identity.Name);

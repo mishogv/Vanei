@@ -30,7 +30,6 @@
             this.receiptService = receiptService;
         }
 
-
         public async Task<ReportServiceModel> CreateAsync(string companyId, string name, DateTime from, DateTime to, MISUser user)
         {
             var report = new Report
